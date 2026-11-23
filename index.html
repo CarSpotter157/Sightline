@@ -108,6 +108,13 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 .rarity-overview{padding:18px 19px 15px;margin:0 0 17px;overflow:hidden;background:linear-gradient(145deg,var(--surface),color-mix(in srgb,#3c82f7 3%,var(--surface)));}
 .rarity-overview-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px}.rarity-overview-head .eyebrow{margin-bottom:4px}.rarity-overview-head h2{margin:0;font:900 25px/.95 var(--font-display);letter-spacing:.4px}.rarity-overview-head p{max-width:590px;margin:6px 0 0;color:var(--muted);font-size:10px;line-height:1.55}.rarity-disclaimer{font-size:8px;letter-spacing:.8px;font-weight:900;color:var(--muted);white-space:nowrap}.rarity-counts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:16px}.rarity-count{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;padding:10px 11px;border:1px solid var(--line);border-radius:12px;background:var(--surface);text-align:left;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s}.rarity-count:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.rarity-count-num{font:900 25px/.9 var(--font-display);color:var(--text)}.rarity-count-label{font-size:8px;font-weight:900;letter-spacing:.7px;text-transform:uppercase;color:var(--muted)}.rarity-count-track{display:block;height:4px;width:100%;overflow:hidden;margin-top:4px;border-radius:99px;background:var(--surface-3)}.rarity-count-track b{display:block;height:100%;border-radius:99px;background:var(--rarity-color);transition:width .4s ease}.rarity-legend{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin-top:12px;font-size:8px;font-weight:800;color:var(--muted)}.rarity-dot{width:8px;height:8px;border-radius:50%;margin-right:-6px;background:var(--rarity-color)}.rarity-count.common,.rarity-card.rarity-common{--rarity-color:#98a2b2}.rarity-count.uncommon,.rarity-card.rarity-uncommon{--rarity-color:#2fa879}.rarity-count.rare,.rarity-card.rarity-rare{--rarity-color:#3588f5}.rarity-count.epic,.rarity-card.rarity-epic{--rarity-color:#9656e8}.rarity-count.legendary,.rarity-card.rarity-legendary{--rarity-color:#e3a31c}.rarity-dot.common{--rarity-color:#98a2b2}.rarity-dot.uncommon{--rarity-color:#2fa879}.rarity-dot.rare{--rarity-color:#3588f5}.rarity-dot.epic{--rarity-color:#9656e8}.rarity-dot.legendary{--rarity-color:#e3a31c}.rarity-card{position:relative;border-top:3px solid var(--rarity-color);background:linear-gradient(180deg,color-mix(in srgb,var(--rarity-color) 3%,var(--surface)),var(--surface) 35%)}.rarity-card:hover{border-color:color-mix(in srgb,var(--rarity-color) 55%,var(--line))}.car-rarity-overlay{position:absolute;bottom:10px;left:10px;padding:6px 8px;border-radius:7px;background:color-mix(in srgb,var(--rarity-color) 90%,#142033);color:#fff;font-size:8px;font-weight:900;letter-spacing:1px;box-shadow:0 4px 12px rgba(0,0,0,.16)}.car-rarity-overlay.legendary{background:linear-gradient(110deg,#b97709,#e3a31c,#f4d36d);color:#382600}.car-rarity-overlay.epic{background:#8040c6}.car-rarity-overlay.rare{background:#2475d8}.car-rarity-overlay.uncommon{background:#22875f}.car-rarity-overlay.common{background:#64748b}.rarity-legend .common{--rarity-color:#98a2b2}.rarity-legend .uncommon{--rarity-color:#2fa879}.rarity-legend .rare{--rarity-color:#3588f5}.rarity-legend .epic{--rarity-color:#9656e8}.rarity-legend .legendary{--rarity-color:#e3a31c}.rarity-count:focus-visible{outline:3px solid var(--rarity-color);outline-offset:2px}.car-card.rarity-legendary{box-shadow:0 0 0 1px color-mix(in srgb,#e3a31c 15%,transparent)}.car-card.rarity-epic{box-shadow:0 0 0 1px color-mix(in srgb,#9656e8 10%,transparent)}@media(max-width:620px){.rarity-overview{padding:14px}.rarity-overview-head{align-items:flex-start;flex-direction:column;gap:7px}.rarity-overview-head h2{font-size:22px}.rarity-counts{gap:5px;margin-top:12px}.rarity-count{padding:8px 6px}.rarity-count-num{font-size:22px}.rarity-count-label{font-size:7px;letter-spacing:.3px}.rarity-legend{gap:6px;font-size:7px}}
 
+
+/* Cinematic sighting capture */
+.spot-reveal[hidden]{display:none!important}.spot-reveal{--reveal-glow:#4c91ff;position:fixed;inset:0;z-index:500;display:grid;grid-template-rows:auto 1fr auto auto;gap:0;overflow:hidden;padding:clamp(18px,3vw,34px) clamp(18px,5vw,64px) max(18px,env(safe-area-inset-bottom));background:radial-gradient(ellipse at 50% 42%,rgba(36,102,202,.25),transparent 38%),radial-gradient(ellipse at 50% 110%,rgba(20,66,137,.30),transparent 45%),#08111f;color:#eef5ff;opacity:0;visibility:hidden;transform:scale(1.018);transition:opacity .35s ease,visibility .35s ease,transform .55s cubic-bezier(.2,.8,.2,1)}.spot-reveal.is-active{opacity:1;visibility:visible;transform:scale(1)}.spot-reveal[data-rarity="uncommon"]{--reveal-glow:#3fce9a}.spot-reveal[data-rarity="rare"]{--reveal-glow:#4c91ff}.spot-reveal[data-rarity="epic"]{--reveal-glow:#b47aff}.spot-reveal[data-rarity="legendary"]{--reveal-glow:#ffd05a}.reveal-atmosphere{position:absolute;inset:0;overflow:hidden;pointer-events:none;background-image:linear-gradient(rgba(114,160,222,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(114,160,222,.055) 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(ellipse at center,#000 12%,transparent 78%);animation:revealGridDrift 18s linear infinite}.reveal-atmosphere:before,.reveal-atmosphere:after{content:"";position:absolute;inset:-30%;border:1px solid rgba(116,174,255,.11);border-radius:50%;transform:rotate(-18deg) scaleX(1.5);animation:revealOrbit 13s linear infinite}.reveal-atmosphere:after{inset:-18% 7%;transform:rotate(22deg) scaleX(1.3);animation-duration:18s;animation-direction:reverse}.reveal-atmosphere i{position:absolute;width:3px;height:3px;border-radius:50%;background:#a9d3ff;box-shadow:0 0 12px 3px rgba(104,166,255,.45);animation:revealStar 3.8s ease-in-out infinite}.reveal-atmosphere i:nth-child(1){left:12%;top:23%;animation-delay:-.5s}.reveal-atmosphere i:nth-child(2){left:81%;top:18%;animation-delay:-1.2s}.reveal-atmosphere i:nth-child(3){left:22%;top:76%;animation-delay:-2s}.reveal-atmosphere i:nth-child(4){left:91%;top:71%;animation-delay:-.8s}.reveal-atmosphere i:nth-child(5){left:68%;top:86%;animation-delay:-2.6s}.reveal-atmosphere i:nth-child(6){left:43%;top:12%;animation-delay:-1.8s}.reveal-topline,.reveal-bottom,.reveal-actions{position:relative;z-index:4}.reveal-topline{display:flex;justify-content:space-between;align-items:center;gap:14px;color:#8ca9cd;font-size:9px;font-weight:900;letter-spacing:1.8px}.reveal-topline>span{display:flex;align-items:center;gap:9px}.reveal-live-dot{width:7px;height:7px;border-radius:50%;background:#50d7a0;box-shadow:0 0 0 5px rgba(80,215,160,.12),0 0 15px rgba(80,215,160,.7)}.reveal-topline button{border:1px solid rgba(159,190,232,.25);border-radius:99px;background:rgba(17,35,60,.55);color:#b7c9e1;padding:9px 13px;font-size:8px;font-weight:900;letter-spacing:1px}.reveal-center{width:min(880px,100%);justify-self:center;align-self:center;text-align:center;position:relative;z-index:2;padding:4px 0 20px}.reveal-kicker{display:flex;justify-content:center;gap:13px;align-items:center;margin-bottom:10px;color:#81a3d2;font-size:8px;font-weight:900;letter-spacing:2.1px}.reveal-kicker span{color:#506a8e}.reveal-stage{height:clamp(210px,34vh,310px);position:relative;display:grid;place-items:center;margin:0 auto 5px;isolation:isolate}.reveal-orbit{position:absolute;width:min(480px,85vw);aspect-ratio:1;border:1px solid rgba(93,151,228,.15);border-radius:50%;box-shadow:inset 0 0 50px rgba(45,106,186,.05),0 0 65px rgba(39,104,194,.06);animation:revealOrbitPulse 4s ease-in-out infinite}.orbit-two{width:min(350px,65vw);border-style:dashed;border-color:rgba(116,175,252,.16);animation:revealOrbitSpin 24s linear infinite}.reveal-car-drawing{width:min(710px,96%);position:relative;z-index:1;filter:drop-shadow(0 0 13px rgba(71,147,255,.28));opacity:.86;transition:opacity .6s ease,transform .8s ease}.reveal-car-drawing svg{width:100%;height:auto;overflow:visible}.reveal-car-line{stroke:#8fc2ff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1550;stroke-dashoffset:1550;transition:stroke-dashoffset 1.45s cubic-bezier(.2,.7,.2,1)}.reveal-window-line{stroke:#4f91e7;stroke-width:1.7;transition-delay:.13s}.reveal-car-detail{stroke:#f8d66b;stroke-width:2;stroke-linecap:round;opacity:.7;stroke-dasharray:600;stroke-dashoffset:600;transition:stroke-dashoffset .8s ease .55s}.reveal-wheel{stroke:#78a9e6;stroke-width:2;stroke-dasharray:245;stroke-dashoffset:245;transition:stroke-dashoffset .9s ease .2s}.reveal-wheel-core{fill:#8fc2ff;opacity:0;transition:opacity .35s ease .85s}.stage-scan .reveal-car-line,.stage-scan .reveal-car-detail,.stage-scan .reveal-wheel{stroke-dashoffset:0}.stage-scan .reveal-wheel-core{opacity:.9}.reveal-scan-beam{position:absolute;z-index:3;left:5%;right:5%;top:13%;height:2px;opacity:0;background:linear-gradient(90deg,transparent,var(--reveal-glow),#e6f4ff,var(--reveal-glow),transparent);box-shadow:0 0 16px 4px color-mix(in srgb,var(--reveal-glow) 55%,transparent);transform:translateY(0);transition:opacity .15s}.stage-scan .reveal-scan-beam{opacity:1;animation:revealScan 1.15s cubic-bezier(.5,0,.4,1) forwards}.reveal-photo-card{position:absolute;z-index:5;width:min(520px,82vw);height:clamp(175px,27vh,260px);overflow:hidden;border:1px solid rgba(165,203,255,.48);border-radius:18px;background:linear-gradient(140deg,#1a3153,#0b1729);box-shadow:0 28px 75px rgba(0,0,0,.5),0 0 0 7px rgba(102,165,255,.055),0 0 55px color-mix(in srgb,var(--reveal-glow) 24%,transparent);opacity:0;transform:translateY(18px) scale(.88);filter:blur(10px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .85s cubic-bezier(.16,1,.3,1),filter .7s ease}.stage-reveal .reveal-photo-card{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}.reveal-photo-card:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(125deg,rgba(4,14,29,.08),transparent 45%,rgba(5,15,29,.42))}.reveal-photo-card img{width:100%;height:100%;display:block;object-fit:cover;opacity:0;transform:scale(1.12);transition:opacity .45s ease .15s,transform 3s cubic-bezier(.2,.65,.2,1)}.stage-reveal .reveal-photo-card img:not([hidden]){opacity:1;transform:scale(1.02)}.reveal-photo-empty{position:relative;z-index:3;height:100%;display:grid;align-content:center;justify-items:center;gap:8px;background:radial-gradient(circle at 50% 35%,rgba(80,143,230,.25),transparent 40%),linear-gradient(145deg,#172d4c,#0b1729);color:#bad8ff}.reveal-photo-empty[hidden]{display:none}.reveal-photo-empty span{font:900 58px/.9 var(--font-display);letter-spacing:2px}.reveal-photo-empty small{font-size:8px;font-weight:900;letter-spacing:2px;color:#7d9fc7}.reveal-photo-corner{position:absolute;left:13px;top:12px;z-index:3;padding:7px 9px;border:1px solid rgba(255,255,255,.25);border-radius:7px;background:rgba(5,15,29,.68);color:#fff;font-size:7px;font-weight:900;letter-spacing:1.5px}.reveal-photo-glint{position:absolute;z-index:4;top:-40%;bottom:-40%;left:-45%;width:25%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transform:rotate(18deg);opacity:0}.stage-reveal .reveal-photo-glint{opacity:1;animation:revealGlint 1.1s ease .25s both}.reveal-particles{position:absolute;inset:0;z-index:4;pointer-events:none}.reveal-particles i{position:absolute;left:var(--px);top:var(--py);width:5px;height:5px;border-radius:2px;background:var(--reveal-glow);opacity:0;box-shadow:0 0 13px 3px color-mix(in srgb,var(--reveal-glow) 65%,transparent)}.reveal-particles i:nth-child(1){--px:15%;--py:35%;--dx:80px;--dy:-48px}.reveal-particles i:nth-child(2){--px:24%;--py:70%;--dx:54px;--dy:35px}.reveal-particles i:nth-child(3){--px:36%;--py:17%;--dx:-60px;--dy:54px}.reveal-particles i:nth-child(4){--px:61%;--py:23%;--dx:70px;--dy:-40px}.reveal-particles i:nth-child(5){--px:78%;--py:42%;--dx:-62px;--dy:24px}.reveal-particles i:nth-child(6){--px:83%;--py:74%;--dx:-82px;--dy:-38px}.reveal-particles i:nth-child(7){--px:49%;--py:82%;--dx:10px;--dy:-65px}.reveal-particles i:nth-child(8){--px:10%;--py:57%;--dx:95px;--dy:0px}.reveal-particles i:nth-child(9){--px:90%;--py:28%;--dx:-95px;--dy:40px}.reveal-particles i:nth-child(10){--px:30%;--py:88%;--dx:20px;--dy:-65px}.reveal-particles i:nth-child(11){--px:68%;--py:87%;--dx:-55px;--dy:-60px}.reveal-particles i:nth-child(12){--px:55%;--py:9%;--dx:10px;--dy:70px}.reveal-particles i:nth-child(13){--px:18%;--py:15%;--dx:70px;--dy:50px}.reveal-particles i:nth-child(14){--px:73%;--py:13%;--dx:-60px;--dy:65px}.reveal-particles i:nth-child(15){--px:42%;--py:92%;--dx:35px;--dy:-70px}.reveal-particles i:nth-child(16){--px:94%;--py:55%;--dx:-90px;--dy:-10px}.stage-scan .reveal-particles i{animation:revealParticle .95s ease-out var(--pd,0s) both}.reveal-particles i:nth-child(3n){--pd:.08s}.reveal-particles i:nth-child(3n + 1){--pd:.2s}.reveal-particles i:nth-child(3n + 2){--pd:.32s}.reveal-copy{position:relative;z-index:5;opacity:0;transform:translateY(18px);transition:opacity .55s ease .2s,transform .6s cubic-bezier(.2,.8,.2,1) .2s}.stage-reveal .reveal-copy{opacity:1;transform:translateY(0)}.reveal-make{display:block;color:var(--reveal-glow);font-size:9px;font-weight:900;letter-spacing:2.4px}.reveal-copy h2{margin:5px 0 3px;color:#f3f7ff;font:900 clamp(33px,5vw,52px)/.95 var(--font-display);letter-spacing:.2px;text-transform:uppercase;text-shadow:0 5px 22px rgba(0,0,0,.22)}.reveal-trim{min-height:13px;color:#9cb3d2;font-size:10px}.reveal-meta-row{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:12px;color:#7390b7;font-size:8px;font-weight:900;letter-spacing:1px}.reveal-rarity{padding:6px 9px;border:1px solid color-mix(in srgb,var(--reveal-glow) 45%,transparent);border-radius:6px;background:color-mix(in srgb,var(--reveal-glow) 13%,transparent);color:var(--reveal-glow)}.reveal-divider{height:15px;width:1px;background:rgba(143,177,221,.25)}.reveal-complete{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:16px;color:#83e0b7;font-size:8px;font-weight:900;letter-spacing:1.7px;opacity:0;transform:translateY(7px);transition:opacity .35s ease,transform .35s ease}.stage-complete .reveal-complete{opacity:1;transform:translateY(0)}.reveal-check{width:21px;height:21px;border-radius:50%;display:grid;place-items:center;background:#1b9c70;color:#fff;font-size:12px;box-shadow:0 0 0 5px rgba(27,156,112,.14)}.stage-complete .reveal-orbit{border-color:color-mix(in srgb,var(--reveal-glow) 35%,transparent);box-shadow:0 0 55px color-mix(in srgb,var(--reveal-glow) 12%,transparent)}.stage-complete[data-rarity="legendary"] .reveal-photo-card,.spot-reveal[data-rarity="legendary"] .reveal-photo-card{box-shadow:0 28px 75px rgba(0,0,0,.5),0 0 0 7px rgba(255,208,90,.12),0 0 75px rgba(255,190,53,.3)}.reveal-bottom{width:min(560px,100%);justify-self:center;align-self:end;margin:12px auto 0}.reveal-track{height:3px;overflow:hidden;border-radius:9px;background:rgba(136,172,221,.16)}.reveal-track span{display:block;width:0;height:100%;background:linear-gradient(90deg,#3b85ff,var(--reveal-glow),#f5d46b);box-shadow:0 0 12px var(--reveal-glow);transition:width 2.9s cubic-bezier(.2,.7,.2,1)}.is-active .reveal-track span{width:100%}.reveal-bottom-row{display:flex;justify-content:space-between;gap:12px;margin-top:9px;color:#718bab;font-size:7px;font-weight:900;letter-spacing:1.3px}.reveal-bottom-row strong{color:#d7e6fb;font-size:9px;letter-spacing:.8px}.reveal-actions{display:flex;justify-content:center;gap:8px;padding-top:17px;opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease}.stage-complete .reveal-actions{opacity:1;transform:translateY(0)}.reveal-actions button{min-height:41px;padding:0 16px;border-radius:10px;font-size:8px;font-weight:900;letter-spacing:.7px}.reveal-continue{border:0;background:#347ff0;color:#fff;box-shadow:0 8px 20px rgba(40,113,220,.25)}.reveal-view{border:1px solid rgba(150,187,238,.25);background:rgba(18,39,66,.72);color:#d4e3f8}.reveal-actions button:hover{transform:translateY(-2px);filter:brightness(1.08)}body.spot-reveal-open{overflow:hidden}@keyframes revealGridDrift{to{background-position:46px 46px}}@keyframes revealOrbit{to{transform:rotate(342deg) scaleX(1.5)}}@keyframes revealStar{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.5)}}@keyframes revealOrbitPulse{0%,100%{transform:scale(.96);opacity:.55}50%{transform:scale(1.035);opacity:1}}@keyframes revealOrbitSpin{to{transform:rotate(360deg)}}@keyframes revealScan{0%{top:13%;opacity:0}12%{opacity:1}88%{opacity:.85}100%{top:88%;opacity:0}}@keyframes revealGlint{0%{left:-45%}100%{left:130%}}@keyframes revealParticle{0%{opacity:0;transform:translate(0,0) scale(.4)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}}
+@media(max-width:600px){.spot-reveal{padding:15px 15px max(14px,env(safe-area-inset-bottom))}.reveal-topline{font-size:7px;letter-spacing:1.2px}.reveal-topline button{padding:8px 10px}.reveal-stage{height:clamp(195px,30vh,245px)}.reveal-photo-card{width:min(440px,88vw);height:clamp(165px,26vh,215px);border-radius:14px}.reveal-center{padding-bottom:12px}.reveal-copy h2{font-size:39px}.reveal-actions{padding-top:13px}.reveal-actions button{flex:1;padding:0 9px;font-size:7px}.reveal-bottom-row{font-size:6px}}
+.spot-reveal.is-special .reveal-orbit-two{border-color:color-mix(in srgb,var(--reveal-glow) 34%,transparent);animation-duration:11s}.spot-reveal.is-special .reveal-stage:after{content:"";position:absolute;width:min(580px,96vw);aspect-ratio:1;border:1px solid color-mix(in srgb,var(--reveal-glow) 26%,transparent);border-radius:50%;opacity:0;pointer-events:none}.spot-reveal.is-special.stage-complete .reveal-stage:after{animation:rarityShockwave 1.15s cubic-bezier(.12,.72,.2,1) both}.spot-reveal.is-elite .reveal-photo-card{box-shadow:0 28px 75px rgba(0,0,0,.5),0 0 0 7px color-mix(in srgb,var(--reveal-glow) 15%,transparent),0 0 85px color-mix(in srgb,var(--reveal-glow) 35%,transparent)}.spot-reveal.is-elite.stage-complete .reveal-photo-glint{animation:revealGlint 1.2s ease .15s both}.spot-reveal[data-rarity="legendary"] .reveal-atmosphere:before{border-color:rgba(255,208,90,.2);box-shadow:0 0 0 28px rgba(255,208,90,.035),0 0 0 62px rgba(255,208,90,.025)}.spot-reveal[data-rarity="legendary"].stage-complete .reveal-orbit{border-color:rgba(255,208,90,.48);box-shadow:0 0 85px rgba(255,190,53,.2),inset 0 0 55px rgba(255,190,53,.08)}.spot-reveal[data-rarity="legendary"] .reveal-rarity{background:rgba(255,208,90,.17);border-color:rgba(255,208,90,.58);color:#ffda73}@keyframes rarityShockwave{0%{opacity:0;transform:scale(.72)}22%{opacity:.8}100%{opacity:0;transform:scale(1.12)}}
+@media(prefers-reduced-motion:reduce){.spot-reveal,.spot-reveal *{animation:none!important;transition:none!important}.spot-reveal .reveal-car-drawing{opacity:.2}.spot-reveal .reveal-photo-card,.spot-reveal .reveal-copy,.spot-reveal .reveal-complete,.spot-reveal .reveal-actions{opacity:1;filter:none;transform:none}.spot-reveal .reveal-track span{width:100%}}
+
 </style>
 </head>
 <body data-theme="light">
@@ -184,7 +191,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
             <div class="form-grid">
               <div class="field"><label for="makeSelect">Make</label><select class="control" id="makeSelect" required><option value="">Choose a make</option></select><input class="control conditional-input" id="customMake" type="text" maxlength="40" placeholder="Enter make" aria-label="Custom make"></div>
               <div class="field"><label for="modelSelect">Model</label><select class="control" id="modelSelect" required disabled><option value="">Choose make first</option></select><input class="control conditional-input" id="customModel" type="text" maxlength="50" placeholder="Enter model" aria-label="Custom model"></div>
-              <div class="field full"><label for="trimSelect">Submodel / trim <span class="optional">Optional</span></label><select class="control" id="trimSelect"><option value="">No submodel</option></select><input class="control conditional-input" id="customTrim" type="text" maxlength="50" placeholder="Enter submodel or trim" aria-label="Custom submodel"></div>
+              <div class="field full"><label for="trimSelect">Submodel / trim <span class="optional">Optional</span></label><select class="control" id="trimSelect"><option value="">No submodel</option></select><input class="control conditional-input" id="customTrim" type="text" maxlength="50" placeholder="Enter submodel or trim" aria-label="Custom submodel"><div class="field-help">Options are matched to the selected make and model. Choose custom for an unlisted version.</div></div>
               <div class="field"><label for="yearInput">Model year <span class="optional">Optional</span></label><input class="control" id="yearInput" type="number" inputmode="numeric" min="1886" max="2099" placeholder="e.g. 2022"></div>
               <div class="field"><label for="colorInput">Color <span class="optional">Optional</span></label><input class="control" id="colorInput" type="text" maxlength="28" placeholder="e.g. Nardo Grey"></div>
             </div>
@@ -280,7 +287,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 <div class="modal-backdrop" id="editSpotModal" role="dialog" aria-modal="true" aria-labelledby="editSpotTitle"><div class="modal"><div class="modal-head"><div><h2 id="editSpotTitle">Edit this spot.</h2><p>Update the car details or replace the photo.</p></div><button class="modal-x" data-close-modal="editSpotModal" type="button" aria-label="Close">×</button></div><div class="form-grid">
   <div class="field"><label for="editMakeSelect">Make</label><select class="control" id="editMakeSelect"></select><input class="control conditional-input" id="editCustomMake" maxlength="40" placeholder="Enter make"></div>
   <div class="field"><label for="editModelSelect">Model</label><select class="control" id="editModelSelect" disabled></select><input class="control conditional-input" id="editCustomModel" maxlength="50" placeholder="Enter model"></div>
-  <div class="field full"><label for="editTrimSelect">Submodel / trim <span class="optional">Optional</span></label><select class="control" id="editTrimSelect"></select><input class="control conditional-input" id="editCustomTrim" maxlength="50" placeholder="Enter submodel or trim"></div>
+  <div class="field full"><label for="editTrimSelect">Submodel / trim <span class="optional">Optional</span></label><select class="control" id="editTrimSelect"></select><input class="control conditional-input" id="editCustomTrim" maxlength="50" placeholder="Enter submodel or trim"><div class="field-help">Options are matched to the selected make and model.</div></div>
   <div class="field"><label for="editYearInput">Model year</label><input class="control" id="editYearInput" type="number" inputmode="numeric" min="1886" max="2099" placeholder="e.g. 2022"></div>
   <div class="field"><label for="editColorInput">Color</label><input class="control" id="editColorInput" maxlength="28" placeholder="e.g. Nardo Grey"></div>
   <div class="field full"><label for="editPlaceInput">Place or event</label><input class="control" id="editPlaceInput" maxlength="80" placeholder="e.g. Cars & Coffee, North Hills"></div>
@@ -293,6 +300,44 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 
 <!-- Data / backup -->
 <div class="modal-backdrop" id="dataModal" role="dialog" aria-modal="true" aria-labelledby="dataTitle"><div class="modal"><div class="modal-head"><div><h2 id="dataTitle">Your data.</h2><p>Your collection lives in this browser, not in an online account.</p></div><button class="modal-x" data-close-modal="dataModal" type="button" aria-label="Close">×</button></div><div class="data-actions"><button class="data-action" id="exportButton" type="button"><strong>↓ Export backup</strong><span>Download all cars, photos, locations and runs as one JSON file.</span></button><button class="data-action" id="importButton" type="button"><strong>↑ Import backup</strong><span>Restore a CarSpotter backup on this browser.</span></button></div><input id="importFile" type="file" accept=".json,application/json" hidden><p class="modal-note">Use Export before clearing browser data or moving to another device. Import replaces the collection currently saved in this browser. Photos are stored in browser database storage to handle larger collections more reliably than localStorage.</p><div class="modal-actions"><button class="secondary-btn danger-btn" id="clearAllButton" type="button">CLEAR ALL DATA</button><button class="primary-btn" data-close-modal="dataModal" type="button">DONE</button></div></div></div>
+
+
+<div class="spot-reveal" id="spotReveal" hidden aria-hidden="true">
+  <div class="reveal-atmosphere" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="reveal-topline"><span><b class="reveal-live-dot"></b> CARSPOTTER / CAPTURE SEQUENCE</span><button type="button" id="spotRevealSkip" aria-label="Skip animation">SKIP ↗</button></div>
+  <div class="reveal-center">
+    <div class="reveal-kicker" id="spotRevealStatus">IDENTIFYING VEHICLE <span>01 / 04</span></div>
+    <div class="reveal-stage">
+      <div class="reveal-orbit orbit-one"></div><div class="reveal-orbit orbit-two"></div>
+      <div class="reveal-car-drawing" aria-hidden="true">
+        <svg viewBox="0 0 700 270" role="presentation" fill="none">
+          <path class="reveal-car-line" d="M78 176 119 122c12-16 31-27 52-30l106-17 77-52c13-9 29-14 46-14h105c26 0 47 10 65 30l49 56 55 25c18 8 27 22 27 42v26H51v-8c0-10 10-19 27-24Z"/>
+          <path class="reveal-car-line reveal-window-line" d="m283 79 64-43c12-8 25-12 42-12h105c18 0 33 8 45 22l37 43-293-10Z"/>
+          <path class="reveal-car-detail" d="M111 151h478M53 191h596M139 181h25m382 0h25"/>
+          <circle class="reveal-wheel" cx="183" cy="190" r="39"/><circle class="reveal-wheel-core" cx="183" cy="190" r="14"/>
+          <circle class="reveal-wheel" cx="527" cy="190" r="39"/><circle class="reveal-wheel-core" cx="527" cy="190" r="14"/>
+        </svg>
+      </div>
+      <div class="reveal-scan-beam"></div>
+      <div class="reveal-particles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="reveal-photo-card" id="spotRevealPhotoCard">
+        <img id="spotRevealPhoto" alt="Newly saved car" hidden>
+        <div class="reveal-photo-empty" id="spotRevealNoPhoto"><span id="spotRevealMonogram">CS</span><small>PHOTO NOT ADDED</small></div>
+        <span class="reveal-photo-corner">NEW SIGHTING</span>
+        <span class="reveal-photo-glint"></span>
+      </div>
+    </div>
+    <div class="reveal-copy">
+      <span class="reveal-make" id="spotRevealMake">PORSCHE</span>
+      <h2 id="spotRevealModel">911 GT3</h2>
+      <div class="reveal-trim" id="spotRevealTrim"></div>
+      <div class="reveal-meta-row"><span class="reveal-rarity" id="spotRevealRarity">RARE</span><span class="reveal-divider"></span><span id="spotRevealCountLabel">COLLECTION ENTRY #001</span></div>
+    </div>
+    <div class="reveal-complete" id="spotRevealComplete"><span class="reveal-check">✓</span><span>ADDED TO YOUR GARAGE</span></div>
+  </div>
+  <div class="reveal-bottom"><div class="reveal-track"><span></span></div><div class="reveal-bottom-row"><span id="spotRevealCollectionLabel">YOUR COLLECTION IS GROWING</span><strong><span id="spotRevealCount">0</span> CARS</strong></div></div>
+  <div class="reveal-actions"><button type="button" class="reveal-continue" id="spotRevealAnother">＋ LOG ANOTHER CAR</button><button type="button" class="reveal-view" id="spotRevealView">VIEW IN GARAGE ↗</button></div>
+</div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
@@ -363,7 +408,47 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     'Other':['Other / custom…']
   };
   const makes = Object.keys(modelCatalog).filter(x => x !== 'Other').sort((a,b)=>a.localeCompare(b));
-  const trims = ['GT','GTS','GT3','GT3 RS','GT4','GT4 RS','Turbo','Turbo S','Carrera S','Carrera GTS','RS','R','Competition','CS','CSL','AMG','Black Series','Type R','Type S','N','TRD','GR','Z06','ZL1','ZR1','Hellcat','Trackhawk','SV','SVJ','STO','Performante','Superleggera','Scuderia','Pista','Speciale','Challenge Stradale','Trofeo','Raptor','ST','Shelby GT350','Shelby GT500','Dark Horse','M'];
+  // Only show trims that belong to the selected make + model. Unlisted vehicles
+  // deliberately offer only 'No submodel' and a custom entry instead of unrelated trims.
+  const submodelCatalog = {
+    'Acura': {'Integra':['Base','A-Spec','Type S'],'TLX':['Base','Technology','A-Spec','Advance','Type S'],'NSX':['Base','Type S'],'RSX':['Base','Type-S'],'MDX':['Base','Technology','A-Spec','Advance','Type S']},
+    'Alfa Romeo': {'Giulia':['Sprint','Ti','Veloce','Quadrifoglio'],'Stelvio':['Sprint','Ti','Veloce','Quadrifoglio'],'4C':['Coupe','Spider']},
+    'Aston Martin': {'Vantage':['V8','V12','F1 Edition'],'DB11':['V8','V12','Volante'],'DB12':['Coupe','Volante'],'DBS':['Superleggera','770 Ultimate'],'Vanquish':['Coupe','Volante'],'Valkyrie':['Coupe','Spider','AMR Pro'],'DBX':['Base','707','S'], 'One-77':['Base']},
+    'Audi': {'A3':['Premium','Premium Plus','Prestige'],'S3':['Premium','Premium Plus','Prestige'],'RS 3':['Base'],'A4':['Premium','Premium Plus','Prestige'],'S4':['Premium','Premium Plus','Prestige'],'RS 4':['Avant'],'A5':['Premium','Premium Plus','Prestige'],'S5':['Premium','Premium Plus','Prestige'],'RS 5':['Coupe','Sportback'],'A6':['Premium','Premium Plus','Prestige'],'S6':['Premium Plus','Prestige'],'RS 6':['Avant','Performance'],'A7':['Premium Plus','Prestige'],'S7':['Premium Plus','Prestige'],'RS 7':['Performance'],'Q5':['Premium','Premium Plus','Prestige'],'SQ5':['Premium Plus','Prestige'],'Q7':['Premium','Premium Plus','Prestige'],'SQ7':['Premium Plus','Prestige'],'Q8':['Premium','Premium Plus','Prestige'],'RS Q8':['Base','Performance'],'R8':['V8','V10','V10 Plus','Performance','GT'],'TT':['Coupe','Roadster','TTS','TT RS']},
+    'Bentley': {'Continental GT':['Azure','S','Speed','Mulliner'],'Flying Spur':['Azure','S','Speed','Mulliner'],'Bentayga':['S','Azure','Speed','EWB Mulliner'],'Bacalar':['Mulliner'],'Batur':['Mulliner']},
+    'BMW': {'2 Series':['230i','M240i'],'M2':['Base','Competition','CS'],'3 Series':['320i','330i','330e','340i'],'M3':['Base','Competition','CS','CSL'],'4 Series':['430i','M440i'],'M4':['Base','Competition','CS','CSL'],'5 Series':['530i','540i','550e','M550i'],'M5':['Base','Competition','CS'],'8 Series':['840i','M850i'],'M8':['Base','Competition','CS'],'Z4':['sDrive30i','M40i'],'X3':['sDrive30i','xDrive30i','M40i'],'X3 M':['Base','Competition'],'X4':['xDrive30i','M40i'],'X4 M':['Base','Competition'],'X5':['sDrive40i','xDrive40i','xDrive50e','M60i'],'X5 M':['Base','Competition'],'X6':['xDrive40i','M60i'],'X6 M':['Base','Competition'],'XM':['Base','Label'],'i8':['Coupe','Roadster']},
+    'Bugatti': {'Chiron':['Base','Sport','Pur Sport','Super Sport','Super Sport 300+'],'Veyron':['16.4','Grand Sport','Super Sport','Grand Sport Vitesse'],'Divo':['Base'],'Bolide':['Track version'],'Tourbillon':['Base']},
+    'Cadillac': {'ATS-V':['Coupe','Sedan'],'CT4':['Luxury','Premium Luxury','Sport'],'CT4-V Blackwing':['6-speed manual','10-speed automatic'],'CT5':['Luxury','Premium Luxury','Sport'],'CT5-V Blackwing':['6-speed manual','10-speed automatic'],'CTS-V':['Gen II','Gen III'],'Escalade':['Luxury','Premium Luxury','Sport','V-Series']},
+    'Chevrolet': {'Corvette':['C5 Base','C6 Z06','C6 ZR1','C7 Stingray','C7 Grand Sport','C7 Z06','C7 ZR1','C8 Stingray','C8 E-Ray','C8 Z06','C8 ZR1'],'Camaro':['LS','LT1','SS','SS 1LE','ZL1','ZL1 1LE','Z/28'],'Chevelle':['SS 396','SS 454'],'Impala':['SS'],'SS':['Base'],'Silverado':['WT','LT','RST','LTZ','High Country','ZR2']},
+    'Dodge': {'Challenger':['SXT','GT','R/T','Scat Pack','392','Hellcat','Hellcat Redeye','Super Stock','Demon','Demon 170'],'Charger':['SXT','GT','R/T','Scat Pack','Hellcat','Hellcat Redeye','Daytona','SRT 392'],'Viper':['RT/10','GTS','SRT-10','ACR','TA'],'Durango':['GT','R/T','Citadel','SRT 392','SRT Hellcat'],'Neon SRT-4':['Base']},
+    'Ferrari': {'296 GTB':['Assetto Fiorano'],'296 GTS':['Assetto Fiorano'],'F8 Tributo':['Coupe','Spider'],'SF90 Stradale':['Assetto Fiorano'],'SF90 Spider':['Assetto Fiorano'],'812 Superfast':['GTS'],'812 Competizione':['Coupe','A'],'12Cilindri':['Coupe','Spider'],'Roma':['Coupe','Spider'],'Portofino':['M'],'488 GTB':['Pista','Pista Spider'],'458 Italia':['Spider','Speciale','Speciale A'],'430 Scuderia':['Coupe','16M Spider'],'F40':['Base'],'F50':['Base'],'Daytona SP3':['Icona']},
+    'Ford': {'Mustang':['EcoBoost','EcoBoost Premium','GT','GT Premium','California Special','Mach 1','Dark Horse','Dark Horse Premium','Shelby GT350','Shelby GT350R','Shelby GT500'],'GT':['Mk I','Mk II','Mk IV'],'Focus RS':['Base'],'Focus ST':['Base'],'Bronco':['Base','Big Bend','Black Diamond','Outer Banks','Badlands','Wildtrak','Raptor'],'Bronco Raptor':['Base'],'F-150':['XL','XLT','Lariat','King Ranch','Platinum','Limited'],'F-150 Raptor':['Raptor','Raptor R']},
+    'Genesis': {'G70':['2.0T','3.3T Sport'],'G80':['2.5T','3.5T Sport'],'G90':['3.5T','3.5T E-Supercharger'],'GV70':['2.5T','3.5T Sport'],'GV80':['2.5T','3.5T']},
+    'Honda': {'Civic':['LX','Sport','Si','Type R'],'Civic Type R':['Base','Limited Edition','Touring'],'Integra':['Base','A-Spec','A-Spec Tech','Type S'],'S2000':['AP1','AP2'],'NSX':['Base','Type S'],'Prelude':['Base','SH']},
+    'Hyundai': {'Elantra N':['Base'],'Veloster N':['Performance Package'],'Kona N':['Base'],'Ioniq 5 N':['Base'],'Genesis Coupe':['2.0T','3.8 R-Spec','3.8 Track','3.8 Ultimate']},
+    'Hennessey': {'Venom F5':['Coupe','Roadster','Revolution'],'Venom GT':['Coupe','Spyder'],'Exorcist':['Camaro ZL1 package']},
+    'Koenigsegg': {'CCX':['Base','Edition'],'Agera':['Agera R','Agera S','Agera RS'],'Jesko':['Attack','Absolut'],'Regera':['Base'],'Gemera':['HV8'],'CC850':['Base'],'One:1':['Base']},
+    'Jaguar': {'F-Type':['P300','P380','P450','R-Dynamic','R'],'E-Type':['Series 1','Series 2','Series 3']},
+    'Jeep': {'Wrangler':['Sport','Willys','Sahara','Rubicon','4xe','392'],'Grand Cherokee':['Laredo','Limited','Overland','Summit','Trailhawk'],'Grand Cherokee Trackhawk':['Base'],'Gladiator':['Sport','Overland','Rubicon','Mojave']},
+    'Kia': {'Stinger':['GT-Line','GT1','GT2'],'EV6 GT':['Base'],'K5 GT':['Base'],'Forte GT':['Base']},
+    'Lamborghini': {'Huracán':['LP 610-4','LP 580-2','EVO','EVO RWD','Performante','Tecnica','STO','Sterrato','STJ'],'Aventador':['LP 700-4','S','SV','SVJ','Ultimae'],'Revuelto':['Ad Personam'],'Urus':['S','Performante','SE'],'Gallardo':['LP 550-2','LP 560-4','Superleggera','Performante'],'Murciélago':['LP 580-2','LP 640','LP 670-4 SV'],'Diablo':['VT','SV','GT','GTR'],'Countach':['LP400','LP5000 QV','25th Anniversary','LPI 800-4'],'Essenza SCV12':['Base'],'Centenario':['Coupe','Roadster'],'Sian':['FKP 37','Roadster'],'Reventón':['Coupe','Roadster']},
+    'Lexus': {'RC F':['Base','Track Edition'],'LC 500':['Coupe','Convertible'],'LFA':['Base','Nürburgring Package'],'IS 500':['Premium','F Sport Performance'],'IS F':['Base'],'GS F':['Base']},
+    'Lotus': {'Emira':['First Edition','V6','Turbo'],'Evora':['400','GT','GT430'],'Exige':['Sport 350','Sport 380','Cup 430'],'Elise':['Sport','Cup'],'Evija':['Base']},
+    'Maserati': {'MC20':['Coupe','Cielo','GT2 Stradale'],'GranTurismo':['Modena','Trofeo','Folgore'],'Ghibli':['GT','Modena','Trofeo'],'Quattroporte':['Modena','Trofeo'],'MC12':['Stradale','Versione Corse']},
+    'Mazda': {'MX-5 Miata':['Sport','Club','Grand Touring','RF'],'RX-7':['Base','Turbo II','GT-X','Spirit R','Type R'],'RX-8':['Base','Sport','Grand Touring','R3'],'Cosmo':['13B','20B']},
+    'McLaren': {'570S':['Coupe','Spider'],'600LT':['Coupe','Spider'],'620R':['Base'],'720S':['Performance','Luxury','Spider'],'750S':['Coupe','Spider'],'765LT':['Coupe','Spider'],'Artura':['Coupe','Spider'],'P1':['Base','GTR'],'Senna':['Base','GTR'],'Speedtail':['Base'],'F1':['Road Car','LM','GTR'],'Solus GT':['Track-only']},
+    'Mercedes-Benz': {'A-Class':['A 220','AMG A 35','AMG A 45 S'],'C-Class':['C 300','AMG C 43','AMG C 63'],'C 63 AMG':['Sedan','Coupe','S'],'E-Class':['E 350','E 450','AMG E 53','AMG E 63 S'],'E 63 AMG':['S'],'S-Class':['S 500','S 580','AMG S 63'],'AMG GT':['GT','GT S','GT C','GT R','GT Black Series','63','63 S'],'G-Class':['G 550','AMG G 63'],'GLC':['GLC 300','AMG GLC 43','AMG GLC 63'],'GLE':['GLE 350','GLE 450','AMG GLE 53','AMG GLE 63 S'],'SLS AMG':['Coupe','Roadster','Black Series']},
+    'Mini': {'Cooper':['Hardtop 2 Door','Hardtop 4 Door','Convertible'],'Cooper S':['Hardtop','Convertible'],'John Cooper Works':['Hardtop','Convertible','GP'],'Countryman':['Cooper','Cooper S','JCW','ALL4'],'Clubman':['Cooper S','JCW','ALL4']},
+    'Mitsubishi': {'Lancer Evolution':['VII','VIII','IX','X','MR','Final Edition'],'3000GT':['SL','VR-4'],'Eclipse':['GS','GS-T','GSX']},
+    'Nissan': {'GT-R':['Premium','Black Edition','Track Edition','Nismo','T-Spec'],'Z':['Sport','Performance','Nismo'],'370Z':['Base','Sport','Sport Touring','Nismo'],'350Z':['Base','Enthusiast','Performance','Track','Touring','Grand Touring','Nismo'],'Silvia':['S13','S14','S15'],'Skyline':['GT-R R32','GT-R R33','GT-R R34','GTS-t'],'240SX':['S13','S14','SE','LE'],'180SX':['Type I','Type II','Type III']},
+    'Pagani': {'Zonda':['C12','F','Roadster F','Cinque','Tricolore','R'],'Huayra':['Coupe','Roadster','BC','R','Codalunga'],'Utopia':['Coupe','Roadster'],'Imola':['Base']},
+    'Porsche': {'911':['Carrera','Carrera T','Carrera S','Carrera GTS','Turbo','Turbo S','GT3','GT3 Touring','GT3 RS','GT2 RS','Dakar','Sport Classic','S/T'],'718 Cayman':['Base','S','GTS 4.0','GT4','GT4 RS'],'718 Boxster':['Base','S','GTS 4.0','Spyder','Spyder RS'],'Cayenne':['Base','S','GTS','Turbo','Turbo GT','E-Hybrid'],'Macan':['Base','S','GTS','Electric 4','Electric Turbo'],'Panamera':['Base','4','4S','GTS','Turbo S','Turbo E-Hybrid'],'Taycan':['4S','GTS','Turbo','Turbo S','Turbo GT'],'Carrera GT':['Base'],'918 Spyder':['Base','Weissach Package'],'944':['Base','S','S2','Turbo'],'928':['Base','S4','GTS']},
+    'Subaru': {'WRX':['Base','Premium','Limited','TR','tS'],'WRX STI':['Base','Limited','Type RA','S209'],'BRZ':['Premium','Limited','tS'],'Legacy GT':['GT','Spec.B'],'Impreza 22B':['STi 22B']},
+    'Tesla': {'Model S':['Long Range','Plaid'],'Model 3':['Standard Range','Long Range','Performance'],'Model X':['Long Range','Plaid'],'Model Y':['Long Range','Performance'],'Roadster':['Base','Founders Series']},
+    'Toyota': {'GR Supra':['2.0','3.0','3.0 Premium','A91','A91-CF'],'Supra':['Turbo','Twin Turbo','RZ','SZ-R'],'GR86':['Base','Premium','Hakone Edition'],'86':['Base','GT','GT Black Limited'],'GR Corolla':['Core','Premium','Circuit Edition','Morizo Edition'],'Corolla':['LE','SE','XSE','GR Sport'],'Camry':['LE','SE','XLE','XSE','TRD','TRD V6'],'MR2':['AW11','SW20','ZZW30'],'Land Cruiser':['Base','First Edition'],'4Runner':['SR5','TRD Sport','TRD Off-Road','Limited','TRD Pro','Trailhunter']},
+    'Volkswagen': {'Golf GTI':['S','SE','Autobahn'],'Golf R':['Base','20th Anniversary','Black Edition'],'Jetta GLI':['S','Autobahn'],'Arteon':['SE','SEL R-Line','SEL Premium R-Line']},
+    'Volvo': {'S60':['Core','Plus','Ultimate','Polestar Engineered'],'V60 Polestar':['Polestar Engineered'],'XC60':['Core','Plus','Ultimate','Polestar Engineered'],'XC90':['Core','Plus','Ultimate']}
+  };
   let db = null;
   let dbMode = 'indexeddb';
   let data = {spots:[],runs:[],activeRunId:null};
@@ -471,24 +556,42 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     return prefix + key.charAt(0).toUpperCase() + key.slice(1);
   }
   function vehicleField(prefix,key){return $(vehicleFieldId(prefix,key))}
+  function updateTrimOptions(prefix, preferredTrim=''){
+    const makeSelect=vehicleField(prefix,'makeSelect');
+    const modelSelect=vehicleField(prefix,'modelSelect');
+    const trimSelect=vehicleField(prefix,'trimSelect');
+    const make=makeSelect.value==='__custom__'?vehicleField(prefix,'customMake').value.trim():makeSelect.value;
+    const model=modelSelect.value==='__custom__'?vehicleField(prefix,'customModel').value.trim():modelSelect.value;
+    const options=(submodelCatalog[make]&&submodelCatalog[make][model])||[];
+    trimSelect.innerHTML='<option value="">No submodel</option>'+options.map(t=>`<option value="${escapeHTML(t)}">${escapeHTML(t)}</option>`).join('')+'<option value="__custom__">Other / custom…</option>';
+    const known=options.includes(preferredTrim);
+    trimSelect.value=preferredTrim?(known?preferredTrim:'__custom__'):'';
+    vehicleField(prefix,'customTrim').classList.toggle('show',!!preferredTrim&&!known);
+    vehicleField(prefix,'customTrim').value=known?'':(preferredTrim||'');
+  }
   function populateVehicle(prefix){
     const makeSelect=vehicleField(prefix,'makeSelect'),modelSelect=vehicleField(prefix,'modelSelect'),trimSelect=vehicleField(prefix,'trimSelect');
     makeSelect.innerHTML='<option value="">Choose a make</option>'+makes.map(m=>`<option value="${escapeHTML(m)}">${escapeHTML(m)}</option>`).join('')+'<option value="__custom__">Other / custom…</option>';
     modelSelect.innerHTML='<option value="">Choose make first</option>';modelSelect.disabled=true;
-    trimSelect.innerHTML='<option value="">No submodel</option>'+trims.map(t=>`<option value="${escapeHTML(t)}">${escapeHTML(t)}</option>`).join('')+'<option value="__custom__">Other / custom…</option>';
+    trimSelect.innerHTML='<option value="">No submodel</option><option value="__custom__">Other / custom…</option>';
     makeSelect.addEventListener('change',()=>{
       const value=makeSelect.value;
       vehicleField(prefix,'customMake').classList.toggle('show',value==='__custom__');
       const items=value==='__custom__'?[]:(modelCatalog[value]||[]);
       modelSelect.innerHTML='<option value="">Choose a model</option>'+items.map(m=>`<option value="${escapeHTML(m)}">${escapeHTML(m)}</option>`).join('')+'<option value="__custom__">Other / custom…</option>';
       modelSelect.disabled=!value;
+      modelSelect.value='';
       vehicleField(prefix,'customModel').classList.remove('show');vehicleField(prefix,'customModel').value='';
+      updateTrimOptions(prefix);
     });
-    modelSelect.addEventListener('change',()=>{vehicleField(prefix,'customModel').classList.toggle('show',modelSelect.value==='__custom__');});
-    trimSelect.addEventListener('change',()=>{vehicleField(prefix,'customTrim').classList.toggle('show',trimSelect.value==='__custom__');});
+    modelSelect.addEventListener('change',()=>{
+      vehicleField(prefix,'customModel').classList.toggle('show',modelSelect.value==='__custom__');
+      updateTrimOptions(prefix);
+    });
+    trimSelect.addEventListener('change',()=>vehicleField(prefix,'customTrim').classList.toggle('show',trimSelect.value==='__custom__'));
   }
   function setVehicleFields(prefix,spot){
-    const makeSelect=vehicleField(prefix,'makeSelect'),modelSelect=vehicleField(prefix,'modelSelect'),trimSelect=vehicleField(prefix,'trimSelect');
+    const makeSelect=vehicleField(prefix,'makeSelect'),modelSelect=vehicleField(prefix,'modelSelect');
     const makeKnown=makes.includes(spot.make);
     makeSelect.value=makeKnown?spot.make:'__custom__';
     vehicleField(prefix,'customMake').classList.toggle('show',!makeKnown);vehicleField(prefix,'customMake').value=makeKnown?'':spot.make;
@@ -498,9 +601,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     const modelKnown=items.includes(spot.model);
     modelSelect.value=modelKnown?spot.model:'__custom__';
     vehicleField(prefix,'customModel').classList.toggle('show',!modelKnown);vehicleField(prefix,'customModel').value=modelKnown?'':spot.model;
-    const trimKnown=trims.includes(spot.trim);
-    trimSelect.value=!spot.trim?'':trimKnown?spot.trim:'__custom__';
-    vehicleField(prefix,'customTrim').classList.toggle('show',!!spot.trim&&!trimKnown);vehicleField(prefix,'customTrim').value=trimKnown?'':spot.trim;
+    updateTrimOptions(prefix,spot.trim||'');
   }
   function readVehicleFields(prefix){
     const rawMake=vehicleField(prefix,'makeSelect').value,rawModel=vehicleField(prefix,'modelSelect').value,rawTrim=vehicleField(prefix,'trimSelect').value;
@@ -547,6 +648,57 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     const label=unlocked===1?`FIRST SPOT SAVED · ${left} TO ${next}`:unlocked?`${unlocked}-SPOT MILESTONE · ${left} TO ${next}`:`${left} MORE ${left===1?'SPOT':'SPOTS'} TO ${next}`;
     return {ratio,label,unlocked,next};
   }
+
+  let activeRevealResolve=null, revealAutoTimer=null;
+  function showSpotReveal(spot,total,progress){
+    const overlay=$('spotReveal'),rarity=estimateRarity(spot);
+    const reduced=document.body.classList.contains('reduce-motion')||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    $('spotRevealMake').textContent=spot.make.toUpperCase();
+    $('spotRevealModel').textContent=`${spot.year?spot.year+' ':''}${spot.model}`;
+    $('spotRevealTrim').textContent=spot.trim||spot.color||'A new addition to your sightings';
+    $('spotRevealRarity').textContent=rarity.label.toUpperCase();
+    $('spotRevealCountLabel').textContent=progress.unlocked?`${progress.unlocked}-SPOT MILESTONE`:`COLLECTION ENTRY #${String(total).padStart(3,'0')}`;
+    $('spotRevealCollectionLabel').textContent=progress.label;
+    $('spotRevealMonogram').textContent=`${(spot.make||'C').slice(0,1)}${(spot.model||'S').slice(0,1)}`.toUpperCase();
+    const photo=$('spotRevealPhoto'),empty=$('spotRevealNoPhoto');
+    if(spot.photo){photo.src=spot.photo;photo.hidden=false;empty.hidden=true;}else{photo.removeAttribute('src');photo.hidden=true;empty.hidden=false;}
+    overlay.dataset.rarity=rarity.key;
+    overlay.classList.toggle('is-special',rarity.rank>=3);
+    overlay.classList.toggle('is-elite',rarity.rank>=4);
+    $('spotRevealCount').textContent='0';
+    $('spotRevealStatus').innerHTML=`IDENTIFYING VEHICLE <span>01 / 04</span>`;
+    overlay.hidden=false;overlay.setAttribute('aria-hidden','false');
+    overlay.classList.remove('is-active','stage-scan','stage-reveal','stage-complete');
+    void overlay.offsetWidth;
+    requestAnimationFrame(()=>overlay.classList.add('is-active'));
+    if(reduced){
+      overlay.classList.add('stage-scan','stage-reveal','stage-complete');
+      $('spotRevealStatus').innerHTML='SIGHTING CAPTURED <span>04 / 04</span>';
+      $('spotRevealCount').textContent=String(total);
+    }else{
+      setTimeout(()=>{overlay.classList.add('stage-scan');$('spotRevealStatus').innerHTML='SCANNING VEHICLE <span>02 / 04</span>';},250);
+      setTimeout(()=>{overlay.classList.add('stage-reveal');$('spotRevealStatus').innerHTML='MATCH FOUND <span>03 / 04</span>';},1050);
+      setTimeout(()=>{overlay.classList.add('stage-complete');$('spotRevealStatus').innerHTML='SIGHTING CAPTURED <span>04 / 04</span>';},2050);
+      const start=performance.now(),duration=950;
+      const tick=now=>{const t=Math.min(1,(now-start)/duration),ease=1-Math.pow(1-t,3);$('spotRevealCount').textContent=String(Math.round(total*ease));if(t<1)requestAnimationFrame(tick)};
+      setTimeout(()=>requestAnimationFrame(tick),2050);
+    }
+    return new Promise(resolve=>{
+      let finished=false;
+      const finish=action=>{
+        if(finished)return;finished=true;clearTimeout(revealAutoTimer);activeRevealResolve=null;
+        overlay.classList.remove('is-active');overlay.setAttribute('aria-hidden','true');
+        setTimeout(()=>{overlay.hidden=true;document.body.classList.remove('spot-reveal-open');},reduced?0:260);
+        resolve(action);
+      };
+      activeRevealResolve=finish;
+      revealAutoTimer=setTimeout(()=>finish('continue'),reduced?1100:3550);
+      document.body.classList.add('spot-reveal-open');
+    });
+  }
+  $('spotRevealSkip').addEventListener('click',()=>activeRevealResolve?.('continue'));
+  $('spotRevealAnother').addEventListener('click',()=>activeRevealResolve?.('another'));
+  $('spotRevealView').addEventListener('click',()=>activeRevealResolve?.('view'));
 
   function activeRun(){return data.runs.find(r=>r.id===data.activeRunId&&!r.endedAt)||null}
   function spotsForRun(runId){return data.spots.filter(s=>s.runId===runId)}
@@ -611,6 +763,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
   function resetSpotForm(){
     $('spotForm').reset();
     $('modelSelect').innerHTML='<option value="">Choose make first</option>';$('modelSelect').disabled=true;
+    updateTrimOptions('');
     ['customMake','customModel','customTrim'].forEach(key=>{$(key).classList.remove('show');$(key).value=''});
     currentPhoto='';$('photoFile').value='';$('photoPreview').removeAttribute('src');$('photoDrop').classList.remove('has-photo','no-photo');$('photoStatus').textContent='No photo selected';$('yearInput').value='';$('colorInput').value='';$('placeInput').value='';$('notesInput').value='';$('notesCounter').textContent='0 / 280';clearCurrentLocation();updateSpotRunNotice();updateSpotProgress();
   }
@@ -629,18 +782,17 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     data.spots.unshift(spot);
     try{
       await persist();
-      const total=data.spots.length,progress=collectionProgress(total),note=$('spotSuccessNote');
+      const total=data.spots.length,progress=collectionProgress(total);
       resetSpotForm();renderAll();
-      $('spotSuccessTitle').textContent=`NICE CATCH — ${spot.year?spot.year+' ':''}${spot.make} ${spot.model}!`;
-      $('spotSuccessCopy').textContent=`Spot #${total} is now in your collection${spot.photo?' with your photo':''}${spot.location?' and a map pin':''}.`;
-      $('collectionProgressFill').style.width='0%';
-      $('collectionProgressText').textContent=progress.label;
-      $('viewLastSpotButton').dataset.spotId=spot.id;
-      note.hidden=false;note.classList.remove('is-celebrating');
-      if(!document.body.classList.contains('reduce-motion')){void note.offsetWidth;note.classList.add('is-celebrating');}
-      requestAnimationFrame(()=>requestAnimationFrame(()=>$('collectionProgressFill').style.width=`${progress.ratio}%`));
-      navigate('spot');
-      if(navigator.vibrate&&!document.body.classList.contains('reduce-motion')){try{navigator.vibrate(18)}catch{}}
+      $('spotSuccessNote').hidden=true;
+      const revealAction=await showSpotReveal(spot,total,progress);
+      if(revealAction==='view'){
+        navigate('garage');
+        setTimeout(()=>openSpotDetail(spot.id),80);
+      }else if(revealAction==='another'){
+        $('makeSelect').focus({preventScroll:true});
+      }
+      if(navigator.vibrate&&!document.body.classList.contains('reduce-motion')){try{navigator.vibrate([16,35,22])}catch{}}
     }catch(err){
       data.spots=data.spots.filter(s=>s.id!==spot.id);
       showToast('Your spot could not be saved. Your form is still here — try again.');
