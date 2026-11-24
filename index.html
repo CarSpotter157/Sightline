@@ -339,6 +339,9 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 @keyframes rarityBadgeImpact{0%{transform:translateX(-50%) scale(.88);filter:brightness(1)}48%{transform:translateX(-50%) scale(1.12);filter:brightness(1.9)}100%{transform:translateX(-50%) scale(1);filter:brightness(1)}}
 @media(prefers-reduced-motion:reduce){.spot-reveal{transition-duration:.35s!important}.spot-reveal .reveal-rarity-wash{transition-duration:.3s!important}}
 
+
+
+
 </style>
 </head>
 <body data-theme="light">
@@ -535,6 +538,9 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 
 
 <div class="spot-reveal" id="spotReveal" hidden aria-hidden="true">
+  <div class="reveal-rarity-wash" aria-hidden="true"></div>
+  <div class="reveal-screen-flash" aria-hidden="true"></div>
+  <div class="reveal-confetti" aria-hidden="true"></div>
   <div class="reveal-atmosphere" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <div class="reveal-topline">
     <span><b class="reveal-live-dot"></b> CARSPOTTER <span class="reveal-topline-divider">/</span> NEW SIGHTING</span>
@@ -1005,6 +1011,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
       const appReduced=document.body.classList.contains('reduce-motion');
       const systemReduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches===true;
       const gentleMotion=appReduced||systemReduced;
+      const raritySteps=['common','uncommon','rare','epic','legendary'].slice(0,rarity.rank);
       let finished=false,skipped=false;
       $('spotRevealMake').textContent=(spot.make||'').toUpperCase();
       $('spotRevealModel').textContent=`${spot.year?spot.year+' ':''}${spot.model||''}`;
@@ -1017,8 +1024,11 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
       photo.onerror=()=>{photo.hidden=true;empty.hidden=false;};
       if(spot.photo){photo.src=spot.photo;photo.hidden=false;empty.hidden=true;}else{photo.removeAttribute('src');photo.hidden=true;empty.hidden=false;}
       overlay.dataset.rarity=rarity.key;
+      overlay.dataset.currentRarity='base';
       overlay.classList.toggle('gentle-motion',gentleMotion);
-      overlay.classList.remove('is-active','stage-scan','stage-launch','stage-slam','stage-reveal','stage-complete');
+      overlay.classList.remove('is-active','stage-scan','stage-launch','stage-slam','stage-reveal','stage-complete','stage-confetti','impact-flash','is-special','is-elite','is-legendary');
+      const confetti=overlay.querySelector('.reveal-confetti');
+      if(confetti)confetti.replaceChildren();
       $('spotRevealCount').textContent='0';
       $('spotRevealCountUnit').textContent=total===1?'CAR':'CARS';
       $('spotRevealSkip').hidden=false;
@@ -1027,8 +1037,15 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
       void overlay.offsetWidth;
       requestAnimationFrame(()=>overlay.classList.add('is-active'));
 
+      const showFinalRarity=()=>{
+        overlay.dataset.currentRarity=rarity.key;
+        if(rarity.rank>=3)overlay.classList.add('is-special');
+        if(rarity.rank>=4)overlay.classList.add('is-elite');
+        if(rarity.rank>=5)overlay.classList.add('is-legendary');
+      };
       const finishVisual=()=>{
-        overlay.classList.remove('stage-launch','stage-slam');
+        overlay.classList.remove('stage-launch','stage-slam','impact-flash');
+        showFinalRarity();
         overlay.classList.add('stage-scan','stage-reveal','stage-complete');
         $('spotRevealStatus').textContent='SIGHTING SAVED';
         $('spotRevealCount').textContent=String(total);
@@ -1041,10 +1058,54 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
         if(finished)return;
         finished=true;activeRevealSkip=null;activeRevealResolve=null;
         overlay.classList.remove('is-active');overlay.setAttribute('aria-hidden','true');
-        setTimeout(()=>{overlay.hidden=true;overlay.classList.remove('gentle-motion');document.body.classList.remove('spot-reveal-open');},320);
+        setTimeout(()=>{
+          overlay.hidden=true;
+          overlay.classList.remove('gentle-motion','stage-confetti','is-special','is-elite','is-legendary','impact-flash');
+          overlay.dataset.currentRarity='base';
+          if(confetti)confetti.replaceChildren();
+          document.body.classList.remove('spot-reveal-open');
+        },320);
         resolve(action);
       };
       activeRevealResolve=finish;
+
+      const applyRarityStep=async index=>{
+        if(skipped)return;
+        const key=raritySteps[index];
+        overlay.dataset.currentRarity=key;
+        if(index>=2)overlay.classList.add('is-special');
+        if(index>=3)overlay.classList.add('is-elite');
+        if(index>=4)overlay.classList.add('is-legendary');
+        if(!gentleMotion){
+          overlay.classList.remove('impact-flash');
+          void overlay.offsetWidth;
+          overlay.classList.add('impact-flash');
+        }
+        await revealDelay(gentleMotion?330:500);
+        overlay.classList.remove('impact-flash');
+      };
+      const launchRarityConfetti=()=>{
+        if(gentleMotion||rarity.rank<3||!confetti)return;
+        const count=rarity.rank===3?9:rarity.rank===4?17:28;
+        const colors={common:'#c3ccd8',uncommon:'#55e0ae',rare:'#70b8ff',epic:'#ca91ff',legendary:'#ffdc78'};
+        const palette=[colors[rarity.key],'#ffffff',colors[rarity.key]];
+        const fragment=document.createDocumentFragment();
+        for(let i=0;i<count;i++){
+          const bit=document.createElement('i');
+          const angle=(Math.PI*2*i)/count+(Math.random()-.5)*.42;
+          const distance=(rarity.rank===5?130:rarity.rank===4?105:82)+Math.random()*65;
+          bit.style.setProperty('--dx',`${Math.cos(angle)*distance|0}px`);
+          bit.style.setProperty('--dy',`${Math.sin(angle)*distance+70|0}px`);
+          bit.style.setProperty('--spin',`${Math.round((Math.random()>.5?1:-1)*(240+Math.random()*540))}deg`);
+          bit.style.setProperty('--w',`${5+Math.random()*5}px`);
+          bit.style.setProperty('--duration',`${1.25+Math.random()*.8}s`);
+          bit.style.setProperty('--delay',`${Math.random()*.18}s`);
+          bit.style.setProperty('--confetti-color',palette[i%palette.length]);
+          fragment.appendChild(bit);
+        }
+        confetti.replaceChildren(fragment);
+        overlay.classList.add('stage-confetti');
+      };
 
       const runAnimation=async()=>{
         $('spotRevealStatus').textContent='GETTING YOUR PHOTO READY';
@@ -1058,13 +1119,22 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
         overlay.classList.add('stage-slam');
         $('spotRevealStatus').textContent='LOCKING IN YOUR SIGHTING';
         if(navigator.vibrate&&!gentleMotion){try{navigator.vibrate([18,28,24])}catch{}}
-        await revealDelay(gentleMotion?300:430);if(skipped)return;
+        // The first hit turns the neutral reveal into Common. Higher tiers then
+        // pass through each colour in order: grey, green, blue, purple, gold.
+        await applyRarityStep(0);if(skipped)return;
         overlay.classList.remove('stage-slam');
         overlay.classList.add('stage-reveal');
         $('spotRevealStatus').textContent='SAVED TO YOUR GARAGE';
-        await revealDelay(gentleMotion?180:360);if(skipped)return;
+        for(let i=1;i<raritySteps.length;i++){
+          if(skipped)return;
+          // Elite and Legendary discoveries get a little extra anticipation.
+          if(i>=3){await revealDelay(gentleMotion?90:(i===4?240:160));if(skipped)return;}
+          await applyRarityStep(i);
+        }
+        await revealDelay(gentleMotion?130:260);if(skipped)return;
         $('spotRevealCount').textContent=String(total);
         overlay.classList.add('stage-complete');
+        launchRarityConfetti();
         $('spotRevealSkip').hidden=true;
       };
       runAnimation().catch(err=>{console.error('Reveal animation failed:',err);finishVisual();});
@@ -1234,8 +1304,26 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
   });
 
   function navigate(view){
-    document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===`view-${view}`));
-    document.querySelectorAll('[data-view]').forEach(btn=>btn.classList.toggle('active',btn.dataset.view===view));
+    const reduced=document.body.classList.contains('reduce-motion')||window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches===true;
+    document.querySelectorAll('.view').forEach(el=>{
+      el.classList.toggle('active',el.id===`view-${view}`);
+      el.classList.remove('motion-home','motion-spot','motion-garage','motion-trips','motion-profile');
+    });
+    const nextView=$(`view-${view}`);
+    if(nextView&&!reduced){
+      void nextView.offsetWidth;
+      nextView.classList.add(`motion-${view}`);
+      setTimeout(()=>nextView.classList.remove(`motion-${view}`),760);
+    }
+    document.querySelectorAll('[data-view]').forEach(btn=>{
+      btn.classList.toggle('active',btn.dataset.view===view);
+      btn.classList.remove('nav-motion');
+      if(btn.dataset.view===view&&!reduced){
+        void btn.offsetWidth;
+        btn.classList.add('nav-motion');
+        setTimeout(()=>btn.classList.remove('nav-motion'),620);
+      }
+    });
     $('currentSection').textContent=({home:'HOME',spot:'NEW SPOT',garage:'MY GARAGE',trips:'ROAD TRIPS',profile:'PROFILE'})[view]||'CARSPOTTER';
     if(view==='home')renderHome();
     if(view==='garage'){renderGarage();if($('garageMapWrap').hidden===false)setTimeout(initGarageMap,100)}
@@ -1288,10 +1376,10 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     const container=$('garageCollection');
     if(!data.spots.length){container.innerHTML=noCarsMarkup('Your garage starts here.','Save your first sighting and it will land here with its photo and details.');}
     else if(!spots.length){const emptyCopy={favorites:['No favorites yet.','Open any sighting and tap the star to keep your best finds close.'],located:['No pinned sightings.','Save a GPS location or place a pin on the map when logging a car.'],'no-photo':['Every sighting has a photo.','There are no photo-free entries in your collection right now.']};const message=emptyCopy[filter]||['No cars found.','Try another make, model, trim or note, or clear your search to see everything.'];container.innerHTML=noCarsMarkup(message[0],message[1],false)}
-    else{container.innerHTML=spots.map(s=>{
+    else{container.innerHTML=spots.map((s,index)=>{
       const run=s.runId?data.runs.find(r=>r.id===s.runId):null;
       const photo=s.photo?`<img class="car-image" src="${escapeHTML(s.photo)}" alt="${escapeHTML(s.make)} ${escapeHTML(s.model)}" loading="lazy">`:`<div class="car-image-placeholder"><span>PHOTO NOT ADDED</span><b>${escapeHTML((s.make||'C').slice(0,1)+(s.model||'S').slice(0,1))}</b></div>`;
-      const rarity=estimateRarity(s);return `<article class="car-card rarity-card rarity-${rarity.key}" data-open-spot="${escapeHTML(s.id)}" tabindex="0" role="button" aria-label="View ${escapeHTML(s.make)} ${escapeHTML(s.model)}"><div class="car-image-wrap">${photo}<span class="car-tag">${run?'ROAD TRIP':'FIELD SPOT'}</span><span class="car-rarity-overlay ${rarity.key}">${rarity.label.toUpperCase()}</span>${s.favorite?'<span class="favorite-chip" aria-label="Favorite">★</span>':''}</div><div class="car-card-body"><div class="car-make">${escapeHTML(s.make)} ${s.year?`<span class="car-year">${s.year}</span>`:''}</div><div class="car-model">${escapeHTML(s.model)}</div><div class="car-trim">${escapeHTML(s.trim||s.color||'Trim not noted')}</div><div class="car-meta"><span>${s.place?`⌖ ${escapeHTML(s.place)}`:s.location?'⌖ Location saved':'Location not saved'}</span><span>${fmtDate(s.createdAt,{month:'short',day:'numeric',year:undefined})}</span></div></div></article>`;
+      const rarity=estimateRarity(s);return `<article class="car-card rarity-card rarity-${rarity.key}" style="--card-index:${Math.min(index,10)};--card-delay:${Math.min(index,10)*34}ms" data-open-spot="${escapeHTML(s.id)}" tabindex="0" role="button" aria-label="View ${escapeHTML(s.make)} ${escapeHTML(s.model)}"><div class="car-image-wrap">${photo}<span class="car-tag">${run?'ROAD TRIP':'FIELD SPOT'}</span><span class="car-rarity-overlay ${rarity.key}">${rarity.label.toUpperCase()}</span>${s.favorite?'<span class="favorite-chip" aria-label="Favorite">★</span>':''}</div><div class="car-card-body"><div class="car-make">${escapeHTML(s.make)} ${s.year?`<span class="car-year">${s.year}</span>`:''}</div><div class="car-model">${escapeHTML(s.model)}</div><div class="car-trim">${escapeHTML(s.trim||s.color||'Trim not noted')}</div><div class="car-meta"><span>${s.place?`⌖ ${escapeHTML(s.place)}`:s.location?'⌖ Location saved':'Location not saved'}</span><span>${fmtDate(s.createdAt,{month:'short',day:'numeric',year:undefined})}</span></div></div></article>`;
     }).join('')}
   }
   $('garageSearch').addEventListener('input',renderGarage);$('garageSort').addEventListener('change',renderGarage);$('garageFilter').addEventListener('change',renderGarage);
@@ -1728,5 +1816,90 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 .spot-reveal.gentle-motion.stage-launch .reveal-photo-card{animation:photoSpinSlamGentle .9s ease-out both!important}
 .spot-reveal.gentle-motion.stage-slam .reveal-photo-card{animation:photoImpactBounce .32s ease-out both!important}
 .spot-reveal.gentle-motion.stage-launch .reveal-photo-card,.spot-reveal.gentle-motion.stage-slam .reveal-photo-card{left:50%!important;top:50%!important}
+
+/* ================================================================
+   V32 MOTION PASS — adapted to the current CarSpotter interface
+   Screen entrances, button response, collector-grid motion and rarity
+   reveal choreography. No hammer sequence or valuation/XP system.
+   ================================================================ */
+:root{--motion-spring:cubic-bezier(.34,1.42,.64,1);--motion-hero:cubic-bezier(.22,1,.36,1)}
+@keyframes v32AmbientDrift{0%{transform:translate3d(-1.2%,-.8%,0) scale(1);opacity:.55}50%{transform:translate3d(1%,1.1%,0) scale(1.045);opacity:.9}100%{transform:translate3d(-.5%,.4%,0) scale(1.02);opacity:.68}}
+body{position:relative}
+body::before{content:"";position:fixed;inset:-8%;z-index:0;pointer-events:none;background:radial-gradient(55% 42% at 13% 8%,color-mix(in srgb,var(--accent) 7%,transparent),transparent 70%),radial-gradient(48% 40% at 88% 86%,rgba(244,197,66,.055),transparent 72%);animation:v32AmbientDrift 16s ease-in-out infinite alternate}
+.app-shell{position:relative;z-index:1}
+@keyframes v32PageUp{0%{opacity:0;transform:translateY(15px) scale(.992)}68%{opacity:1;transform:translateY(-2px) scale(1.002)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes v32GarageIn{0%{opacity:0;transform:perspective(1050px) translateX(34px) rotateY(-5deg);transform-origin:right center}100%{opacity:1;transform:perspective(1050px) translateX(0) rotateY(0)}}
+@keyframes v32JournalUnfold{0%{opacity:0;transform:perspective(1100px) rotateX(-10deg) translateY(-17px) scale(.99);transform-origin:center top}62%{opacity:1;transform:perspective(1100px) rotateX(1.5deg) translateY(1px)}100%{opacity:1;transform:perspective(1100px) rotateX(0) translateY(0)}}
+@keyframes v32ProfileCabinet{0%{opacity:0;transform:perspective(1100px) scale(1.045) rotateX(3deg);transform-origin:center top}100%{opacity:1;transform:perspective(1100px) scale(1) rotateX(0)}}
+@keyframes v32SpotDriveIn{0%{opacity:0;transform:translateY(20px) scale(.985)}70%{opacity:1;transform:translateY(-2px) scale(1.003)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.view.active{transform-origin:center top}
+.view.active.motion-home{animation:v32PageUp .46s var(--motion-hero) both}
+.view.active.motion-spot{animation:v32SpotDriveIn .5s var(--motion-hero) both}
+.view.active.motion-garage{animation:v32GarageIn .48s var(--motion-hero) both}
+.view.active.motion-trips{animation:v32JournalUnfold .54s var(--motion-hero) both}
+.view.active.motion-profile{animation:v32ProfileCabinet .52s var(--motion-hero) both}
+@keyframes v32NavBounce{0%{transform:translateY(0) scale(1)}38%{transform:translateY(-3px) scale(1.16)}68%{transform:translateY(1px) scale(.96)}100%{transform:translateY(0) scale(1)}}
+.nav-btn.nav-motion svg,.mobile-nav button.nav-motion>svg{animation:v32NavBounce .48s var(--motion-spring) both}
+.mobile-nav button.nav-motion.mobile-spot .mobile-spot-circle{animation:v32NavBounce .56s var(--motion-spring) both}
+@keyframes v32StaggerLift{0%{opacity:0;transform:translateY(13px) scale(.985)}72%{opacity:1;transform:translateY(-2px) scale(1.003)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.view.active.motion-home .home-stat-card{animation:v32StaggerLift .48s var(--motion-hero) both}
+.view.active.motion-home .home-stat-card:nth-child(2){animation-delay:.055s}
+.view.active.motion-home .home-stat-card:nth-child(3){animation-delay:.11s}
+.view.active.motion-home .home-stat-card:nth-child(4){animation-delay:.165s}
+.view.active.motion-home .home-section{animation:v32StaggerLift .52s var(--motion-hero) .12s both}
+.view.active.motion-spot .form-section{animation:v32StaggerLift .44s var(--motion-hero) both}
+.view.active.motion-spot .form-section:nth-child(2){animation-delay:.055s}
+.view.active.motion-spot .form-section:nth-child(3){animation-delay:.11s}
+.view.active.motion-spot .form-section:nth-child(4){animation-delay:.165s}
+.view.active.motion-trips .run-card{animation:v32StaggerLift .46s var(--motion-hero) both;animation-delay:0s}
+.view.active.motion-trips .run-card:nth-child(2){animation-delay:0.045s}
+.view.active.motion-trips .run-card:nth-child(3){animation-delay:0.090s}
+.view.active.motion-trips .run-card:nth-child(4){animation-delay:0.135s}
+.view.active.motion-trips .run-card:nth-child(5){animation-delay:0.180s}
+.view.active.motion-trips .run-card:nth-child(6){animation-delay:0.225s}
+.view.active.motion-trips .run-card:nth-child(7){animation-delay:0.270s}
+.view.active.motion-profile .profile-settings{animation:v32StaggerLift .48s var(--motion-hero) both}
+.view.active.motion-profile .profile-settings:nth-child(2){animation-delay:.07s}
+.view.active.motion-profile .profile-settings:nth-child(3){animation-delay:.14s}
+@keyframes v32GarageCardIn{0%{opacity:0;transform:translateY(18px) scale(.94) rotate(var(--card-tilt,0deg))}66%{opacity:1;transform:translateY(-3px) scale(1.012) rotate(0)}100%{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
+@keyframes v32GarageSheen{0%{left:-75%;opacity:0}12%{opacity:.62}42%{left:135%;opacity:0}100%{left:135%;opacity:0}}
+.car-card{position:relative;animation:v32GarageCardIn .52s var(--motion-spring) both;animation-delay:var(--card-delay,0ms);transform-origin:center center}
+.car-image-wrap::after{content:"";position:absolute;top:-35%;bottom:-35%;left:-75%;width:42%;z-index:4;pointer-events:none;opacity:0;transform:skewX(-18deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);animation:v32GarageSheen 1.05s ease calc(120ms + var(--card-delay,0ms)) both}
+.car-card.rarity-epic{box-shadow:0 9px 27px rgba(150,86,232,.13),0 0 0 1px rgba(150,86,232,.12)}
+.car-card.rarity-legendary{box-shadow:0 10px 34px rgba(227,163,28,.17),0 0 0 1px rgba(227,163,28,.2)}
+.car-card.rarity-legendary .car-image-wrap::after{background:linear-gradient(90deg,transparent,rgba(255,218,115,.55),rgba(255,255,255,.2),transparent)}
+@keyframes v32SoftAura{0%,100%{opacity:.2}50%{opacity:.56}}
+.car-card.rarity-epic::before,.car-card.rarity-legendary::before{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 1px var(--rarity-color);opacity:0;animation:v32SoftAura 3.2s ease-in-out infinite}
+@keyframes v32SaveGlow{0%,100%{box-shadow:0 8px 18px rgba(37,99,235,.14)}50%{box-shadow:0 10px 26px rgba(37,99,235,.26),0 0 0 5px rgba(37,99,235,.055)}}
+.form-panel.ready-to-save #saveSpotButton:not(:disabled):not(.is-saving){animation:v32SaveGlow 2.8s ease-in-out infinite}
+
+/* Bring the unused rarity wash, flash and confetti layers to life. */
+.spot-reveal{transition:opacity .35s ease,visibility .35s ease,transform .55s var(--motion-hero),--reveal-glow .5s var(--motion-hero),--reveal-screen-a .5s var(--motion-hero),--reveal-screen-b .5s var(--motion-hero),--reveal-screen-c .5s var(--motion-hero)}
+.reveal-rarity-wash{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.48;background:radial-gradient(ellipse at 50% 43%,color-mix(in srgb,var(--reveal-glow) 30%,transparent),transparent 63%),linear-gradient(125deg,color-mix(in srgb,var(--reveal-glow) 12%,transparent),transparent 46%,color-mix(in srgb,var(--reveal-glow) 17%,transparent));mix-blend-mode:screen;transition:opacity .42s ease,background .5s ease,filter .35s ease}
+.spot-reveal[data-current-rarity="base"] .reveal-rarity-wash{opacity:0}
+.reveal-screen-flash{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 50% 45%,color-mix(in srgb,var(--reveal-glow) 70%,transparent),color-mix(in srgb,var(--reveal-glow) 16%,transparent) 28%,transparent 70%);mix-blend-mode:screen}
+.spot-reveal.impact-flash .reveal-screen-flash{animation:rarityScreenFlash .34s ease-out both}
+.spot-reveal.impact-flash .reveal-rarity-wash{opacity:.9;filter:brightness(1.35) saturate(1.22)}
+.spot-reveal.is-special .reveal-orbit-two{border-color:color-mix(in srgb,var(--reveal-glow) 42%,transparent);animation-duration:11s}
+.spot-reveal.is-special .reveal-stage::after{content:"";position:absolute;left:50%;top:50%;width:min(580px,96vw);aspect-ratio:1;border:1px solid color-mix(in srgb,var(--reveal-glow) 36%,transparent);border-radius:50%;opacity:0;transform:translate(-50%,-50%) scale(.72);pointer-events:none}
+.spot-reveal.is-special.impact-flash .reveal-stage::after{animation:v32RarityShockwave .72s cubic-bezier(.12,.72,.2,1) both}
+@keyframes v32RarityShockwave{0%{opacity:0;transform:translate(-50%,-50%) scale(.72)}20%{opacity:.82}100%{opacity:0;transform:translate(-50%,-50%) scale(1.14)}}
+.spot-reveal.is-elite .reveal-photo-card{box-shadow:0 30px 82px rgba(0,0,0,.52),0 0 0 8px color-mix(in srgb,var(--reveal-glow) 17%,transparent),0 0 86px color-mix(in srgb,var(--reveal-glow) 39%,transparent)}
+.spot-reveal.is-legendary .reveal-photo-card{border-color:rgba(255,220,120,.82);box-shadow:0 32px 90px rgba(0,0,0,.56),0 0 0 10px rgba(255,208,90,.2),0 0 100px rgba(255,190,53,.42)}
+.spot-reveal.is-elite.stage-complete .reveal-photo-glint{animation:revealGlint 1.25s ease .12s both}
+.reveal-confetti{position:absolute;inset:0;z-index:6;overflow:hidden;pointer-events:none}
+.reveal-confetti i{position:absolute;left:50%;top:46%;width:var(--w,7px);height:calc(var(--w,7px)*1.55);border-radius:2px;background:var(--confetti-color,var(--reveal-glow));opacity:0;box-shadow:0 0 10px color-mix(in srgb,var(--confetti-color,var(--reveal-glow)) 45%,transparent)}
+.stage-confetti .reveal-confetti i{animation:rarityConfetti var(--duration,1.7s) cubic-bezier(.12,.65,.28,1) var(--delay,0s) both}
+.spot-reveal[data-current-rarity="legendary"] .reveal-orbit{border-color:rgba(255,208,90,.42);box-shadow:0 0 85px rgba(255,190,53,.17),inset 0 0 55px rgba(255,190,53,.07)}
+.spot-reveal[data-current-rarity="legendary"] .reveal-track span{background:linear-gradient(90deg,#ffd05a,#fff0be,#ffd05a);box-shadow:0 0 18px rgba(255,190,53,.6)}
+.spot-reveal.gentle-motion .reveal-screen-flash,.spot-reveal.gentle-motion .reveal-confetti{display:none}
+.spot-reveal.gentle-motion.is-special .reveal-stage::after{display:none}
+@media(prefers-reduced-motion:reduce){body::before{animation:none!important}.view.active.motion-home,.view.active.motion-spot,.view.active.motion-garage,.view.active.motion-trips,.view.active.motion-profile{animation:none!important}.nav-btn.nav-motion svg,.mobile-nav button.nav-motion>svg,.mobile-nav button.nav-motion.mobile-spot .mobile-spot-circle{animation:none!important}.car-card{animation:none!important}.car-image-wrap::after{display:none}.car-card.rarity-epic::before,.car-card.rarity-legendary::before{animation:none!important;opacity:.25}}
+body.reduce-motion::before{animation:none!important}
+body.reduce-motion .view.active.motion-home,body.reduce-motion .view.active.motion-spot,body.reduce-motion .view.active.motion-garage,body.reduce-motion .view.active.motion-trips,body.reduce-motion .view.active.motion-profile{animation:none!important}
+body.reduce-motion .nav-btn.nav-motion svg,body.reduce-motion .mobile-nav button.nav-motion>svg,body.reduce-motion .mobile-nav button.nav-motion.mobile-spot .mobile-spot-circle{animation:none!important}
+body.reduce-motion .car-card{animation:none!important}
+body.reduce-motion .car-image-wrap::after{display:none}
+body.reduce-motion .car-card.rarity-epic::before,body.reduce-motion .car-card.rarity-legendary::before{animation:none!important;opacity:.25}
 
 </style>
