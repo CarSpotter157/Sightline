@@ -255,6 +255,90 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 .spot-reveal.impact-flash .reveal-photo-card{box-shadow:0 34px 82px rgba(0,0,0,.55),0 0 0 8px color-mix(in srgb,var(--reveal-glow) 18%,transparent),0 0 58px color-mix(in srgb,var(--reveal-glow) 42%,transparent);}
 @media(max-width:600px){.reveal-hammer{left:calc(50% - 22px);top:-18px;width:150px;height:180px;}}
 @media(min-width:601px){.reveal-hammer{left:calc(50% + 16px);top:-5px;width:190px;height:220px;}}
+
+
+/* Cinematic rarity ladder polish: neutral base screen, then a full-screen tier shift on every impact. */
+@property --reveal-glow { syntax: "<color>"; inherits: true; initial-value: #83a6d2; }
+@property --reveal-screen-a { syntax: "<color>"; inherits: true; initial-value: #102039; }
+@property --reveal-screen-b { syntax: "<color>"; inherits: true; initial-value: #08111f; }
+@property --reveal-screen-c { syntax: "<color>"; inherits: true; initial-value: #142641; }
+.spot-reveal{
+  --reveal-glow:#83a6d2;
+  --reveal-screen-a:#102039;--reveal-screen-b:#08111f;--reveal-screen-c:#142641;
+  background:
+    radial-gradient(ellipse at 50% 42%,color-mix(in srgb,var(--reveal-glow) 15%,transparent),transparent 49%),
+    radial-gradient(ellipse at 50% 112%,color-mix(in srgb,var(--reveal-glow) 22%,transparent),transparent 47%),
+    linear-gradient(138deg,var(--reveal-screen-a) 0%,var(--reveal-screen-b) 52%,var(--reveal-screen-c) 100%);
+  transition:opacity .35s ease,visibility .35s ease,transform .55s cubic-bezier(.2,.8,.2,1),
+    --reveal-glow .68s cubic-bezier(.2,.75,.2,1),
+    --reveal-screen-a .72s cubic-bezier(.2,.75,.2,1),
+    --reveal-screen-b .72s cubic-bezier(.2,.75,.2,1),
+    --reveal-screen-c .72s cubic-bezier(.2,.75,.2,1);
+}
+.spot-reveal[data-current-rarity="base"]{
+  --reveal-glow:#83a6d2;--reveal-screen-a:#102039;--reveal-screen-b:#08111f;--reveal-screen-c:#142641;
+}
+.spot-reveal[data-current-rarity="common"]{
+  --reveal-glow:#c3ccd8;--reveal-screen-a:#475361;--reveal-screen-b:#141d29;--reveal-screen-c:#303d4d;
+}
+.spot-reveal[data-current-rarity="uncommon"]{
+  --reveal-glow:#55e0ae;--reveal-screen-a:#155b47;--reveal-screen-b:#071c20;--reveal-screen-c:#1e493b;
+}
+.spot-reveal[data-current-rarity="rare"]{
+  --reveal-glow:#70b8ff;--reveal-screen-a:#1b5794;--reveal-screen-b:#07182e;--reveal-screen-c:#244b78;
+}
+.spot-reveal[data-current-rarity="epic"]{
+  --reveal-glow:#ca91ff;--reveal-screen-a:#572e83;--reveal-screen-b:#160e2d;--reveal-screen-c:#452866;
+}
+.spot-reveal[data-current-rarity="legendary"]{
+  --reveal-glow:#ffdc78;--reveal-screen-a:#80591b;--reveal-screen-b:#251b0d;--reveal-screen-c:#67491e;
+}
+.reveal-rarity-wash{
+  opacity:.54;
+  background:
+    radial-gradient(ellipse at 50% 43%,color-mix(in srgb,var(--reveal-glow) 28%,transparent),transparent 62%),
+    linear-gradient(125deg,color-mix(in srgb,var(--reveal-glow) 13%,transparent),transparent 46%,color-mix(in srgb,var(--reveal-glow) 17%,transparent));
+  mix-blend-mode:screen;
+  filter:saturate(1.08);
+  transition:opacity .45s ease,background .55s ease,filter .35s ease;
+}
+.spot-reveal[data-current-rarity="base"] .reveal-rarity-wash{opacity:0;}
+.spot-reveal.impact-flash .reveal-rarity-wash{opacity:.92;filter:brightness(1.48) saturate(1.35);}
+.reveal-live-dot{background:var(--reveal-glow);box-shadow:0 0 0 5px color-mix(in srgb,var(--reveal-glow) 15%,transparent),0 0 18px color-mix(in srgb,var(--reveal-glow) 78%,transparent);transition:background .5s,box-shadow .5s;}
+.reveal-topline,.reveal-bottom,.reveal-kicker{transition:color .55s ease;}
+.reveal-kicker{color:color-mix(in srgb,var(--reveal-glow) 66%,#91a8c8);}
+.reveal-orbit{border-color:color-mix(in srgb,var(--reveal-glow) 30%,transparent);box-shadow:inset 0 0 55px color-mix(in srgb,var(--reveal-glow) 7%,transparent),0 0 72px color-mix(in srgb,var(--reveal-glow) 14%,transparent);}
+.reveal-car-drawing{filter:drop-shadow(0 0 17px color-mix(in srgb,var(--reveal-glow) 48%,transparent));transition:filter .6s ease;}
+.reveal-car-line{stroke:color-mix(in srgb,var(--reveal-glow) 70%,#eef6ff);transition:stroke .6s ease,stroke-dashoffset 1.45s cubic-bezier(.2,.7,.2,1);}
+.reveal-window-line{stroke:color-mix(in srgb,var(--reveal-glow) 68%,#315987);}
+.reveal-wheel{stroke:color-mix(in srgb,var(--reveal-glow) 76%,#d9e8ff);}
+.reveal-wheel-core{fill:var(--reveal-glow);transition:fill .5s ease,opacity .35s ease .85s;}
+.reveal-photo-card{
+  border-color:color-mix(in srgb,var(--reveal-glow) 62%,rgba(255,255,255,.24));
+  box-shadow:0 30px 82px rgba(0,0,0,.52),0 0 0 7px color-mix(in srgb,var(--reveal-glow) 11%,transparent),0 0 62px color-mix(in srgb,var(--reveal-glow) 34%,transparent);
+  transition:border-color .62s ease,box-shadow .62s ease,opacity .7s cubic-bezier(.2,.8,.2,1),transform .85s cubic-bezier(.16,1,.3,1),filter .7s ease;
+}
+.reveal-photo-corner{border-color:color-mix(in srgb,var(--reveal-glow) 42%,rgba(255,255,255,.25));}
+.reveal-rarity{
+  color:var(--reveal-glow);border:1px solid color-mix(in srgb,var(--reveal-glow) 52%,transparent);
+  background:color-mix(in srgb,var(--reveal-glow) 14%,rgba(5,15,29,.82));
+  box-shadow:0 0 24px color-mix(in srgb,var(--reveal-glow) 17%,transparent);
+  transition:color .5s ease,border-color .5s ease,background-color .5s ease,box-shadow .5s ease;
+}
+.reveal-hit-count{
+  background:color-mix(in srgb,var(--reveal-glow) 10%,rgba(4,13,26,.86));
+  border-color:color-mix(in srgb,var(--reveal-glow) 60%,transparent);
+  box-shadow:0 6px 26px rgba(0,0,0,.32),0 0 24px color-mix(in srgb,var(--reveal-glow) 17%,transparent);
+}
+.reveal-track span{transition:background .55s ease,box-shadow .55s ease;}
+.reveal-screen-flash{background:radial-gradient(ellipse at 50% 45%,color-mix(in srgb,var(--reveal-glow) 76%,transparent),color-mix(in srgb,var(--reveal-glow) 20%,transparent) 27%,transparent 68%);}
+.spot-reveal.impact-flash{box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--reveal-glow) 60%,transparent),inset 0 0 110px color-mix(in srgb,var(--reveal-glow) 18%,transparent);}
+.spot-reveal.impact-flash .reveal-stage:before{border-width:3px;box-shadow:0 0 24px color-mix(in srgb,var(--reveal-glow) 55%,transparent),inset 0 0 24px color-mix(in srgb,var(--reveal-glow) 18%,transparent);}
+.spot-reveal.impact-flash .reveal-photo-card{box-shadow:0 35px 90px rgba(0,0,0,.58),0 0 0 10px color-mix(in srgb,var(--reveal-glow) 23%,transparent),0 0 76px color-mix(in srgb,var(--reveal-glow) 58%,transparent);}
+.spot-reveal.impact-flash .reveal-hit-count{animation:rarityBadgeImpact .42s cubic-bezier(.16,.85,.2,1) both;}
+@keyframes rarityBadgeImpact{0%{transform:translateX(-50%) scale(.88);filter:brightness(1)}48%{transform:translateX(-50%) scale(1.12);filter:brightness(1.9)}100%{transform:translateX(-50%) scale(1);filter:brightness(1)}}
+@media(prefers-reduced-motion:reduce){.spot-reveal{transition-duration:.35s!important}.spot-reveal .reveal-rarity-wash{transition-duration:.3s!important}}
+
 </style>
 </head>
 <body data-theme="light">
@@ -979,14 +1063,14 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
       $('spotRevealMake').textContent=spot.make.toUpperCase();
       $('spotRevealModel').textContent=`${spot.year?spot.year+' ':''}${spot.model}`;
       $('spotRevealTrim').textContent=spot.trim||spot.color||'A new addition to your sightings';
-      $('spotRevealRarity').textContent='COMMON';
+      $('spotRevealRarity').textContent='BASE TONE';
       $('spotRevealCountLabel').textContent=progress.unlocked?`${progress.unlocked}-SPOT MILESTONE`:`COLLECTION ENTRY #${String(total).padStart(3,'0')}`;
       $('spotRevealCollectionLabel').textContent=progress.label;
       $('spotRevealMonogram').textContent=`${(spot.make||'C').slice(0,1)}${(spot.model||'S').slice(0,1)}`.toUpperCase();
       const photo=$('spotRevealPhoto'),empty=$('spotRevealNoPhoto');
       if(spot.photo){photo.src=spot.photo;photo.hidden=false;empty.hidden=true;}else{photo.removeAttribute('src');photo.hidden=true;empty.hidden=false;}
       overlay.dataset.rarity=rarity.key;
-      overlay.dataset.currentRarity='common';
+      overlay.dataset.currentRarity='base';
       overlay.dataset.hits=String(rank);
       overlay.classList.toggle('gentle-motion',gentleMotion);
       overlay.classList.toggle('is-special',rarity.rank>=3);
@@ -1059,9 +1143,9 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
         ];
         for(let hit=1;hit<=rank;hit++){
           if(skipped)return;
-          // The screen starts at Common. Each strike climbs one level until the
-          // car's estimated rarity is reached; the final strike seals that level.
-          const level=rarityLadder[Math.min(hit,rank-1)];
+          // Begin with the untouched base screen. Each impact reveals one tier:
+          // strike 1 = Common, strike 2 = Uncommon, then Rare, Epic, Legendary.
+          const level=rarityLadder[Math.min(hit-1,rank-1)];
           const levelsUp=level.key!==overlay.dataset.currentRarity;
           $('spotRevealStatus').innerHTML=`${levelsUp?'NEXT RARITY':'FINAL CALIBRATION'} <span>${level.label} · IMPACT ${hit} / ${rank}</span>`;
           $('spotRevealHitCount').textContent=`IMPACT ${hit} / ${rank}`;
