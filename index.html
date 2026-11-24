@@ -963,6 +963,182 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
   }
   populateVehicle('');populateVehicle('edit');populateChoiceLists();
 
+  // Mobile-friendly searchable suggestions for the main logging form.
+  // The input remains a normal editable text field; the custom listbox makes
+  // the suggestion experience consistent on iOS Safari and desktop browsers.
+  function setupSearchSuggestions(){
+    document.querySelectorAll('#spotForm .searchable-control[list]').forEach((input,index)=>{
+      const listId=input.getAttribute('list');
+      const list=$(listId);
+      if(!list || input.dataset.suggestionsReady==='true')return;
+      input.dataset.suggestionsReady='true';
+      input.dataset.suggestionListId=listId;
+      input.removeAttribute('list'); // avoid competing / inconsistent native datalist popups
+
+      const wrap=document.createElement('div');
+      wrap.className='autocomplete-wrap';
+      input.parentNode.insertBefore(wrap,input);
+      wrap.appendChild(input);
+
+      const label=document.querySelector('label[for="'+input.id+'"]');
+      if(label){
+        const hint=document.createElement('span');
+        hint.className='field-mode-hint';
+        hint.textContent='TYPE OR PICK';
+        label.appendChild(hint);
+      }
+
+      const toggle=document.createElement('button');
+      toggle.type='button';
+      toggle.className='autocomplete-toggle';
+      toggle.setAttribute('aria-label','Show suggestions');
+      toggle.setAttribute('aria-expanded','false');
+      toggle.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+      wrap.appendChild(toggle);
+
+      const menu=document.createElement('div');
+      menu.className='autocomplete-menu';
+      menu.id='suggestions-'+input.id;
+      menu.setAttribute('role','listbox');
+      menu.setAttribute('aria-label','Suggestions');
+      wrap.appendChild(menu);
+      input.setAttribute('aria-autocomplete','list');
+      input.setAttribute('aria-controls',menu.id);
+      input.setAttribute('aria-expanded','false');
+
+      let values=[];
+      let activeIndex=-1;
+      let pointerSelected=false;
+      const optionValues=()=>{
+        const source=$(input.dataset.suggestionListId);
+        return source ? Array.from(source.options).map(o=>o.value).filter((v,i,a)=>v && a.indexOf(v)===i) : [];
+      };
+      const currentMatches=()=>{
+        const term=input.value.trim().toLocaleLowerCase();
+        const all=optionValues();
+        if(!term)return all;
+        return all.filter(v=>v.toLocaleLowerCase().includes(term)).sort((a,b)=>{
+          const aa=a.toLocaleLowerCase(),bb=b.toLocaleLowerCase();
+          return Number(!aa.startsWith(term))-Number(!bb.startsWith(term));
+        });
+      };
+      const setOpen=(open)=>{
+        if(open && input.disabled)open=false;
+        wrap.classList.toggle('is-open',open);
+        toggle.setAttribute('aria-expanded',String(open));
+        input.setAttribute('aria-expanded',String(open));
+        if(open)render();
+        else{activeIndex=-1;input.removeAttribute('aria-activedescendant');}
+      };
+      function render(){
+        values=currentMatches();
+        activeIndex=-1;
+        menu.replaceChildren();
+        if(!values.length){
+          const empty=document.createElement('div');
+          empty.className='autocomplete-empty';
+          empty.innerHTML='<strong>No matching suggestions</strong><span>Keep typing — custom entries are accepted.</span>';
+          menu.appendChild(empty);
+        }else{
+          const heading=document.createElement('div');
+          heading.className='autocomplete-menu-heading';
+          heading.textContent=input.value.trim()?'MATCHING SUGGESTIONS':'POPULAR CHOICES';
+          menu.appendChild(heading);
+          values.forEach((value,i)=>{
+            const option=document.createElement('button');
+            option.type='button';
+            option.className='autocomplete-option';
+            option.setAttribute('role','option');
+            option.setAttribute('aria-selected','false');
+            option.dataset.index=String(i);
+            const text=document.createElement('span');
+            text.textContent=value;
+            const marker=document.createElement('span');
+            marker.className='autocomplete-option-mark';
+            marker.textContent='↵';
+            option.append(text,marker);
+            // Commit on pointer-down so the on-screen keyboard does not blur
+            // the input before a tapped suggestion can be selected.
+            option.addEventListener('pointerdown',event=>{
+              event.preventDefault();pointerSelected=true;choose(value);
+            });
+            option.addEventListener('click',()=>{
+              if(pointerSelected){pointerSelected=false;return;}
+              choose(value);
+            });
+            menu.appendChild(option);
+          });
+          const foot=document.createElement('div');
+          foot.className='autocomplete-menu-foot';
+          foot.textContent='Tap a choice or keep typing';
+          menu.appendChild(foot);
+        }
+      }
+      function choose(value){
+        input.value=value;
+        input.dispatchEvent(new Event('input',{bubbles:true}));
+        input.dispatchEvent(new Event('change',{bubbles:true}));
+        setOpen(false);
+        input.focus({preventScroll:true});
+      }
+      function moveActive(direction){
+        if(!wrap.classList.contains('is-open'))setOpen(true);
+        const buttons=Array.from(menu.querySelectorAll('.autocomplete-option'));
+        if(!buttons.length)return;
+        activeIndex=Math.max(0,Math.min(buttons.length-1,activeIndex+direction));
+        buttons.forEach((button,i)=>{
+          const active=i===activeIndex;
+          button.classList.toggle('is-active',active);
+          button.setAttribute('aria-selected',String(active));
+        });
+        input.setAttribute('aria-activedescendant',buttons[activeIndex].id || (buttons[activeIndex].id='suggestion-'+input.id+'-'+activeIndex));
+        buttons[activeIndex].scrollIntoView({block:'nearest'});
+      }
+
+      input.addEventListener('focus',()=>setOpen(true));
+      input.addEventListener('click',()=>{if(!wrap.classList.contains('is-open'))setOpen(true);});
+      input.addEventListener('input',()=>{if(wrap.classList.contains('is-open'))render();});
+      input.addEventListener('keydown',event=>{
+        if(event.key==='ArrowDown'){event.preventDefault();moveActive(1);}
+        else if(event.key==='ArrowUp'){event.preventDefault();moveActive(-1);}
+        else if(event.key==='Escape'){setOpen(false);}
+        else if(event.key==='Enter' && wrap.classList.contains('is-open') && activeIndex>=0 && values[activeIndex]){
+          event.preventDefault();choose(values[activeIndex]);
+        }
+      });
+      input.addEventListener('blur',()=>{
+        // A short delay allows pointer-down selection to finish without
+        // dismissing the menu as the user taps an option.
+        setTimeout(()=>{if(!wrap.contains(document.activeElement))setOpen(false);},180);
+      });
+      toggle.addEventListener('mousedown',event=>event.preventDefault());
+      toggle.addEventListener('click',()=>{
+        const wasFocused=document.activeElement===input;
+        if(!wasFocused){input.focus({preventScroll:true});setOpen(true);}
+        else setOpen(!wrap.classList.contains('is-open'));
+      });
+      const syncDisabled=()=>{
+        toggle.disabled=input.disabled;
+        toggle.setAttribute('aria-label',input.disabled?'Choose a make first':'Show suggestions');
+        if(input.disabled)setOpen(false);
+      };
+      new MutationObserver(syncDisabled).observe(input,{attributes:true,attributeFilter:['disabled']});
+      syncDisabled();
+    });
+    document.addEventListener('pointerdown',event=>{
+      document.querySelectorAll('#spotForm .autocomplete-wrap.is-open').forEach(w=>{
+        if(!w.contains(event.target)){
+          w.classList.remove('is-open');
+          const field=w.querySelector('.searchable-control');
+          const button=w.querySelector('.autocomplete-toggle');
+          if(field){field.setAttribute('aria-expanded','false');field.removeAttribute('aria-activedescendant');}
+          if(button)button.setAttribute('aria-expanded','false');
+        }
+      });
+    });
+  }
+  setupSearchSuggestions();
+
   function updateSpotProgress(){
     const vehicle=readVehicleFields('');
     const carReady=!!(vehicle.make.trim()&&vehicle.model.trim());
@@ -1901,5 +2077,60 @@ body.reduce-motion .nav-btn.nav-motion svg,body.reduce-motion .mobile-nav button
 body.reduce-motion .car-card{animation:none!important}
 body.reduce-motion .car-image-wrap::after{display:none}
 body.reduce-motion .car-card.rarity-epic::before,body.reduce-motion .car-card.rarity-legendary::before{animation:none!important;opacity:.25}
+
+
+
+/* ================================================================
+   MOBILE SEARCHABLE FIELDS — visible typing + reliable suggestions
+   ================================================================ */
+#spotForm.form-panel{overflow:visible}
+#spotForm .form-section{position:relative;z-index:1}
+#spotForm .form-section:focus-within{z-index:15}
+#spotForm .field:focus-within{z-index:12}
+#spotForm .field label{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.field-mode-hint{display:inline-flex;align-items:center;gap:5px;padding:4px 7px;border:1px solid color-mix(in srgb,var(--accent) 24%,var(--line));border-radius:6px;background:color-mix(in srgb,var(--accent) 7%,var(--surface));color:var(--accent-strong);font-size:8px;font-weight:900;letter-spacing:.75px;white-space:nowrap}
+.autocomplete-wrap{position:relative;width:100%;min-width:0;isolation:isolate}
+.autocomplete-wrap .searchable-control{width:100%;height:49px;padding:0 57px 0 13px;border:1.5px solid color-mix(in srgb,var(--accent) 22%,var(--line));border-radius:12px;background:linear-gradient(180deg,var(--surface),var(--surface-2));color:var(--text);font-size:14px;font-weight:600;letter-spacing:.05px;box-shadow:0 2px 7px rgba(25,55,95,.035);transition:border-color .18s,box-shadow .18s,background .18s}
+.autocomplete-wrap .searchable-control::placeholder{color:var(--soft);font-weight:500;opacity:1}
+.autocomplete-wrap .searchable-control:hover{border-color:color-mix(in srgb,var(--accent) 48%,var(--line))}
+.autocomplete-wrap .searchable-control:focus{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 13%,transparent),0 7px 18px rgba(25,55,95,.07);outline:none}
+.autocomplete-wrap .searchable-control:disabled{background:var(--surface-3);border-color:var(--line);color:var(--soft);box-shadow:none}
+.autocomplete-toggle{position:absolute;right:6px;top:6px;width:37px;height:37px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));border-radius:9px;background:color-mix(in srgb,var(--accent) 8%,var(--surface));color:var(--accent-strong);cursor:pointer;transition:background .18s,border-color .18s,transform .18s;z-index:2;touch-action:manipulation}
+.autocomplete-toggle svg{width:17px;height:17px;transition:transform .18s}
+.autocomplete-toggle:hover{background:color-mix(in srgb,var(--accent) 14%,var(--surface));border-color:var(--accent)}
+.autocomplete-toggle:active{transform:scale(.94)}
+.autocomplete-toggle:disabled{opacity:.4;cursor:not-allowed}
+.autocomplete-wrap.is-open .autocomplete-toggle{background:var(--accent);border-color:var(--accent);color:#fff}
+.autocomplete-wrap.is-open .autocomplete-toggle svg{transform:rotate(180deg)}
+.autocomplete-menu{position:absolute;top:calc(100% + 7px);left:0;right:0;z-index:90;display:none;max-height:min(280px,42vh);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:6px;border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));border-radius:13px;background:var(--surface);box-shadow:0 18px 42px rgba(17,35,66,.2),0 3px 9px rgba(17,35,66,.08)}
+.autocomplete-wrap.is-open .autocomplete-menu{display:block;animation:suggestionMenuIn .16s ease-out both}
+@keyframes suggestionMenuIn{from{opacity:0;transform:translateY(-4px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+.autocomplete-menu-heading{padding:7px 9px 8px;color:var(--soft);font-size:8px;font-weight:900;letter-spacing:1.15px}
+.autocomplete-option{width:100%;min-height:43px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 10px;border:0;border-radius:8px;background:transparent;color:var(--text);font-size:13px;font-weight:600;text-align:left;cursor:pointer;touch-action:manipulation}
+.autocomplete-option+.autocomplete-option{border-top:1px solid color-mix(in srgb,var(--line) 55%,transparent)}
+.autocomplete-option:hover,.autocomplete-option.is-active{background:color-mix(in srgb,var(--accent) 10%,var(--surface));color:var(--accent-strong)}
+.autocomplete-option-mark{width:21px;height:21px;display:grid;place-items:center;flex:none;border-radius:6px;background:var(--surface-3);color:var(--soft);font-size:12px}
+.autocomplete-option.is-active .autocomplete-option-mark{background:var(--accent);color:#fff}
+.autocomplete-menu-foot{padding:8px 9px 5px;border-top:1px solid var(--line);color:var(--soft);font-size:9px;font-weight:600;text-align:center}
+.autocomplete-empty{display:grid;gap:5px;padding:15px 11px;text-align:center}
+.autocomplete-empty strong{color:var(--text);font-size:12px}
+.autocomplete-empty span{color:var(--muted);font-size:10px;line-height:1.45}
+@media(max-width:850px){
+  #spotForm .autocomplete-wrap .searchable-control{height:52px;min-height:52px;font-size:16px!important;line-height:1.25;padding-left:13px;padding-right:58px;letter-spacing:0}
+  #spotForm .autocomplete-toggle{width:39px;height:39px;right:6px;top:6px}
+  #spotForm .autocomplete-option{min-height:46px;font-size:14px;padding:10px 11px}
+  #spotForm .autocomplete-menu{max-height:min(300px,38vh)}
+  #spotForm .field label{font-size:9px;letter-spacing:1px;margin-bottom:8px}
+  #spotForm .field-mode-hint{font-size:8px}
+}
+@media(max-width:390px){
+  #spotForm .form-grid{grid-template-columns:minmax(0,1fr)}
+  #spotForm .field.full{grid-column:auto}
+  #spotForm .form-section{padding-left:13px;padding-right:13px}
+  #spotForm .section-head{align-items:flex-start}
+  #spotForm .section-head .section-tag{margin-top:5px}
+}
+body[data-theme="dark"] .autocomplete-menu{box-shadow:0 18px 42px rgba(0,0,0,.48),0 3px 9px rgba(0,0,0,.2)}
+body[data-theme="dark"] .autocomplete-wrap .searchable-control{box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
 
 </style>
