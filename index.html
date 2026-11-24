@@ -30,7 +30,7 @@
 @media(max-width:1180px){.main{padding-left:28px;padding-right:28px}.garage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.car-image-wrap{height:170px}}
 @media(max-width:850px){.app-shell{display:block}.sidebar{display:none}.main{padding:0 18px 105px}.topbar{height:65px;margin-bottom:27px}.mobile-nav{position:fixed;display:grid;grid-template-columns:repeat(3,1fr);left:0;right:0;bottom:0;z-index:60;padding:7px 12px calc(7px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(18px)}.mobile-nav button{display:grid;justify-items:center;gap:4px;border:0;background:transparent;color:var(--muted);padding:5px;font-size:9px;font-weight:900;letter-spacing:.5px}.mobile-nav svg{width:19px;height:19px}.mobile-nav button.active{color:var(--accent-strong)}.garage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.run-hero{padding:22px}.run-hero:after{right:-8%}}
 @media(max-width:560px){.main{padding-left:12px;padding-right:12px}.topbar{margin-bottom:23px}.top-pill{font-size:0;padding:9px}.top-pill .live-dot{margin:0}.theme-btn{width:38px;padding:0;font-size:0}.theme-btn svg{width:17px;height:17px}.icon-btn{width:38px;padding:0;font-size:0}.icon-btn svg{width:17px;height:17px}.page-head{display:block;margin-bottom:20px}.page-head h1{font-size:46px}.head-aside{margin-top:12px}.spot-flow{gap:6px;padding:10px}.flow-step{font-size:9px}.flow-step b{width:19px;height:19px}.flow-arrow{font-size:10px}.form-section{padding:17px 14px}.form-grid{gap:12px}.control{height:45px;font-size:11px;padding:0 10px}.field label{font-size:8px}.section-head h2{font-size:20px}.section-head p{font-size:9px}.photo-drop{min-height:155px}.photo-preview{height:205px}.location-toolbar{align-items:flex-start;flex-direction:column}.location-buttons{width:100%}.location-buttons button{flex:1}.location-copy strong{font-size:10px}.location-copy span{font-size:8px}.form-footer{align-items:stretch;flex-direction:column;padding:15px 14px}.form-footer .primary-btn{width:100%}.save-note{max-width:none}.garage-overview{gap:7px}.overview-card{padding:12px}.overview-card span{font-size:8px}.overview-card strong{font-size:26px}.garage-toolbar{gap:7px}.search-wrap{flex-basis:100%}.garage-count{margin-left:0}.garage-grid{gap:9px}.car-image-wrap{height:125px}.car-card-body{padding:10px}.car-model{font-size:20px}.car-meta{font-size:8px}.run-hero{display:block;padding:18px}.run-hero h2{font-size:32px}.run-hero-action{margin-top:16px}.run-hero-action .primary-btn{width:100%}.run-metrics{gap:7px}.run-metric{padding:12px 10px}.run-metric span{font-size:7px;letter-spacing:.6px}.run-metric strong{font-size:25px}.run-card{grid-template-columns:46px minmax(0,1fr);gap:10px;padding:11px}.run-date{height:50px}.run-count{grid-column:2;justify-self:start}.detail-specs{grid-template-columns:1fr 1fr}.run-car-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.modal{padding:18px}.data-actions{grid-template-columns:1fr}.map-panel-head{padding:14px}#garageMap{min-height:340px;height:55vh}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media(prefers-reduced-motion:reduce){body:not(.spot-reveal-open) *,body:not(.spot-reveal-open) *::before,body:not(.spot-reveal-open) *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 /* ==========================================================
    CARSPOTTER VISUAL REFRESH — WHITE / RACING BLUE / YELLOW
@@ -58,8 +58,8 @@ body{background:radial-gradient(ellipse at 85% -14%,color-mix(in srgb,var(--acce
 @media(max-width:850px){.mobile-nav{display:grid;grid-template-columns:1fr 1fr 76px 1fr 1fr;padding:7px 8px calc(7px + env(safe-area-inset-bottom));gap:0}.mobile-nav button{align-content:center;min-width:0;padding:4px 1px;color:var(--muted);font-size:8px;letter-spacing:.25px}.mobile-nav button svg{width:18px;height:18px}.mobile-nav button.active:not(.mobile-spot){color:var(--accent)}.mobile-nav .mobile-spot{align-self:start;margin-top:-24px;gap:3px;color:var(--accent);font-size:8px}.mobile-spot-circle{width:54px;height:54px;border-radius:19px;background:linear-gradient(145deg,#3989ff,#1553cb);border:4px solid var(--bg);box-shadow:0 7px 22px rgba(37,99,235,.35);display:grid;place-items:center;color:#fff;animation:spotPulse 3s ease-in-out infinite}.mobile-spot-circle svg{width:26px;height:26px}.mobile-nav .mobile-spot.active .mobile-spot-circle{background:linear-gradient(145deg,#174fc6,#0f3d9f);box-shadow:0 0 0 4px rgba(37,99,235,.16),0 8px 24px rgba(37,99,235,.32)}@keyframes spotPulse{0%,100%{box-shadow:0 7px 22px rgba(37,99,235,.28)}50%{box-shadow:0 7px 27px rgba(37,99,235,.48),0 0 0 6px rgba(37,99,235,.07)}}.main{padding-bottom:112px}.home-hero{grid-template-columns:1fr;padding:27px 25px 15px}.home-hero-art{height:150px;margin-top:4px}.hero-car{width:min(94%,480px)}.home-hero h2{font-size:52px}.home-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.home-dashboard-grid{grid-template-columns:1fr}.home-side-stack{grid-template-columns:repeat(2,minmax(0,1fr))}.profile-layout{grid-template-columns:1fr}.home-welcome-row{align-items:flex-start}.home-date-chip{margin-top:4px}}
 @media(max-width:560px){.home-welcome-row{display:block}.home-welcome-row h1{font-size:42px}.home-date-chip{display:inline-flex;margin-top:12px}.home-hero{padding:23px 19px 12px;min-height:0}.home-hero h2{font-size:47px}.home-hero p{font-size:11px}.home-hero-art{height:126px}.hero-art-label{font-size:7px}.home-stat-grid{gap:8px}.home-stat-card{min-height:116px;padding:13px}.home-stat-card strong{font-size:28px}.home-stat-icon{margin-bottom:8px}.home-dashboard-grid{gap:12px}.home-section{padding:17px 15px}.home-side-stack{grid-template-columns:1fr;gap:12px}.home-recent-photo{width:56px;height:45px}.profile-card-banner{height:88px}.profile-identity{padding:0 16px}.profile-form{padding:19px 16px}.profile-settings{padding:17px 16px}.profile-identity-copy h2{font-size:22px}.setting-row{gap:10px}.profile-settings-head h2{font-size:19px}.home-footer-note{font-size:7px;line-height:1.6}.topbar{margin-bottom:20px}.main{padding-left:12px;padding-right:12px}.mobile-nav{left:0;right:0}.mobile-nav button span{white-space:nowrap}}
 body.large-text{font-size:16px}body.large-text .page-head p,body.large-text .home-subtitle,body.large-text .setting-row span,body.large-text .home-recent-info small{font-size:calc(1em + 1px)}body.high-contrast{--line:#9aabc0;--muted:#43536b;--soft:#56677e}body[data-theme="dark"].high-contrast{--line:#71829a;--muted:#d3deed;--soft:#adbbcf}
-body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+body.reduce-motion:not(.spot-reveal-open) *,body.reduce-motion:not(.spot-reveal-open) *:before,body.reduce-motion:not(.spot-reveal-open) *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@media(prefers-reduced-motion:reduce){body:not(.spot-reveal-open) *,body:not(.spot-reveal-open) *:before,body:not(.spot-reveal-open) *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 /* Product-quality additions */
 .notes-control{height:auto;min-height:82px;padding:11px 13px;resize:vertical;line-height:1.5}
 .spot-context-grid{margin-top:17px}
@@ -115,7 +115,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 .stage-launch .reveal-photo-card img:not([hidden]),.stage-slam .reveal-photo-card img:not([hidden]),.stage-hit .reveal-photo-card img:not([hidden]){opacity:1;transform:scale(1.02)}.reveal-photo-empty{position:relative;z-index:3;height:100%;display:grid;align-content:center;justify-items:center;gap:8px;background:radial-gradient(circle at 50% 35%,rgba(80,143,230,.25),transparent 40%),linear-gradient(145deg,#172d4c,#0b1729);color:#bad8ff}.reveal-photo-empty[hidden]{display:none}.reveal-photo-empty span{font:900 58px/.9 var(--font-display);letter-spacing:2px}.reveal-photo-empty small{font-size:8px;font-weight:900;letter-spacing:2px;color:#7d9fc7}.reveal-photo-corner{position:absolute;left:13px;top:12px;z-index:3;padding:7px 9px;border:1px solid rgba(255,255,255,.25);border-radius:7px;background:rgba(5,15,29,.68);color:#fff;font-size:7px;font-weight:900;letter-spacing:1.5px}.reveal-photo-glint{position:absolute;z-index:4;top:-40%;bottom:-40%;left:-45%;width:25%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transform:rotate(18deg);opacity:0}.stage-reveal .reveal-photo-glint{opacity:1;animation:revealGlint 1.1s ease .25s both}.reveal-particles{position:absolute;inset:0;z-index:4;pointer-events:none}.reveal-particles i{position:absolute;left:var(--px);top:var(--py);width:5px;height:5px;border-radius:2px;background:var(--reveal-glow);opacity:0;box-shadow:0 0 13px 3px color-mix(in srgb,var(--reveal-glow) 65%,transparent)}.reveal-particles i:nth-child(1){--px:15%;--py:35%;--dx:80px;--dy:-48px}.reveal-particles i:nth-child(2){--px:24%;--py:70%;--dx:54px;--dy:35px}.reveal-particles i:nth-child(3){--px:36%;--py:17%;--dx:-60px;--dy:54px}.reveal-particles i:nth-child(4){--px:61%;--py:23%;--dx:70px;--dy:-40px}.reveal-particles i:nth-child(5){--px:78%;--py:42%;--dx:-62px;--dy:24px}.reveal-particles i:nth-child(6){--px:83%;--py:74%;--dx:-82px;--dy:-38px}.reveal-particles i:nth-child(7){--px:49%;--py:82%;--dx:10px;--dy:-65px}.reveal-particles i:nth-child(8){--px:10%;--py:57%;--dx:95px;--dy:0px}.reveal-particles i:nth-child(9){--px:90%;--py:28%;--dx:-95px;--dy:40px}.reveal-particles i:nth-child(10){--px:30%;--py:88%;--dx:20px;--dy:-65px}.reveal-particles i:nth-child(11){--px:68%;--py:87%;--dx:-55px;--dy:-60px}.reveal-particles i:nth-child(12){--px:55%;--py:9%;--dx:10px;--dy:70px}.reveal-particles i:nth-child(13){--px:18%;--py:15%;--dx:70px;--dy:50px}.reveal-particles i:nth-child(14){--px:73%;--py:13%;--dx:-60px;--dy:65px}.reveal-particles i:nth-child(15){--px:42%;--py:92%;--dx:35px;--dy:-70px}.reveal-particles i:nth-child(16){--px:94%;--py:55%;--dx:-90px;--dy:-10px}.stage-scan .reveal-particles i{animation:revealParticle .95s ease-out var(--pd,0s) both}.reveal-particles i:nth-child(3n){--pd:.08s}.reveal-particles i:nth-child(3n + 1){--pd:.2s}.reveal-particles i:nth-child(3n + 2){--pd:.32s}.reveal-copy{position:relative;z-index:5;opacity:0;transform:translateY(18px);transition:opacity .55s ease .2s,transform .6s cubic-bezier(.2,.8,.2,1) .2s}.stage-reveal .reveal-copy{opacity:1;transform:translateY(0)}.reveal-make{display:block;color:var(--reveal-glow);font-size:9px;font-weight:900;letter-spacing:2.4px}.reveal-copy h2{margin:5px 0 3px;color:#f3f7ff;font:900 clamp(33px,5vw,52px)/.95 var(--font-display);letter-spacing:.2px;text-transform:uppercase;text-shadow:0 5px 22px rgba(0,0,0,.22)}.reveal-trim{min-height:13px;color:#9cb3d2;font-size:10px}.reveal-meta-row{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:12px;color:#7390b7;font-size:8px;font-weight:900;letter-spacing:1px}.reveal-rarity{padding:6px 9px;border:1px solid color-mix(in srgb,var(--reveal-glow) 45%,transparent);border-radius:6px;background:color-mix(in srgb,var(--reveal-glow) 13%,transparent);color:var(--reveal-glow)}.reveal-divider{height:15px;width:1px;background:rgba(143,177,221,.25)}.reveal-complete{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:16px;color:#83e0b7;font-size:8px;font-weight:900;letter-spacing:1.7px;opacity:0;transform:translateY(7px);transition:opacity .35s ease,transform .35s ease}.stage-complete .reveal-complete{opacity:1;transform:translateY(0)}.reveal-check{width:21px;height:21px;border-radius:50%;display:grid;place-items:center;background:#1b9c70;color:#fff;font-size:12px;box-shadow:0 0 0 5px rgba(27,156,112,.14)}.stage-complete .reveal-orbit{border-color:color-mix(in srgb,var(--reveal-glow) 35%,transparent);box-shadow:0 0 55px color-mix(in srgb,var(--reveal-glow) 12%,transparent)}.stage-complete[data-rarity="legendary"] .reveal-photo-card,.spot-reveal[data-rarity="legendary"] .reveal-photo-card{box-shadow:0 28px 75px rgba(0,0,0,.5),0 0 0 7px rgba(255,208,90,.12),0 0 75px rgba(255,190,53,.3)}.reveal-bottom{width:min(560px,100%);justify-self:center;align-self:end;margin:12px auto 0}.reveal-track{height:3px;overflow:hidden;border-radius:9px;background:rgba(136,172,221,.16)}.reveal-track span{display:block;width:0;height:100%;background:linear-gradient(90deg,#3b85ff,var(--reveal-glow),#f5d46b);box-shadow:0 0 12px var(--reveal-glow);transition:width 2.9s cubic-bezier(.2,.7,.2,1)}.is-active .reveal-track span{width:100%}.reveal-bottom-row{display:flex;justify-content:space-between;gap:12px;margin-top:9px;color:#718bab;font-size:7px;font-weight:900;letter-spacing:1.3px}.reveal-bottom-row strong{color:#d7e6fb;font-size:9px;letter-spacing:.8px}.reveal-actions{display:flex;justify-content:center;gap:8px;padding-top:17px;opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease}.stage-complete .reveal-actions{opacity:1;transform:translateY(0)}.reveal-actions button{min-height:41px;padding:0 16px;border-radius:10px;font-size:8px;font-weight:900;letter-spacing:.7px}.reveal-continue{border:0;background:#347ff0;color:#fff;box-shadow:0 8px 20px rgba(40,113,220,.25)}.reveal-view{border:1px solid rgba(150,187,238,.25);background:rgba(18,39,66,.72);color:#d4e3f8}.reveal-actions button:hover{transform:translateY(-2px);filter:brightness(1.08)}body.spot-reveal-open{overflow:hidden}@keyframes revealGridDrift{to{background-position:46px 46px}}@keyframes revealOrbit{to{transform:rotate(342deg) scaleX(1.5)}}@keyframes revealStar{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.5)}}@keyframes revealOrbitPulse{0%,100%{transform:scale(.96);opacity:.55}50%{transform:scale(1.035);opacity:1}}@keyframes revealOrbitSpin{to{transform:rotate(360deg)}}@keyframes revealScan{0%{top:13%;opacity:0}12%{opacity:1}88%{opacity:.85}100%{top:88%;opacity:0}}@keyframes revealGlint{0%{left:-45%}100%{left:130%}}@keyframes revealParticle{0%{opacity:0;transform:translate(0,0) scale(.4)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}}
 @media(max-width:600px){.spot-reveal{padding:15px 15px max(14px,env(safe-area-inset-bottom))}.reveal-topline{font-size:7px;letter-spacing:1.2px}.reveal-topline button{padding:8px 10px}.reveal-stage{height:clamp(195px,30vh,245px)}.reveal-photo-card{width:min(440px,88vw);height:clamp(165px,26vh,215px);border-radius:14px}.reveal-center{padding-bottom:12px}.reveal-copy h2{font-size:39px}.reveal-actions{padding-top:13px}.reveal-actions button{flex:1;padding:0 9px;font-size:7px}.reveal-bottom-row{font-size:6px}}
 .spot-reveal.is-special .reveal-orbit-two{border-color:color-mix(in srgb,var(--reveal-glow) 34%,transparent);animation-duration:11s}.spot-reveal.is-special .reveal-stage:after{content:"";position:absolute;width:min(580px,96vw);aspect-ratio:1;border:1px solid color-mix(in srgb,var(--reveal-glow) 26%,transparent);border-radius:50%;opacity:0;pointer-events:none}.spot-reveal.is-special.stage-complete .reveal-stage:after{animation:rarityShockwave 1.15s cubic-bezier(.12,.72,.2,1) both}.spot-reveal.is-elite .reveal-photo-card{box-shadow:0 28px 75px rgba(0,0,0,.5),0 0 0 7px color-mix(in srgb,var(--reveal-glow) 15%,transparent),0 0 85px color-mix(in srgb,var(--reveal-glow) 35%,transparent)}.spot-reveal.is-elite.stage-complete .reveal-photo-glint{animation:revealGlint 1.2s ease .15s both}.spot-reveal[data-rarity="legendary"] .reveal-atmosphere:before{border-color:rgba(255,208,90,.2);box-shadow:0 0 0 28px rgba(255,208,90,.035),0 0 0 62px rgba(255,208,90,.025)}.spot-reveal[data-rarity="legendary"].stage-complete .reveal-orbit{border-color:rgba(255,208,90,.48);box-shadow:0 0 85px rgba(255,190,53,.2),inset 0 0 55px rgba(255,190,53,.08)}.spot-reveal[data-rarity="legendary"] .reveal-rarity{background:rgba(255,208,90,.17);border-color:rgba(255,208,90,.58);color:#ffda73}@keyframes rarityShockwave{0%{opacity:0;transform:scale(.72)}22%{opacity:.8}100%{opacity:0;transform:scale(1.12)}}
-@media(prefers-reduced-motion:reduce){.spot-reveal,.spot-reveal *{animation:none!important;transition:none!important}.spot-reveal .reveal-car-drawing{opacity:.2}.spot-reveal .reveal-photo-card,.spot-reveal .reveal-copy,.spot-reveal .reveal-complete,.spot-reveal .reveal-actions{opacity:1;filter:none;transform:none}.spot-reveal .reveal-track span{width:100%}}
+/* Reduced-motion presentation is applied selectively below so the hammer sequence is never silently removed. */
 
 
 /* Searchable fields: native datalist suggestions stay editable and type-filterable. */
@@ -163,7 +163,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 @keyframes revealTitlePop{0%{opacity:0;transform:translateY(18px) scale(.96)}72%{opacity:1;transform:translateY(-3px) scale(1.015)}100%{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes hitBadgePulse{0%{transform:translateX(-50%) scale(.88);filter:brightness(1)}45%{transform:translateX(-50%) scale(1.08);filter:brightness(1.6)}100%{transform:translateX(-50%) scale(1);filter:brightness(1)}}
 @media(max-width:600px){.reveal-hammer{left:calc(50% + 42px);top:-23px;width:115px;height:145px}.reveal-hit-count{bottom:-1px;font-size:7px;padding:6px 9px}.reveal-photo-card{width:min(440px,88vw)}}
-@media(prefers-reduced-motion:reduce){.spot-reveal .reveal-photo-card,.spot-reveal .reveal-hammer,.spot-reveal .reveal-copy,.spot-reveal .reveal-complete,.spot-reveal .reveal-actions{opacity:1;visibility:visible;filter:none;transform:none;animation:none!important}.spot-reveal .reveal-confetti i{display:none}}
+/* The reduced-motion variant keeps a small, readable hammer movement. */
 
 
 /* Mobile-friendly photo source choice and custom home hero photography. */
@@ -205,6 +205,31 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 .reveal-hammer{will-change:transform;}
 @keyframes hammerContactRing{0%{opacity:0;transform:translate(-50%,-50%) scale(.78)}22%{opacity:.82}100%{opacity:0;transform:translate(-50%,-50%) scale(1.16)}}
 @media(max-width:600px){.reveal-stage:before{width:88vw;height:clamp(150px,23vh,205px)}}
+
+
+/* System-level reduced motion: preserve the actual reveal, but reduce travel, flashes and secondary effects. */
+.spot-reveal.gentle-motion .reveal-atmosphere,
+.spot-reveal.gentle-motion .reveal-orbit,
+.spot-reveal.gentle-motion .reveal-atmosphere i,
+.spot-reveal.gentle-motion .reveal-particles,
+.spot-reveal.gentle-motion .reveal-photo-glint,
+.spot-reveal.gentle-motion .reveal-confetti{animation:none!important}
+.spot-reveal.gentle-motion .reveal-scan-beam{display:none!important}
+.spot-reveal.gentle-motion .reveal-orbit{opacity:.45}
+.spot-reveal.gentle-motion.stage-launch .reveal-photo-card{animation:photoLaunchGentle .92s ease-out both!important}
+.spot-reveal.gentle-motion.stage-slam .reveal-photo-card{animation:photoImpactGentle .38s ease-out both!important}
+.spot-reveal.gentle-motion.stage-slam .reveal-hammer{animation:hammerEnterGentle .42s ease-out both!important}
+.spot-reveal.gentle-motion .reveal-hammer.is-striking{animation:hammerStrikeGentle .42s ease-in-out both!important}
+.spot-reveal.gentle-motion.stage-hit .reveal-stage{animation:none!important}
+.spot-reveal.gentle-motion.stage-hit .reveal-stage:before{animation:none!important;opacity:.22;transform:translate(-50%,-50%) scale(1)}
+.spot-reveal.gentle-motion.stage-hit .reveal-photo-card{animation:photoImpactGentle .24s ease-out both!important;filter:none!important}
+.spot-reveal.gentle-motion .reveal-screen-flash{display:none!important}
+.spot-reveal.gentle-motion.is-special.stage-complete .reveal-stage:after{display:none!important}
+.spot-reveal.gentle-motion .reveal-confetti{display:none!important}
+@keyframes photoLaunchGentle{0%{opacity:0;filter:none;transform:translate3d(0,-32vh,0) scale(.96)}70%{opacity:1;transform:translate3d(0,5px,0) scale(1.01)}100%{opacity:1;filter:none;transform:translate3d(0,0,0) scale(1)}}
+@keyframes photoImpactGentle{0%,100%{transform:translate3d(0,0,0) scale(1)}45%{transform:translate3d(0,3px,0) scale(1.008)}70%{transform:translate3d(0,-1px,0) scale(.998)}}
+@keyframes hammerEnterGentle{0%{opacity:0;transform:translate3d(24px,-42px,0) rotate(-28deg)}100%{opacity:1;transform:translate3d(0,0,0) rotate(-16deg)}}
+@keyframes hammerStrikeGentle{0%,100%{opacity:1;transform:translate3d(0,0,0) rotate(-16deg)}48%{opacity:1;transform:translate3d(-66px,43px,0) rotate(9deg)}66%{transform:translate3d(-58px,34px,0) rotate(4deg)}}
 
 </style>
 </head>
@@ -351,7 +376,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
         <div class="profile-settings-column">
           <section class="profile-settings panel"><div class="profile-settings-head"><div><span class="home-section-kicker">MAKE IT YOURS</span><h2>APPEARANCE</h2></div><span class="settings-symbol blue-icon">◐</span></div><div class="setting-row"><div><strong>Color theme</strong><span>Choose the look that suits you.</span></div><select id="profileThemeSelect" class="select-small" aria-label="Color theme"><option value="light">Light</option><option value="dark">Dark</option></select></div></section>
           <section class="profile-settings panel"><div class="profile-settings-head"><div><span class="home-section-kicker">USE IT YOUR WAY</span><h2>ACCESSIBILITY</h2></div><span class="settings-symbol yellow-icon">◉</span></div>
-            <label class="setting-row setting-toggle" for="reduceMotionToggle"><span><strong>Reduce motion</strong><span>Turn off most interface animations.</span></span><input id="reduceMotionToggle" type="checkbox"><i class="switch-ui"></i></label>
+            <label class="setting-row setting-toggle" for="reduceMotionToggle"><span><strong>Reduce motion</strong><span>Use gentler movement and fewer effects.</span></span><input id="reduceMotionToggle" type="checkbox"><i class="switch-ui"></i></label>
             <label class="setting-row setting-toggle" for="largeTextToggle"><span><strong>Larger text</strong><span>Increase text size across the app.</span></span><input id="largeTextToggle" type="checkbox"><i class="switch-ui"></i></label>
             <label class="setting-row setting-toggle" for="highContrastToggle"><span><strong>High contrast</strong><span>Strengthen borders and text contrast.</span></span><input id="highContrastToggle" type="checkbox"><i class="switch-ui"></i></label>
           </section>
@@ -891,7 +916,11 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
   function showSpotReveal(spot,total,progress){
     return new Promise(resolve=>{
       const overlay=$('spotReveal'),rarity=estimateRarity(spot);
-      const reduced=document.body.classList.contains('reduce-motion')||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      // Either reduced-motion preference selects a gentler reveal, never an instant finish.
+      // The visible Skip Animation control is the deliberate way to bypass the sequence.
+      const appReduced=document.body.classList.contains('reduce-motion');
+      const systemReduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches===true;
+      const gentleMotion=appReduced||systemReduced;
       const rank=Math.max(1,Math.min(5,rarity.rank||1));
       let finished=false,skipped=false,visualComplete=false;
       $('spotRevealMake').textContent=spot.make.toUpperCase();
@@ -905,6 +934,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
       if(spot.photo){photo.src=spot.photo;photo.hidden=false;empty.hidden=true;}else{photo.removeAttribute('src');photo.hidden=true;empty.hidden=false;}
       overlay.dataset.rarity=rarity.key;
       overlay.dataset.hits=String(rank);
+      overlay.classList.toggle('gentle-motion',gentleMotion);
       overlay.classList.toggle('is-special',rarity.rank>=3);
       overlay.classList.toggle('is-elite',rarity.rank>=4);
       overlay.classList.remove('is-active','stage-scan','stage-launch','stage-slam','stage-hit','stage-reveal','stage-complete','stage-confetti','impact-flash');
@@ -934,13 +964,13 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
       const finish=action=>{
         if(finished)return;finished=true;activeRevealSkip=null;activeRevealResolve=null;
         overlay.classList.remove('is-active');overlay.setAttribute('aria-hidden','true');
-        setTimeout(()=>{overlay.hidden=true;document.body.classList.remove('spot-reveal-open');},320);
+        setTimeout(()=>{overlay.hidden=true;overlay.classList.remove('gentle-motion');document.body.classList.remove('spot-reveal-open');},320);
         resolve(action);
       };
       activeRevealResolve=finish;
 
       const countToTotal=async()=>{
-        if(reduced||skipped){$('spotRevealCount').textContent=String(total);return}
+        if(gentleMotion||skipped){$('spotRevealCount').textContent=String(total);return}
         const duration=850,start=performance.now();
         await new Promise(done=>{
           const tick=now=>{
@@ -951,7 +981,6 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
         });
       };
       const runAnimation=async()=>{
-        if(reduced){finishVisual();return}
         $('spotRevealStatus').innerHTML='SCANNING SIGHTING <span>01 / 04</span>';
         await revealDelay(320);if(skipped)return;
         overlay.classList.add('stage-scan');
@@ -962,7 +991,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
         await revealDelay(980);if(skipped)return;
         overlay.classList.add('stage-slam');
         $('spotRevealStatus').innerHTML='VERIFYING VEHICLE';
-        if(navigator.vibrate){try{navigator.vibrate([35,30,45])}catch{}}
+        if(navigator.vibrate&&!gentleMotion){try{navigator.vibrate([35,30,45])}catch{}}
         await revealDelay(430);if(skipped)return;
         const hammer=$('spotRevealHammer');
         for(let hit=1;hit<=rank;hit++){
@@ -973,7 +1002,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
           overlay.classList.remove('impact-flash','stage-hit');hammer.classList.remove('is-striking');
           void overlay.offsetWidth;void hammer.offsetWidth;
           overlay.classList.add('impact-flash','stage-hit');hammer.classList.add('is-striking');
-          if(navigator.vibrate){try{navigator.vibrate(hit===rank?[45,35,65]:[28])}catch{}}
+          if(navigator.vibrate&&!gentleMotion){try{navigator.vibrate(hit===rank?[45,35,65]:[28])}catch{}}
           await revealDelay(450);if(skipped)return;
           overlay.classList.remove('impact-flash','stage-hit');hammer.classList.remove('is-striking');
           await revealDelay(145);if(skipped)return;
