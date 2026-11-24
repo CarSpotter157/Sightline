@@ -2049,8 +2049,12 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
         input.value=value;
         input.dispatchEvent(new Event('input',{bubbles:true}));
         input.dispatchEvent(new Event('change',{bubbles:true}));
+        // On mobile, tapping an option can blur the text field before the
+        // synthesized click runs. Refocusing fires the input's focus handler,
+        // which opens the menu again. Restore focus first, then close it.
+        // This keeps typing available without leaving the suggestions open.
+        try{input.focus({preventScroll:true});}catch{input.focus();}
         setOpen(false);
-        input.focus({preventScroll:true});
       }
       function moveActive(direction){
         if(!wrap.classList.contains('is-open'))setOpen(true);
