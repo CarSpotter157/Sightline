@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous" onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'">
 <style>
  :root{--font-display:'Barlow Condensed',Impact,sans-serif;--font-body:'DM Sans',system-ui,sans-serif}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 80% -15%,color-mix(in srgb,var(--accent) 8%,transparent),transparent 36%),var(--bg);color:var(--text);font-family:var(--font-body);font-size:14px}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 55%,transparent);outline-offset:2px}img{max-width:100%}.app-shell{min-height:100vh;display:grid;grid-template-columns:248px minmax(0,1fr)}
@@ -1293,6 +1293,93 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
   }
 }
 
+
+
+/* ================================================================
+   FINAL GARAGE + MAP + DROPDOWN OVERLAY POLISH
+   ================================================================ */
+#view-garage .garage-overview{gap:12px;margin-bottom:16px}
+#view-garage .overview-card{border-radius:17px;background:linear-gradient(145deg,var(--surface),var(--surface-2));box-shadow:0 8px 24px rgba(22,43,77,.045)}
+#view-garage .garage-toolbar{align-items:center}
+#view-garage .garage-grid{align-items:stretch;gap:18px}
+#view-garage .car-card{position:relative;display:flex;flex-direction:column;min-width:0;border:1px solid var(--line);border-top:3px solid var(--rarity-color,var(--accent));border-radius:19px;background:var(--surface);box-shadow:0 10px 28px rgba(22,43,77,.075);isolation:isolate}
+#view-garage .car-card:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 55%,transparent);outline-offset:3px}
+#view-garage .car-image-wrap{height:auto;aspect-ratio:1.42/1;min-height:0;background:radial-gradient(circle at 50% 30%,var(--surface),var(--surface-3));}
+#view-garage .car-image{display:block;width:100%;height:100%;object-fit:cover;object-position:center 52%;background:var(--surface-3);filter:saturate(1.08) contrast(1.015)}
+#view-garage .car-image-wrap:before{content:"";position:absolute;inset:34% 0 0;z-index:1;pointer-events:none;background:linear-gradient(180deg,transparent 12%,rgba(5,13,27,.30) 100%)}
+#view-garage .car-tag{z-index:5;left:11px;top:11px;padding:6px 9px;border-radius:8px;font-size:8px;letter-spacing:1px;box-shadow:0 4px 13px rgba(0,0,0,.16)}
+#view-garage .car-rarity-overlay{z-index:5;left:11px;bottom:11px;top:auto;right:auto;border-radius:8px;padding:6px 9px;font-size:8px;letter-spacing:1px}
+#view-garage .favorite-chip{z-index:6;right:11px;top:11px;width:31px;height:31px;border:1px solid rgba(255,255,255,.8)}
+#view-garage .car-card-body{display:flex;flex:1;flex-direction:column;min-width:0;padding:15px 16px 15px}
+#view-garage .car-make{gap:7px;font-size:9px;letter-spacing:1.25px;line-height:1.35}
+#view-garage .car-year{margin:0;padding:4px 6px;border-radius:6px;font-size:8px}
+#view-garage .car-model{margin:7px 0 5px;font-size:clamp(22px,2vw,28px);line-height:.98;overflow-wrap:anywhere;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+#view-garage .car-trim{min-height:20px;font-size:11px;line-height:1.4;overflow-wrap:anywhere}
+#view-garage .car-meta{margin-top:auto;padding-top:12px;gap:7px;border-color:color-mix(in srgb,var(--line) 75%,transparent);font-size:9px;line-height:1.35}
+#view-garage .car-meta span:first-child{min-width:0;flex:1}
+#view-garage .car-meta span:last-child{flex:none}
+#garageMapWrap{border-radius:20px;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--surface)}
+#garageMap{width:100%;height:min(66vh,650px);min-height:360px;position:relative;isolation:isolate;background:var(--surface-3);overflow:hidden}
+#garageMap.leaflet-container{width:100%;height:100%;background:var(--surface-3);font-family:var(--font-body)}
+#garageMap .leaflet-control-zoom a{width:36px;height:36px;line-height:34px;font-size:19px}
+#garageMap .leaflet-control-attribution{font-size:8px!important}
+.map-panel-head{background:linear-gradient(110deg,var(--surface),var(--surface-2))}
+.map-overlay{z-index:700;pointer-events:none;gap:10px;background:color-mix(in srgb,var(--surface) 82%,transparent);backdrop-filter:blur(5px)}
+.map-overlay>div{max-width:340px;display:grid;justify-items:center;gap:9px;padding:22px 24px;border:1px solid var(--line);border-radius:17px;background:var(--surface);box-shadow:0 16px 40px rgba(22,43,77,.12)}
+.map-overlay strong{margin:0;font-size:25px;line-height:1}
+.map-overlay span{display:block;color:var(--muted);font-size:11px;line-height:1.55}
+.map-overlay-error{pointer-events:auto}
+.map-retry-button{min-height:40px;margin-top:5px;padding:0 17px;border:0;border-radius:10px;background:var(--accent);color:#fff;font-size:9px;font-weight:900;letter-spacing:.75px;cursor:pointer}
+.map-spot-popup{min-width:160px}
+.map-spot-popup b{line-height:1.1}
+.map-spot-popup button{min-height:36px;margin-top:3px;font-size:9px}
+
+@media(min-width:851px){
+  #view-garage .garage-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:850px){
+  body.dropdown-active .mobile-nav{display:none!important}
+  body.dropdown-active .main{padding-bottom:calc(20px + env(safe-area-inset-bottom))!important}
+  #spotForm .autocomplete-wrap.is-open{z-index:500}
+  #spotForm .autocomplete-menu{z-index:510;max-height:min(40dvh,330px)}
+  #view-garage .garage-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  #view-garage .car-card{border-radius:17px}
+  #view-garage .car-image-wrap{aspect-ratio:1.18/1;height:auto;min-height:0}
+  #view-garage .car-card-body{padding:12px 11px 12px}
+  #view-garage .car-make{font-size:8px;letter-spacing:.85px}
+  #view-garage .car-model{font-size:clamp(18px,5.1vw,23px);margin:6px 0 5px}
+  #view-garage .car-trim{font-size:10px;min-height:18px}
+  #view-garage .car-meta{flex-wrap:wrap;flex-direction:row;align-items:center;font-size:8px;gap:5px 7px;padding-top:9px;margin-top:10px}
+  #view-garage .car-tag{left:8px;top:8px;padding:5px 7px;font-size:7px}
+  #view-garage .car-rarity-overlay{left:8px;bottom:8px;padding:5px 7px;font-size:7px}
+  #view-garage .favorite-chip{right:8px;top:8px;width:28px;height:28px}
+  #garageMap{height:58dvh;min-height:340px;max-height:620px}
+  #garageMap .leaflet-control-zoom{margin:10px}
+}
+@media(max-width:430px){
+  #view-garage .garage-grid{gap:10px}
+  #view-garage .car-image-wrap{aspect-ratio:1.12/1}
+  #view-garage .car-card-body{padding:11px 10px 11px}
+  #view-garage .car-model{font-size:clamp(17px,5vw,21px)}
+  #view-garage .car-meta{font-size:7.5px}
+  #view-garage .garage-overview{gap:7px}
+  #view-garage .overview-card{padding:11px 8px}
+  #garageMap{height:54dvh;min-height:315px}
+}
+@media(max-width:360px){
+  #view-garage .garage-grid{grid-template-columns:minmax(0,1fr)}
+  #view-garage .car-image-wrap{aspect-ratio:1.48/1}
+  #view-garage .car-card-body{padding:14px}
+  #view-garage .car-model{font-size:24px}
+}
+@media(hover:none){
+  #view-garage .car-card:hover{transform:none;box-shadow:0 10px 28px rgba(22,43,77,.075)}
+  #view-garage .car-card:active{transform:scale(.992)}
+}
+@media(prefers-reduced-motion:reduce){
+  #view-garage .car-card,#view-garage .car-image{transition:none!important}
+}
+
 </style>
 </head>
 <body data-theme="light">
@@ -1539,7 +1626,7 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
 <script>
 (() => {
   'use strict';
@@ -1749,6 +1836,7 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
   let currentRunDetailId = null;
   let editPhoto = '';
   let spotMap = null, spotMarker = null, garageMap = null, garageMarkers = [];
+  let garageMapResizeObserver = null, garageTileLayer = null, garageTileErrorCount = 0, garageTileFallbackUsed = false, leafletFallbackPromise = null;
   let toastTimer = null;
   let persistChain = Promise.resolve();
   const PROFILE_KEY='carspotter.profile.v1';
@@ -1945,6 +2033,11 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
   // The input remains a normal editable text field; the custom listbox makes
   // the suggestion experience consistent on iOS Safari and desktop browsers.
   function setupSearchSuggestions(){
+    const syncMobileDropdownNav=()=>{
+      const isMobile=window.matchMedia ? window.matchMedia('(max-width: 850px)').matches : window.innerWidth<=850;
+      const hasOpenMenu=!!document.querySelector('#spotForm .autocomplete-wrap.is-open');
+      document.body.classList.toggle('dropdown-active',isMobile && hasOpenMenu);
+    };
     document.querySelectorAll('#spotForm .searchable-control[list]').forEach((input,index)=>{
       const listId=input.getAttribute('list');
       const list=$(listId);
@@ -2045,6 +2138,7 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
         wrap.classList.toggle('is-open',open);
         toggle.setAttribute('aria-expanded',String(open));
         input.setAttribute('aria-expanded',String(open));
+        syncMobileDropdownNav();
         if(open)render();
         else{activeIndex=-1;input.removeAttribute('aria-activedescendant');}
       };
@@ -2164,7 +2258,9 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
           if(button)button.setAttribute('aria-expanded','false');
         }
       });
+      syncMobileDropdownNav();
     });
+    window.addEventListener('resize',syncMobileDropdownNav,{passive:true});
   }
   setupSearchSuggestions();
 
@@ -2615,26 +2711,129 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
   $('garageCollection').addEventListener('click',e=>{if(e.target.closest('[data-goto-spot]'))navigate('spot')});
   document.querySelectorAll('[data-garage-mode]').forEach(btn=>btn.addEventListener('click',()=>{
     document.querySelectorAll('[data-garage-mode]').forEach(b=>b.classList.toggle('active',b===btn));
-    const isMap=btn.dataset.garageMode==='map';$('garageCollection').hidden=isMap;$('garageMapWrap').hidden=!isMap;
-    if(isMap)setTimeout(initGarageMap,100);
+    const isMap=btn.dataset.garageMode==='map';
+    $('garageCollection').hidden=isMap;
+    $('garageMapWrap').hidden=!isMap;
+    if(isMap){
+      // Let the panel become visible before Leaflet measures it.
+      requestAnimationFrame(()=>setTimeout(initGarageMap,140));
+    }
   }));
-  function initGarageMap(){
-    if(!window.L){$('garageMap').innerHTML='<div class="map-overlay"><div><strong>Map unavailable</strong>Connect to the internet and reload to view saved pins.</div></div>';return}
-    if(!garageMap){$('garageMap').innerHTML='';garageMap=L.map('garageMap',{scrollWheelZoom:true}).setView([39.5,-98.35],4);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(garageMap)}
-    garageMarkers.forEach(marker=>garageMap.removeLayer(marker));garageMarkers=[];
-    const located=data.spots.filter(s=>s.location&&Number.isFinite(s.location.lat)&&Number.isFinite(s.location.lng));
-    const existing=$('garageMap').querySelector('.map-overlay');if(existing)existing.remove();
-    if(!located.length){const empty=document.createElement('div');empty.className='map-overlay';empty.innerHTML='<div><strong>No pins yet.</strong>Save a car with a location to start filling your map.</div>';$('garageMap').appendChild(empty);garageMap.setView([39.5,-98.35],4);setTimeout(()=>garageMap.invalidateSize(),120);return}
-    located.forEach(s=>{
-      const icon=L.divIcon({className:'',html:'<div class="spot-pin"></div>',iconSize:[16,16],iconAnchor:[8,8]});
-      const marker=L.marker([s.location.lat,s.location.lng],{icon}).addTo(garageMap);
-      const popup=`<div class="map-spot-popup"><b>${escapeHTML(s.year?`${s.year} `:'')}${escapeHTML(s.make)} ${escapeHTML(s.model)}</b><span>${escapeHTML(s.trim||s.color||s.place||'')}</span>${s.photo?`<img src="${escapeHTML(s.photo)}" alt="">`:''}<button type="button" data-map-spot="${escapeHTML(s.id)}">VIEW SIGHTING ↗</button></div>`;
-      marker.bindPopup(popup);
-      marker.on('popupopen',()=>{const button=marker.getPopup()?.getElement()?.querySelector('[data-map-spot]');if(button)button.addEventListener('click',()=>openSpotDetail(s.id),{once:true})});
-      garageMarkers.push(marker);
+
+  function loadLeafletFallback(){
+    if(window.L)return Promise.resolve(true);
+    if(leafletFallbackPromise)return leafletFallbackPromise;
+    leafletFallbackPromise=new Promise(resolve=>{
+      const script=document.createElement('script');
+      script.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.crossOrigin='anonymous';
+      script.onload=()=>resolve(!!window.L);
+      script.onerror=()=>resolve(false);
+      document.head.appendChild(script);
+    }).finally(()=>{if(!window.L)leafletFallbackPromise=null;});
+    return leafletFallbackPromise;
+  }
+
+  function showGarageMapMessage(title,message,withRetry=false){
+    const mapElement=$('garageMap');
+    mapElement.querySelectorAll('.map-overlay').forEach(node=>node.remove());
+    const overlay=document.createElement('div');
+    overlay.className='map-overlay'+(withRetry?' map-overlay-error':'');
+    const content=document.createElement('div');
+    const heading=document.createElement('strong');
+    heading.textContent=title;
+    const copy=document.createElement('span');
+    copy.textContent=message;
+    content.append(heading,copy);
+    if(withRetry){
+      const retry=document.createElement('button');
+      retry.type='button';
+      retry.className='map-retry-button';
+      retry.textContent='TRY AGAIN';
+      retry.addEventListener('click',()=>{overlay.remove();initGarageMap();});
+      content.appendChild(retry);
+    }
+    overlay.appendChild(content);
+    mapElement.appendChild(overlay);
+  }
+
+  function refreshGarageMapSize(){
+    const mapElement=$('garageMap');
+    if(!garageMap||!mapElement||$('garageMapWrap').hidden||mapElement.getBoundingClientRect().width===0)return;
+    garageMap.invalidateSize({pan:false});
+  }
+
+  async function initGarageMap(){
+    const mapElement=$('garageMap');
+    if(!mapElement)return;
+    if(!window.L){
+      const loaded=await loadLeafletFallback();
+      if(!loaded){
+        showGarageMapMessage('MAP COULD NOT LOAD','Check your connection, then try loading the map again.',true);
+        return;
+      }
+    }
+
+    if(!garageMap){
+      mapElement.replaceChildren();
+      garageMap=L.map(mapElement,{zoomControl:true,scrollWheelZoom:false,tap:true,preferCanvas:true}).setView([39.5,-98.35],4);
+      garageTileLayer=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+        maxZoom:19,
+        updateWhenIdle:true,
+        keepBuffer:3,
+        attribution:'&copy; OpenStreetMap contributors'
+      });
+      garageTileLayer.on('tileerror',()=>{
+        garageTileErrorCount++;
+        // Some networks block the OSM tile host. Switch providers after repeated failures.
+        if(garageTileErrorCount>=4&&!garageTileFallbackUsed){
+          garageTileFallbackUsed=true;
+          garageTileErrorCount=0;
+          garageTileLayer.setUrl('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png');
+          garageMap.attributionControl.addAttribution('&copy; CARTO');
+        }
+      });
+      garageTileLayer.addTo(garageMap);
+      if('ResizeObserver' in window){
+        garageMapResizeObserver=new ResizeObserver(refreshGarageMapSize);
+        garageMapResizeObserver.observe(mapElement);
+      }
+    }
+
+    mapElement.querySelectorAll('.map-overlay').forEach(node=>node.remove());
+    garageMarkers.forEach(marker=>garageMap.removeLayer(marker));
+    garageMarkers=[];
+    const located=data.spots.filter(s=>{
+      const loc=s.location;
+      return loc&&Number.isFinite(Number(loc.lat))&&Number.isFinite(Number(loc.lng))&&Number(loc.lat)>=-90&&Number(loc.lat)<=90&&Number(loc.lng)>=-180&&Number(loc.lng)<=180;
     });
-    if(garageMarkers.length===1)garageMap.setView(garageMarkers[0].getLatLng(),13);else garageMap.fitBounds(L.featureGroup(garageMarkers).getBounds().pad(.18),{maxZoom:12});
-    setTimeout(()=>garageMap.invalidateSize(),120);
+
+    if(!located.length){
+      showGarageMapMessage('NO PINNED SIGHTINGS','Save a car with a GPS location or place a pin while logging a sighting.');
+      garageMap.setView([39.5,-98.35],4);
+    }else{
+      located.forEach(s=>{
+        const icon=L.divIcon({className:'',html:'<div class="spot-pin"></div>',iconSize:[18,18],iconAnchor:[9,9]});
+        const marker=L.marker([Number(s.location.lat),Number(s.location.lng)],{icon,keyboard:true}).addTo(garageMap);
+        const popup=`<div class="map-spot-popup"><b>${escapeHTML(s.year?`${s.year} `:'')}${escapeHTML(s.make)} ${escapeHTML(s.model)}</b><span>${escapeHTML(s.trim||s.color||s.place||'')}</span>${s.photo?`<img src="${escapeHTML(s.photo)}" alt="">`:''}<button type="button" data-map-spot="${escapeHTML(s.id)}">VIEW SIGHTING ↗</button></div>`;
+        marker.bindPopup(popup,{maxWidth:230});
+        marker.on('popupopen',()=>{
+          const button=marker.getPopup()?.getElement()?.querySelector('[data-map-spot]');
+          if(button)button.addEventListener('click',()=>openSpotDetail(s.id),{once:true});
+        });
+        garageMarkers.push(marker);
+      });
+      if(garageMarkers.length===1){
+        garageMap.setView(garageMarkers[0].getLatLng(),13);
+      }else{
+        const bounds=L.featureGroup(garageMarkers).getBounds();
+        if(bounds.isValid())garageMap.fitBounds(bounds.pad(.18),{maxZoom:12});
+      }
+    }
+
+    requestAnimationFrame(()=>requestAnimationFrame(refreshGarageMapSize));
+    setTimeout(refreshGarageMapSize,260);
+    setTimeout(refreshGarageMapSize,620);
   }
 
   function openSpotDetail(spotId){
