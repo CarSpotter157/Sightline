@@ -199,8 +199,8 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 
 /* Impact tuning: visible hammer contact, a clean rebound, and a rarity-colored shock ring. */
 .reveal-stage:before{content:"";position:absolute;z-index:8;left:50%;top:50%;width:min(470px,82vw);height:min(220px,26vh);border:2px solid var(--reveal-glow);border-radius:22px;opacity:0;transform:translate(-50%,-50%) scale(.78);pointer-events:none;filter:drop-shadow(0 0 12px var(--reveal-glow))}
-.spot-reveal.stage-hit .reveal-stage:before{animation:hammerContactRing .42s cubic-bezier(.12,.72,.2,1) both}
-.spot-reveal.stage-hit .reveal-photo-card{filter:brightness(1.23) saturate(1.12);animation:photoHitShake .24s cubic-bezier(.2,.7,.2,1) both;}
+.spot-reveal.impact-flash .reveal-stage:before{animation:hammerContactRing .42s cubic-bezier(.12,.72,.2,1) both}
+.spot-reveal.impact-flash .reveal-photo-card{filter:brightness(1.23) saturate(1.12);animation:photoHitShake .24s cubic-bezier(.2,.7,.2,1) both;}
 @keyframes photoHitShake{0%,100%{transform:translate3d(0,0,0) scale(1.02)}28%{transform:translate3d(0,4px,0) scale(1.035,.985)}58%{transform:translate3d(0,-2px,0) scale(.99,1.015)}82%{transform:translate3d(0,1px,0) scale(1.01,.995)}}
 .reveal-hammer{will-change:transform;}
 @keyframes hammerContactRing{0%{opacity:0;transform:translate(-50%,-50%) scale(.78)}22%{opacity:.82}100%{opacity:0;transform:translate(-50%,-50%) scale(1.16)}}
@@ -221,8 +221,8 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 .spot-reveal.gentle-motion.stage-slam .reveal-hammer{animation:hammerEnterGentle .42s ease-out both!important}
 .spot-reveal.gentle-motion .reveal-hammer.is-striking{animation:hammerStrikeGentle .42s ease-in-out both!important}
 .spot-reveal.gentle-motion.stage-hit .reveal-stage{animation:none!important}
-.spot-reveal.gentle-motion.stage-hit .reveal-stage:before{animation:none!important;opacity:.22;transform:translate(-50%,-50%) scale(1)}
-.spot-reveal.gentle-motion.stage-hit .reveal-photo-card{animation:photoImpactGentle .24s ease-out both!important;filter:none!important}
+.spot-reveal.gentle-motion.impact-flash .reveal-stage:before{animation:none!important;opacity:.22;transform:translate(-50%,-50%) scale(1)}
+.spot-reveal.gentle-motion.impact-flash .reveal-photo-card{animation:photoImpactGentle .24s ease-out both!important;filter:none!important}
 .spot-reveal.gentle-motion .reveal-screen-flash{display:none!important}
 .spot-reveal.gentle-motion.is-special.stage-complete .reveal-stage:after{display:none!important}
 .spot-reveal.gentle-motion .reveal-confetti{display:none!important}
@@ -230,6 +230,22 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 @keyframes photoImpactGentle{0%,100%{transform:translate3d(0,0,0) scale(1)}45%{transform:translate3d(0,3px,0) scale(1.008)}70%{transform:translate3d(0,-1px,0) scale(.998)}}
 @keyframes hammerEnterGentle{0%{opacity:0;transform:translate3d(24px,-42px,0) rotate(-28deg)}100%{opacity:1;transform:translate3d(0,0,0) rotate(-16deg)}}
 @keyframes hammerStrikeGentle{0%,100%{opacity:1;transform:translate3d(0,0,0) rotate(-16deg)}48%{opacity:1;transform:translate3d(-66px,43px,0) rotate(9deg)}66%{transform:translate3d(-58px,34px,0) rotate(4deg)}}
+
+
+/* Rarity reveal ladder: the whole screen advances from Common through the earned tier. */
+.spot-reveal{transition:opacity .35s ease,visibility .35s ease,transform .55s cubic-bezier(.2,.8,.2,1),background .55s ease;}
+.spot-reveal[data-current-rarity="common"]{--reveal-glow:#a9b4c4;}
+.spot-reveal[data-current-rarity="uncommon"]{--reveal-glow:#43d6a0;}
+.spot-reveal[data-current-rarity="rare"]{--reveal-glow:#58a7ff;}
+.spot-reveal[data-current-rarity="epic"]{--reveal-glow:#bd82ff;}
+.spot-reveal[data-current-rarity="legendary"]{--reveal-glow:#ffd05a;}
+.reveal-rarity-wash{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.92;background:linear-gradient(132deg,color-mix(in srgb,var(--reveal-glow) 43%,#08111f) 0%,color-mix(in srgb,var(--reveal-glow) 18%,#08111f) 48%,color-mix(in srgb,var(--reveal-glow) 36%,#08111f) 100%);transition:background .55s cubic-bezier(.2,.8,.2,1);}
+.reveal-atmosphere{z-index:1;}
+.spot-reveal.impact-flash .reveal-rarity-wash{filter:brightness(1.35) saturate(1.18);}
+.reveal-rarity{transition:color .45s ease,border-color .45s ease,background-color .45s ease;}
+.reveal-make{transition:color .45s ease;}
+.reveal-hit-count{transition:color .45s ease,border-color .45s ease,box-shadow .45s ease;}
+.reveal-orbit{transition:border-color .45s ease,box-shadow .45s ease;}
 
 </style>
 </head>
@@ -428,6 +444,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 
 <div class="spot-reveal" id="spotReveal" hidden aria-hidden="true">
   <div class="reveal-atmosphere" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="reveal-rarity-wash" aria-hidden="true"></div>
   <div class="reveal-topline"><span><b class="reveal-live-dot"></b> CARSPOTTER / CAPTURE SEQUENCE</span><button type="button" id="spotRevealSkip" aria-label="Skip animation">SKIP ANIMATION ↗</button></div>
   <div class="reveal-center">
     <div class="reveal-kicker" id="spotRevealStatus">IDENTIFYING VEHICLE <span>01 / 04</span></div>
@@ -926,13 +943,14 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
       $('spotRevealMake').textContent=spot.make.toUpperCase();
       $('spotRevealModel').textContent=`${spot.year?spot.year+' ':''}${spot.model}`;
       $('spotRevealTrim').textContent=spot.trim||spot.color||'A new addition to your sightings';
-      $('spotRevealRarity').textContent=rarity.label.toUpperCase();
+      $('spotRevealRarity').textContent='COMMON';
       $('spotRevealCountLabel').textContent=progress.unlocked?`${progress.unlocked}-SPOT MILESTONE`:`COLLECTION ENTRY #${String(total).padStart(3,'0')}`;
       $('spotRevealCollectionLabel').textContent=progress.label;
       $('spotRevealMonogram').textContent=`${(spot.make||'C').slice(0,1)}${(spot.model||'S').slice(0,1)}`.toUpperCase();
       const photo=$('spotRevealPhoto'),empty=$('spotRevealNoPhoto');
       if(spot.photo){photo.src=spot.photo;photo.hidden=false;empty.hidden=true;}else{photo.removeAttribute('src');photo.hidden=true;empty.hidden=false;}
       overlay.dataset.rarity=rarity.key;
+      overlay.dataset.currentRarity='common';
       overlay.dataset.hits=String(rank);
       overlay.classList.toggle('gentle-motion',gentleMotion);
       overlay.classList.toggle('is-special',rarity.rank>=3);
@@ -950,6 +968,8 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 
       const finishVisual=()=>{
         if(visualComplete)return;visualComplete=true;
+        overlay.dataset.currentRarity=rarity.key;
+        $('spotRevealRarity').textContent=rarity.label.toUpperCase();
         overlay.classList.remove('impact-flash','stage-hit','stage-slam');
         $('spotRevealHammer').classList.remove('is-striking');
         overlay.classList.add('stage-scan','stage-launch','stage-reveal','stage-complete','stage-confetti');
@@ -994,16 +1014,34 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
         if(navigator.vibrate&&!gentleMotion){try{navigator.vibrate([35,30,45])}catch{}}
         await revealDelay(430);if(skipped)return;
         const hammer=$('spotRevealHammer');
+        const rarityLadder=[
+          {key:'common',label:'COMMON'},
+          {key:'uncommon',label:'UNCOMMON'},
+          {key:'rare',label:'RARE'},
+          {key:'epic',label:'EPIC'},
+          {key:'legendary',label:'LEGENDARY'}
+        ];
         for(let hit=1;hit<=rank;hit++){
           if(skipped)return;
-          $('spotRevealStatus').innerHTML=`RARITY CALIBRATION <span>IMPACT ${hit} / ${rank}</span>`;
+          // The screen starts at Common. Each strike climbs one level until the
+          // car's estimated rarity is reached; the final strike seals that level.
+          const level=rarityLadder[Math.min(hit,rank-1)];
+          const levelsUp=level.key!==overlay.dataset.currentRarity;
+          $('spotRevealStatus').innerHTML=`${levelsUp?'NEXT RARITY':'FINAL CALIBRATION'} <span>${level.label} · IMPACT ${hit} / ${rank}</span>`;
           $('spotRevealHitCount').textContent=`IMPACT ${hit} / ${rank}`;
           overlay.dataset.impact=String(hit);
           overlay.classList.remove('impact-flash','stage-hit');hammer.classList.remove('is-striking');
           void overlay.offsetWidth;void hammer.offsetWidth;
-          overlay.classList.add('impact-flash','stage-hit');hammer.classList.add('is-striking');
+          overlay.classList.add('stage-hit');hammer.classList.add('is-striking');
+          // The hammer's head reaches the photo about halfway through its swing.
+          // Advance the full-screen rarity color precisely at that contact point.
+          await revealDelay(200);if(skipped)return;
+          overlay.dataset.currentRarity=level.key;
+          $('spotRevealRarity').textContent=level.label;
+          $('spotRevealStatus').innerHTML=`${levelsUp?'RARITY LEVEL UP':'RARITY LOCKED'} <span>${level.label} · IMPACT ${hit} / ${rank}</span>`;
+          overlay.classList.add('impact-flash');
           if(navigator.vibrate&&!gentleMotion){try{navigator.vibrate(hit===rank?[45,35,65]:[28])}catch{}}
-          await revealDelay(450);if(skipped)return;
+          await revealDelay(250);if(skipped)return;
           overlay.classList.remove('impact-flash','stage-hit');hammer.classList.remove('is-striking');
           await revealDelay(145);if(skipped)return;
         }
