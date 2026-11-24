@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#f4f7fc">
 <meta name="description" content="Log the cars you spot, collect photos and details, pin sightings on your map, and group a day of spotting into a road trip.">
 <title>CarSpotter — Your personal car-spotting journal</title>
@@ -341,6 +341,102 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 
 
 
+
+
+
+/* ================================================================
+   MOBILE LOGGING FORM — refined phone layout and clear field rhythm
+   ================================================================ */
+@media (max-width: 680px) {
+  #view-spot .spot-wrap{max-width:620px}
+  #view-spot .page-head{margin-bottom:18px}
+  #view-spot .page-head h1{font-size:clamp(42px,11vw,49px);line-height:.9;letter-spacing:-.2px}
+  #view-spot .page-head p{max-width:34rem;margin-top:9px;font-size:12px;line-height:1.55}
+  #view-spot .head-aside{margin-top:12px;font-size:9px;letter-spacing:1.15px}
+
+  #view-spot .spot-flow{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;
+    margin:0 0 13px;padding:8px;border:1px solid var(--line);border-radius:15px;
+    background:var(--surface);box-shadow:0 5px 16px rgba(22,43,77,.035)
+  }
+  #view-spot .flow-arrow{display:none}
+  #view-spot .flow-step{
+    min-width:0;min-height:65px;display:flex;flex-direction:column;justify-content:center;
+    align-items:center;gap:5px;padding:7px 2px;border:1px solid transparent;
+    border-radius:10px;background:var(--surface-2);color:var(--muted);
+    font-size:8px;line-height:1.1;letter-spacing:.45px;text-align:center
+  }
+  #view-spot .flow-step b{width:23px;height:23px;border-radius:8px;font-size:13px}
+  #view-spot .flow-optional{display:block;margin:0;font-size:7px;line-height:1;color:var(--soft)}
+  #view-spot .flow-step.complete{border-color:color-mix(in srgb,var(--accent) 25%,var(--line));background:color-mix(in srgb,var(--accent) 7%,var(--surface))}
+  #view-spot .flow-step.complete b::after{content:none}
+
+  #spotForm.form-panel{
+    overflow:visible;border-radius:19px;background:var(--surface);
+    box-shadow:0 16px 38px rgba(22,43,77,.075)
+  }
+  #spotForm .form-section{padding:21px 16px 22px}
+  #spotForm .section-head{align-items:flex-start;gap:9px;margin-bottom:17px}
+  #spotForm .section-index{align-items:flex-start;gap:10px;min-width:0}
+  #spotForm .index-box{width:34px;height:34px;flex:none;border-radius:11px;font-size:15px}
+  #spotForm .section-head h2{font-size:23px;line-height:.98;letter-spacing:.15px}
+  #spotForm .section-head p{max-width:280px;margin-top:6px;font-size:10.5px;line-height:1.45}
+  #spotForm .section-head .section-tag{flex:none;margin-top:3px;padding:6px 8px;border:1px solid var(--line);border-radius:99px;background:var(--surface-2);font-size:7px;letter-spacing:.8px;white-space:nowrap}
+
+  #spotForm .form-grid{grid-template-columns:minmax(0,1fr);gap:16px}
+  #spotForm .field.full{grid-column:auto}
+  #spotForm .field label{gap:7px;margin-bottom:8px;color:var(--muted);font-size:10px;letter-spacing:1.05px;line-height:1.25}
+  #spotForm .optional{font-size:9px;color:var(--soft)}
+  #spotForm .field-mode-hint{padding:4px 7px;border-radius:6px;font-size:7px;letter-spacing:.65px}
+  #spotForm .autocomplete-wrap .searchable-control{
+    height:54px;min-height:54px;padding:0 59px 0 14px;border:1.4px solid var(--line);
+    border-radius:13px;background:var(--surface);font-size:16px!important;font-weight:600;
+    line-height:1.25;letter-spacing:0;box-shadow:0 3px 10px rgba(22,43,77,.035)
+  }
+  #spotForm .autocomplete-wrap .searchable-control:focus{
+    border-color:var(--accent);background:var(--surface);
+    box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 13%,transparent),0 6px 16px rgba(22,43,77,.06)
+  }
+  #spotForm .autocomplete-toggle{top:7px;right:7px;width:40px;height:40px;border-radius:10px}
+  #spotForm .autocomplete-menu{max-height:min(44dvh,360px);border-radius:14px}
+  #spotForm .autocomplete-option{min-height:47px;font-size:14px}
+  #spotForm .field-help{margin-top:8px;color:var(--muted);font-size:10.5px;line-height:1.5}
+  #spotForm .control:not(.searchable-control){height:53px;padding:0 14px;border-radius:13px;background:var(--surface);font-size:16px!important}
+  #spotForm .notes-control{height:auto;min-height:108px;padding:13px 14px;line-height:1.5;resize:vertical}
+
+  #spotForm .photo-drop{min-height:166px;border-radius:16px;background:var(--surface-2)}
+  #spotForm .photo-prompt{width:100%;padding:22px 17px}
+  #spotForm .photo-prompt .photo-icon{width:48px;height:48px;border-radius:15px;margin-bottom:11px}
+  #spotForm .photo-prompt strong{font-size:13px}
+  #spotForm .photo-prompt span{font-size:10.5px;line-height:1.45}
+  #spotForm .photo-preview{height:220px}
+  #spotForm .photo-status{align-items:flex-start;flex-wrap:wrap;margin-top:10px;font-size:9.5px;line-height:1.4}
+  #spotForm .photo-optional-row{margin-top:11px;padding:10px 11px;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);font-size:10px;line-height:1.45}
+  #spotForm .photo-optional-row button{align-self:flex-start;margin-top:4px;padding:7px 9px;border-radius:8px;background:color-mix(in srgb,var(--accent) 9%,var(--surface));font-size:8px;letter-spacing:.55px}
+
+  #spotForm .location-card{border-radius:15px;background:var(--surface-2)}
+  #spotForm .location-toolbar{gap:12px;padding:13px}
+  #spotForm .location-status{align-items:center}
+  #spotForm .location-symbol{width:38px;height:38px;border-radius:11px}
+  #spotForm .location-copy strong{font-size:12px}
+  #spotForm .location-copy span{font-size:10px;line-height:1.35}
+  #spotForm .location-buttons{gap:8px}
+  #spotForm .location-buttons button{min-height:43px;border-radius:10px;font-size:9px;letter-spacing:.15px}
+  #spotForm #spotMap{height:190px}
+  #spotForm .location-foot{padding:11px 12px;font-size:9.5px;line-height:1.5}
+  #spotForm .spot-context-grid{margin-top:17px}
+
+  #spotForm .form-footer{gap:11px;padding:16px;background:var(--surface-2)}
+  #spotForm .save-note{font-size:10px;line-height:1.5}
+  #spotForm .form-footer .primary-btn{min-height:54px;border-radius:13px;font-size:11px;letter-spacing:.65px;box-shadow:0 9px 22px rgba(37,99,235,.22)}
+}
+@media (max-width: 380px){
+  #view-spot .page-head h1{font-size:41px}
+  #spotForm .form-section{padding-left:13px;padding-right:13px}
+  #spotForm .section-head h2{font-size:21px}
+  #spotForm .section-head .section-tag{padding:5px 6px;font-size:6.5px}
+  #spotForm .flow-step{font-size:7px}
+}
 
 </style>
 </head>
@@ -1008,7 +1104,20 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 
       let values=[];
       let activeIndex=-1;
-      let pointerSelected=false;
+      let touchingMenu=false;
+      let touchReleaseTimer=null;
+      menu.addEventListener('touchstart',()=>{
+        touchingMenu=true;
+        if(touchReleaseTimer)clearTimeout(touchReleaseTimer);
+      },{passive:true});
+      menu.addEventListener('touchend',()=>{
+        if(touchReleaseTimer)clearTimeout(touchReleaseTimer);
+        touchReleaseTimer=setTimeout(()=>{touchingMenu=false;},500);
+      },{passive:true});
+      menu.addEventListener('touchcancel',()=>{
+        if(touchReleaseTimer)clearTimeout(touchReleaseTimer);
+        touchReleaseTimer=setTimeout(()=>{touchingMenu=false;},500);
+      },{passive:true});
       const optionValues=()=>{
         const source=$(input.dataset.suggestionListId);
         return source ? Array.from(source.options).map(o=>o.value).filter((v,i,a)=>v && a.indexOf(v)===i) : [];
@@ -1057,15 +1166,10 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
             marker.className='autocomplete-option-mark';
             marker.textContent='↵';
             option.append(text,marker);
-            // Commit on pointer-down so the on-screen keyboard does not blur
-            // the input before a tapped suggestion can be selected.
-            option.addEventListener('pointerdown',event=>{
-              event.preventDefault();pointerSelected=true;choose(value);
-            });
-            option.addEventListener('click',()=>{
-              if(pointerSelected){pointerSelected=false;return;}
-              choose(value);
-            });
+            // Select on click, not pointer-down. Preventing the pointer-down
+            // default cancels native touch scrolling in iOS Safari. The input's
+            // delayed blur handler keeps the menu alive until a tap is committed.
+            option.addEventListener('click',()=>choose(value));
             menu.appendChild(option);
           });
           const foot=document.createElement('div');
@@ -1109,7 +1213,9 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
       input.addEventListener('blur',()=>{
         // A short delay allows pointer-down selection to finish without
         // dismissing the menu as the user taps an option.
-        setTimeout(()=>{if(!wrap.contains(document.activeElement))setOpen(false);},180);
+        setTimeout(()=>{
+          if(!touchingMenu && !wrap.contains(document.activeElement))setOpen(false);
+        },360);
       });
       toggle.addEventListener('mousedown',event=>event.preventDefault());
       toggle.addEventListener('click',()=>{
@@ -1138,6 +1244,16 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     });
   }
   setupSearchSuggestions();
+
+  // Lock browser page zoom on touch devices while leaving ordinary page and
+  // dropdown scrolling available. The viewport tag handles standard pinch
+  // zoom; Safari's gesture events are blocked as an additional safeguard.
+  (function lockMobilePageZoom(){
+    const preventGestureZoom=event=>event.preventDefault();
+    ['gesturestart','gesturechange','gestureend'].forEach(type=>{
+      document.addEventListener(type,preventGestureZoom,{passive:false});
+    });
+  })();
 
   function updateSpotProgress(){
     const vehicle=readVehicleFields('');
@@ -2133,4 +2249,27 @@ body.reduce-motion .car-card.rarity-epic::before,body.reduce-motion .car-card.ra
 body[data-theme="dark"] .autocomplete-menu{box-shadow:0 18px 42px rgba(0,0,0,.48),0 3px 9px rgba(0,0,0,.2)}
 body[data-theme="dark"] .autocomplete-wrap .searchable-control{box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
 
+
+/* MOBILE TOUCH BEHAVIOUR — scroll menus, but never zoom the page */
+html,body{
+  touch-action:pan-x pan-y;
+  -ms-touch-action:pan-x pan-y;
+}
+#spotForm .autocomplete-menu{
+  max-height:min(44dvh,360px);
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior-y:contain;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-y;
+  pointer-events:auto;
+}
+#spotForm .autocomplete-option,
+#spotForm .autocomplete-menu-heading,
+#spotForm .autocomplete-menu-foot{
+  touch-action:pan-y;
+}
+@media(max-width:850px){
+  #spotForm .autocomplete-menu{max-height:min(44dvh,360px);}
+}
 </style>
