@@ -1278,6 +1278,21 @@ html,body{
 @media(prefers-reduced-motion:reduce){.car-card.rarity-cosmic::before{animation:none!important;opacity:.55}}
 body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opacity:.55}
 @media(max-width:620px){.rarity-count.cosmic .rarity-count-label{letter-spacing:.2px}}
+
+/* Mobile dropdown tap reliability: keep list rows tap-friendly without
+   disabling the menu's native vertical scrolling. */
+@media (max-width: 850px) {
+  #spotForm .autocomplete-option {
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #spotForm .autocomplete-menu {
+    pointer-events: auto;
+  }
+}
+
 </style>
 </head>
 <body data-theme="light">
@@ -1973,6 +1988,9 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
       let activeIndex=-1;
       let touchingMenu=false;
       let touchReleaseTimer=null;
+      let suppressFocusOpen=false;
+      let pendingTouchOption=null;
+      let suppressSyntheticClickUntil=0;
       menu.addEventListener('touchstart',()=>{
         touchingMenu=true;
         if(touchReleaseTimer)clearTimeout(touchReleaseTimer);
@@ -1985,6 +2003,30 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
         if(touchReleaseTimer)clearTimeout(touchReleaseTimer);
         touchReleaseTimer=setTimeout(()=>{touchingMenu=false;},500);
       },{passive:true});
+      // Commit a real tap on pointer-up. Tracking movement keeps a swipe used
+      // to scroll the list from accidentally selecting whichever row it began on.
+      // The regular click handler remains as a fallback for mouse and keyboard.
+      menu.addEventListener('pointerdown',event=>{
+        const option=event.target.closest?.('.autocomplete-option');
+        if(!option || !menu.contains(option) || event.isPrimary===false || event.pointerType==='mouse'){
+          pendingTouchOption=null;
+          return;
+        }
+        pendingTouchOption={option,x:event.clientX,y:event.clientY,pointerId:event.pointerId};
+      },{passive:true});
+      menu.addEventListener('pointerup',event=>{
+        const pending=pendingTouchOption;
+        pendingTouchOption=null;
+        if(!pending || event.pointerId!==pending.pointerId || !pending.option.isConnected)return;
+        const sameOption=event.target.closest?.('.autocomplete-option')===pending.option;
+        const moved=Math.hypot(event.clientX-pending.x,event.clientY-pending.y);
+        if(!sameOption || moved>12)return;
+        const value=pending.option.dataset.value;
+        if(!value)return;
+        suppressSyntheticClickUntil=performance.now()+900;
+        choose(value);
+      },{passive:true});
+      menu.addEventListener('pointercancel',()=>{pendingTouchOption=null;},{passive:true});
       const optionValues=()=>{
         const source=$(input.dataset.suggestionListId);
         return source ? Array.from(source.options).map(o=>o.value).filter((v,i,a)=>v && a.indexOf(v)===i) : [];
@@ -2027,16 +2069,23 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
             option.setAttribute('role','option');
             option.setAttribute('aria-selected','false');
             option.dataset.index=String(i);
+            option.dataset.value=value;
             const text=document.createElement('span');
             text.textContent=value;
             const marker=document.createElement('span');
             marker.className='autocomplete-option-mark';
             marker.textContent='↵';
             option.append(text,marker);
-            // Select on click, not pointer-down. Preventing the pointer-down
-            // default cancels native touch scrolling in iOS Safari. The input's
-            // delayed blur handler keeps the menu alive until a tap is committed.
-            option.addEventListener('click',()=>choose(value));
+            // Touch selection is committed on pointer-up above. Ignore the
+            // follow-up synthetic click so one tap can never select twice.
+            // Mouse clicks and keyboard-triggered clicks still use this path.
+            option.addEventListener('click',event=>{
+              if(event.detail>0 && performance.now()<suppressSyntheticClickUntil){
+                event.preventDefault();
+                return;
+              }
+              choose(value,true);
+            });
             menu.appendChild(option);
           });
           const foot=document.createElement('div');
@@ -2045,16 +2094,19 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
           menu.appendChild(foot);
         }
       }
-      function choose(value){
+      function choose(value,restoreFocus=false){
         input.value=value;
         input.dispatchEvent(new Event('input',{bubbles:true}));
         input.dispatchEvent(new Event('change',{bubbles:true}));
-        // On mobile, tapping an option can blur the text field before the
-        // synthesized click runs. Refocusing fires the input's focus handler,
-        // which opens the menu again. Restore focus first, then close it.
-        // This keeps typing available without leaving the suggestions open.
-        try{input.focus({preventScroll:true});}catch{input.focus();}
         setOpen(false);
+        // Mouse/keyboard activation can return focus to the text field without
+        // reopening the list. Touch pointer-up deliberately does not refocus,
+        // avoiding a mobile keyboard/menu jump after the user picks a value.
+        if(restoreFocus){
+          suppressFocusOpen=true;
+          try{input.focus({preventScroll:true});}catch{input.focus();}
+          suppressFocusOpen=false;
+        }
       }
       function moveActive(direction){
         if(!wrap.classList.contains('is-open'))setOpen(true);
@@ -2070,7 +2122,7 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
         buttons[activeIndex].scrollIntoView({block:'nearest'});
       }
 
-      input.addEventListener('focus',()=>setOpen(true));
+      input.addEventListener('focus',()=>{if(!suppressFocusOpen)setOpen(true);});
       input.addEventListener('click',()=>{if(!wrap.classList.contains('is-open'))setOpen(true);});
       input.addEventListener('input',()=>{if(wrap.classList.contains('is-open'))render();});
       input.addEventListener('keydown',event=>{
