@@ -1463,7 +1463,7 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
   <div class="field"><label for="editColorInput">Color</label><input class="control searchable-control" id="editColorInput" maxlength="28" list="editColorOptions" autocomplete="off" placeholder="Type or choose a color"><datalist id="editColorOptions"></datalist></div>
   <div class="field full"><label for="editPlaceInput">Place or event</label><input class="control" id="editPlaceInput" maxlength="80" placeholder="e.g. Cars & Coffee, North Hills"></div>
   <div class="field full"><label for="editNotesInput">Spotting notes</label><textarea class="control notes-control" id="editNotesInput" maxlength="280" rows="3" placeholder="Details worth remembering…"></textarea></div>
-  <div class="field full"><label>Photo</label><div class="edit-photo-row"><img id="editPhotoPreview" alt="Current car photo"><button class="text-button" id="editChangePhoto" type="button">CHANGE PHOTO</button><span id="editPhotoStatus" class="field-help">Current photo</span></div></div>
+  <div class="field full"><label>Photo</label><div class="edit-photo-row"><img id="editPhotoPreview" alt="Current car photo"><button class="text-button" id="editChangePhoto" type="button" aria-label="Choose a replacement photo for this car">CHANGE PHOTO</button><span id="editPhotoStatus" class="field-help">Current photo</span></div></div>
 </div><div class="modal-actions"><button class="secondary-btn" data-close-modal="editSpotModal" type="button">CANCEL</button><button class="primary-btn" id="saveEditButton" type="button">SAVE CHANGES</button></div></div></div>
 
 <!-- Run details -->
@@ -1746,13 +1746,40 @@ body.reduce-motion .car-card.rarity-cosmic::before{animation:none!important;opac
   const fmtMonth = value => value ? new Date(value).toLocaleDateString(undefined,{month:'short'}).toUpperCase() : '';
   const bytesLabel = bytes => bytes < 1024 ? `${bytes} B` : bytes < 1024*1024 ? `${(bytes/1024).toFixed(0)} KB` : `${(bytes/1024/1024).toFixed(1)} MB`;
   function showToast(message){ const el=$('toast'); el.textContent=message; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),3000); }
-  let modalReturnFocus=null;
-  function showModal(id){modalReturnFocus=document.activeElement;$(id).classList.add('show');const first=$(id).querySelector('input:not([type=hidden]),select,button,[tabindex="0"]');if(first)setTimeout(()=>first.focus(),50);}
-  function hideModal(id){$(id).classList.remove('show');if(modalReturnFocus&&typeof modalReturnFocus.focus==='function')modalReturnFocus.focus();modalReturnFocus=null;}
+  // Modals can be opened from inside another modal (for example, changing a car photo
+  // while the Edit Spot sheet is open). Keep the newest modal above the previous one.
+  const modalFocusStack=[];
+  function topOpenModal(){
+    return [...document.querySelectorAll('.modal-backdrop.show')]
+      .sort((a,b)=>Number(getComputedStyle(b).zIndex||100)-Number(getComputedStyle(a).zIndex||100))[0]||null;
+  }
+  function showModal(id){
+    const modal=$(id);if(!modal)return;
+    const previous=document.activeElement;
+    const open=[...document.querySelectorAll('.modal-backdrop.show')];
+    const highest=open.reduce((max,item)=>Math.max(max,Number(getComputedStyle(item).zIndex)||100),99);
+    modal.style.zIndex=String(highest+1);
+    modalFocusStack.push({id,previous});
+    modal.classList.add('show');
+    const first=modal.querySelector('input:not([type=hidden]),select,button,[tabindex="0"]');
+    if(first)setTimeout(()=>{if(modal.classList.contains('show'))first.focus();},50);
+  }
+  function hideModal(id){
+    const modal=$(id);if(!modal)return;
+    const wasTop=topOpenModal()===modal;
+    modal.classList.remove('show');modal.style.removeProperty('z-index');
+    let stackIndex=-1;
+    for(let i=modalFocusStack.length-1;i>=0;i--){if(modalFocusStack[i].id===id){stackIndex=i;break;}}
+    const entry=stackIndex>=0?modalFocusStack.splice(stackIndex,1)[0]:null;
+    const nextTop=topOpenModal();
+    if(wasTop&&entry?.previous?.isConnected&&entry.previous.getClientRects().length){
+      if(!nextTop||entry.previous.closest('.modal-backdrop')===nextTop)entry.previous.focus();
+    }
+  }
   document.querySelectorAll('[data-close-modal]').forEach(btn=>btn.addEventListener('click',()=>hideModal(btn.dataset.closeModal)));
   document.querySelectorAll('.modal-backdrop').forEach(backdrop=>backdrop.addEventListener('click',e=>{if(e.target===backdrop)hideModal(backdrop.id)}));
   document.addEventListener('keydown',e=>{
-    const open=document.querySelector('.modal-backdrop.show');
+    const open=topOpenModal();
     if(e.key==='Escape'&&open){hideModal(open.id);return}
     if(e.key!=='Tab'||!open)return;
     const items=[...open.querySelectorAll('button:not(:disabled),input:not(:disabled):not([type=hidden]),select:not(:disabled),textarea:not(:disabled),a[href]')].filter(el=>el.getClientRects().length>0);
