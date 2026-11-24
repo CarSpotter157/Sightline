@@ -536,12 +536,15 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 
 <div class="spot-reveal" id="spotReveal" hidden aria-hidden="true">
   <div class="reveal-atmosphere" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-  <div class="reveal-rarity-wash" aria-hidden="true"></div>
-  <div class="reveal-topline"><span><b class="reveal-live-dot"></b> CARSPOTTER / CAPTURE SEQUENCE</span><button type="button" id="spotRevealSkip" aria-label="Skip animation">SKIP ANIMATION ↗</button></div>
+  <div class="reveal-topline">
+    <span><b class="reveal-live-dot"></b> CARSPOTTER <span class="reveal-topline-divider">/</span> NEW SIGHTING</span>
+    <button type="button" id="spotRevealSkip" aria-label="Skip animation">SKIP ANIMATION</button>
+  </div>
   <div class="reveal-center">
-    <div class="reveal-kicker" id="spotRevealStatus">IDENTIFYING VEHICLE <span>01 / 04</span></div>
+    <div class="reveal-kicker" id="spotRevealStatus">GETTING YOUR PHOTO READY</div>
     <div class="reveal-stage">
-      <div class="reveal-orbit orbit-one"></div><div class="reveal-orbit orbit-two"></div>
+      <div class="reveal-orbit orbit-one" aria-hidden="true"></div>
+      <div class="reveal-orbit orbit-two" aria-hidden="true"></div>
       <div class="reveal-car-drawing" aria-hidden="true">
         <svg viewBox="0 0 700 270" role="presentation" fill="none">
           <path class="reveal-car-line" d="M78 176 119 122c12-16 31-27 52-30l106-17 77-52c13-9 29-14 46-14h105c26 0 47 10 65 30l49 56 55 25c18 8 27 22 27 42v26H51v-8c0-10 10-19 27-24Z"/>
@@ -551,56 +554,14 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
           <circle class="reveal-wheel" cx="527" cy="190" r="39"/><circle class="reveal-wheel-core" cx="527" cy="190" r="14"/>
         </svg>
       </div>
-      <div class="reveal-scan-beam"></div>
-      <div class="reveal-screen-flash" aria-hidden="true"></div>
-      <div class="reveal-particles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       <div class="reveal-photo-card" id="spotRevealPhotoCard">
         <img id="spotRevealPhoto" alt="Newly saved car" hidden>
         <div class="reveal-photo-empty" id="spotRevealNoPhoto"><span id="spotRevealMonogram">CS</span><small>PHOTO NOT ADDED</small></div>
         <span class="reveal-photo-corner">NEW SIGHTING</span>
-        <span class="reveal-photo-glint"></span>
+        <span class="reveal-photo-glint" aria-hidden="true"></span>
+        <span class="reveal-impact-ring" aria-hidden="true"></span>
       </div>
-      <div class="reveal-hammer" id="spotRevealHammer" aria-hidden="true">
-        <svg viewBox="0 0 220 250" role="presentation" focusable="false">
-          <defs>
-            <linearGradient id="hammerSteel" x1="0" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".18" stop-color="#dce8f5"/><stop offset=".48" stop-color="#8799ad"/><stop offset=".72" stop-color="#e8f0f8"/><stop offset="1" stop-color="#52657d"/></linearGradient>
-            <linearGradient id="hammerFace" x1="0" y1="0" x2="1" y2=".1"><stop offset="0" stop-color="#9aabc0"/><stop offset=".42" stop-color="#f8fbff"/><stop offset="1" stop-color="#788ba2"/></linearGradient>
-            <linearGradient id="hammerWood" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#70401f"/><stop offset=".28" stop-color="#d49a58"/><stop offset=".53" stop-color="#f0c17c"/><stop offset=".78" stop-color="#9b5c2d"/><stop offset="1" stop-color="#543019"/></linearGradient>
-            <linearGradient id="hammerRubber" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#111b2b"/><stop offset=".45" stop-color="#42536a"/><stop offset="1" stop-color="#172335"/></linearGradient>
-            <linearGradient id="hammerGlove" x1="0" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#50647b"/><stop offset=".55" stop-color="#26384e"/><stop offset="1" stop-color="#142235"/></linearGradient>
-            <filter id="hammerHeadShadow" x="-35%" y="-50%" width="180%" height="210%"><feGaussianBlur in="SourceAlpha" stdDeviation="3.5" result="blur"/><feOffset dy="4" result="offset"/><feComponentTransfer><feFuncA type="linear" slope=".42"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          </defs>
-          <!-- Long wooden haft, with a rubberized end grip. -->
-          <path d="M105 53 C111 99 125 155 146 218" fill="none" stroke="#201a18" stroke-width="31" stroke-linecap="round"/>
-          <path d="M105 53 C111 99 125 155 146 218" fill="none" stroke="url(#hammerWood)" stroke-width="23" stroke-linecap="round"/>
-          <path d="M99 66 C107 111 122 164 141 208" fill="none" stroke="#ffe0a6" stroke-width="3" stroke-linecap="round" opacity=".72"/>
-          <path d="M132 178 Q139 174 147 178 L163 214 Q166 223 157 230 L146 234 Q137 232 134 223 L123 193 Q121 184 132 178Z" fill="url(#hammerRubber)" stroke="#0a1422" stroke-width="3"/>
-          <path d="M130 190 156 183 M134 201 160 194 M138 212 163 205 M144 222 164 216" stroke="#71839a" stroke-width="2.3" opacity=".6" stroke-linecap="round"/>
-          <path d="M139 183 158 178" stroke="#b5c2d1" stroke-width="2" opacity=".6" stroke-linecap="round"/>
-          <!-- A gloved hand visibly grips the handle. -->
-          <path d="M153 185 C163 178 173 184 179 195 L196 238 L174 250 L148 214Z" fill="#1d3552" stroke="#0b1728" stroke-width="4"/>
-          <path d="M152 190 174 180 182 194 160 207Z" fill="#91a8c3" stroke="#263b55" stroke-width="3"/>
-          <path d="M128 157 C133 148 145 145 155 151 L170 162 Q177 169 171 181 L162 194 Q156 201 145 194 L126 182 Q117 175 121 165Z" fill="url(#hammerGlove)" stroke="#0b1728" stroke-width="4"/>
-          <path d="M124 164 Q136 158 146 169 L161 180 M126 174 Q139 171 151 184 M137 151 Q146 149 155 158" fill="none" stroke="#8294a9" stroke-width="3" stroke-linecap="round" opacity=".72"/>
-          <path d="M147 157 Q157 154 164 163" fill="none" stroke="#d0d9e3" stroke-width="2" stroke-linecap="round" opacity=".55"/>
-          <!-- Forked claw on the left and a flat striking face on the right. -->
-          <g transform="translate(220 0) scale(-1 1)" filter="url(#hammerHeadShadow)">
-            <path d="M82 38 C64 22 49 11 34 14 C20 16 18 28 27 36 Q33 42 48 40" fill="none" stroke="#53677f" stroke-width="22" stroke-linecap="round"/>
-            <path d="M82 60 C63 76 49 88 35 84 C21 82 19 70 28 62 Q34 56 48 57" fill="none" stroke="#53677f" stroke-width="22" stroke-linecap="round"/>
-            <path d="M82 38 C64 22 49 11 34 14 C20 16 18 28 27 36 Q33 42 48 40" fill="none" stroke="url(#hammerSteel)" stroke-width="16" stroke-linecap="round"/>
-            <path d="M82 60 C63 76 49 88 35 84 C21 82 19 70 28 62 Q34 56 48 57" fill="none" stroke="url(#hammerSteel)" stroke-width="16" stroke-linecap="round"/>
-            <path d="M58 30 Q53 38 57 49 Q57 62 65 69 L174 80 Q187 81 191 68 L202 43 Q205 31 193 27 L79 17 Q65 16 58 30Z" fill="url(#hammerSteel)" stroke="#dfeaf5" stroke-width="3"/>
-            <path d="M174 24 Q188 20 196 28 L210 45 Q214 52 209 61 L195 76 Q188 83 179 77 L184 51Z" fill="url(#hammerFace)" stroke="#f6fbff" stroke-width="2.5"/>
-            <path d="M187 32 Q198 36 201 49 Q201 61 190 70" fill="none" stroke="#60738b" stroke-width="3" opacity=".8"/>
-            <path d="M67 27 178 31" stroke="#fff" stroke-width="3.5" stroke-linecap="round" opacity=".78"/>
-            <path d="M68 67 177 72" stroke="#53677f" stroke-width="2" stroke-linecap="round" opacity=".48"/>
-            <path d="M104 26 Q119 38 132 69" fill="none" stroke="#6e8299" stroke-width="3" opacity=".65"/>
-            <circle cx="113" cy="46" r="5.5" fill="#dce7f2" stroke="#71869c" stroke-width="2"/>
-          </g>
-        </svg>
-      </div>
-      <div class="reveal-hit-count" id="spotRevealHitCount">IMPACTS 0 / 0</div>
-      <div class="reveal-confetti" id="spotRevealConfetti" aria-hidden="true"></div>
+      <div class="reveal-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     </div>
     <div class="reveal-copy">
       <span class="reveal-make" id="spotRevealMake">PORSCHE</span>
@@ -610,8 +571,14 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     </div>
     <div class="reveal-complete" id="spotRevealComplete"><span class="reveal-check">✓</span><span>ADDED TO YOUR GARAGE</span></div>
   </div>
-  <div class="reveal-bottom"><div class="reveal-track"><span></span></div><div class="reveal-bottom-row"><span id="spotRevealCollectionLabel">YOUR COLLECTION IS GROWING</span><strong><span id="spotRevealCount">0</span> <span id="spotRevealCountUnit">CARS</span></strong></div></div>
-  <div class="reveal-actions"><button type="button" class="reveal-continue" id="spotRevealAnother">＋ LOG ANOTHER CAR</button><button type="button" class="reveal-view" id="spotRevealView">VIEW IN GARAGE ↗</button></div>
+  <div class="reveal-bottom">
+    <div class="reveal-track"><span></span></div>
+    <div class="reveal-bottom-row"><span id="spotRevealCollectionLabel">YOUR COLLECTION IS GROWING</span><strong><span id="spotRevealCount">0</span> <span id="spotRevealCountUnit">CARS</span></strong></div>
+  </div>
+  <div class="reveal-actions" aria-label="Sighting saved. Choose what to do next.">
+    <button type="button" class="reveal-continue" id="spotRevealAnother">＋ LOG ANOTHER CAR</button>
+    <button type="button" class="reveal-view" id="spotRevealView">VIEW IN GARAGE ↗</button>
+  </div>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -1032,151 +999,75 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 
   let activeRevealResolve=null, activeRevealSkip=null;
   const revealDelay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-  function makeRevealConfetti(rarityKey){
-    const root=$('spotRevealConfetti');root.replaceChildren();
-    const palettes={common:['#cbd5e1','#94a3b8','#f8fafc'],uncommon:['#41d6a0','#8af0c6','#d3fff0'],rare:['#57a6ff','#9acbff','#e6f4ff'],epic:['#b47aff','#dbb7ff','#f7eaff'],legendary:['#ffd05a','#ffe5a1','#fff4d6']};
-    const palette=palettes[rarityKey]||palettes.rare;
-    for(let i=0;i<76;i++){
-      const bit=document.createElement('i');
-      const angle=(Math.PI*2*i/76)+(Math.random()-.5)*.3;
-      const distance=150+Math.random()*Math.min(370,window.innerWidth*.42);
-      bit.style.setProperty('--dx',`${Math.cos(angle)*distance}px`);
-      bit.style.setProperty('--dy',`${Math.sin(angle)*distance-80-Math.random()*140}px`);
-      bit.style.setProperty('--spin',`${Math.round((Math.random()-.5)*1100)}deg`);
-      bit.style.setProperty('--delay',`${Math.random()*.32}s`);
-      bit.style.setProperty('--duration',`${1.35+Math.random()*1.05}s`);
-      bit.style.setProperty('--confetti-color',palette[i%palette.length]);
-      bit.style.setProperty('--w',`${5+Math.random()*6}px`);
-      root.append(bit);
-    }
-  }
   function showSpotReveal(spot,total,progress){
     return new Promise(resolve=>{
       const overlay=$('spotReveal'),rarity=estimateRarity(spot);
-      // Either reduced-motion preference selects a gentler reveal, never an instant finish.
-      // The visible Skip Animation control is the deliberate way to bypass the sequence.
       const appReduced=document.body.classList.contains('reduce-motion');
       const systemReduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches===true;
       const gentleMotion=appReduced||systemReduced;
-      const rank=Math.max(1,Math.min(5,rarity.rank||1));
-      let finished=false,skipped=false,visualComplete=false;
-      $('spotRevealMake').textContent=spot.make.toUpperCase();
-      $('spotRevealModel').textContent=`${spot.year?spot.year+' ':''}${spot.model}`;
+      let finished=false,skipped=false;
+      $('spotRevealMake').textContent=(spot.make||'').toUpperCase();
+      $('spotRevealModel').textContent=`${spot.year?spot.year+' ':''}${spot.model||''}`;
       $('spotRevealTrim').textContent=spot.trim||spot.color||'A new addition to your sightings';
-      $('spotRevealRarity').textContent='BASE TONE';
+      $('spotRevealRarity').textContent=rarity.label.toUpperCase();
       $('spotRevealCountLabel').textContent=progress.unlocked?`${progress.unlocked}-SPOT MILESTONE`:`COLLECTION ENTRY #${String(total).padStart(3,'0')}`;
       $('spotRevealCollectionLabel').textContent=progress.label;
       $('spotRevealMonogram').textContent=`${(spot.make||'C').slice(0,1)}${(spot.model||'S').slice(0,1)}`.toUpperCase();
       const photo=$('spotRevealPhoto'),empty=$('spotRevealNoPhoto');
+      photo.onerror=()=>{photo.hidden=true;empty.hidden=false;};
       if(spot.photo){photo.src=spot.photo;photo.hidden=false;empty.hidden=true;}else{photo.removeAttribute('src');photo.hidden=true;empty.hidden=false;}
       overlay.dataset.rarity=rarity.key;
-      overlay.dataset.currentRarity='base';
-      overlay.dataset.hits=String(rank);
       overlay.classList.toggle('gentle-motion',gentleMotion);
-      overlay.classList.toggle('is-special',rarity.rank>=3);
-      overlay.classList.toggle('is-elite',rarity.rank>=4);
-      overlay.classList.remove('is-active','stage-scan','stage-launch','stage-slam','stage-hit','stage-reveal','stage-complete','stage-confetti','impact-flash');
+      overlay.classList.remove('is-active','stage-scan','stage-launch','stage-slam','stage-reveal','stage-complete');
       $('spotRevealCount').textContent='0';
       $('spotRevealCountUnit').textContent=total===1?'CAR':'CARS';
-      $('spotRevealHitCount').textContent=`IMPACTS 0 / ${rank}`;
       $('spotRevealSkip').hidden=false;
       overlay.hidden=false;overlay.setAttribute('aria-hidden','false');
       document.body.classList.add('spot-reveal-open');
-      makeRevealConfetti(rarity.key);
       void overlay.offsetWidth;
       requestAnimationFrame(()=>overlay.classList.add('is-active'));
 
       const finishVisual=()=>{
-        if(visualComplete)return;visualComplete=true;
-        overlay.dataset.currentRarity=rarity.key;
-        $('spotRevealRarity').textContent=rarity.label.toUpperCase();
-        overlay.classList.remove('impact-flash','stage-hit','stage-slam');
-        $('spotRevealHammer').classList.remove('is-striking');
-        overlay.classList.add('stage-scan','stage-launch','stage-reveal','stage-complete','stage-confetti');
-        $('spotRevealStatus').innerHTML=`RARITY SEALED <span>${rank} / ${rank} IMPACTS</span>`;
-        $('spotRevealHitCount').textContent=`${rank} / ${rank} IMPACTS · ${rarity.label.toUpperCase()}`;
+        overlay.classList.remove('stage-launch','stage-slam');
+        overlay.classList.add('stage-scan','stage-reveal','stage-complete');
+        $('spotRevealStatus').textContent='SIGHTING SAVED';
         $('spotRevealCount').textContent=String(total);
         $('spotRevealSkip').hidden=true;
         const actions=overlay.querySelector('.reveal-actions');
         actions.setAttribute('aria-label','Sighting saved. Choose what to do next.');
       };
-      activeRevealSkip=()=>{skipped=true;finishVisual()};
+      activeRevealSkip=()=>{skipped=true;finishVisual();};
       const finish=action=>{
-        if(finished)return;finished=true;activeRevealSkip=null;activeRevealResolve=null;
+        if(finished)return;
+        finished=true;activeRevealSkip=null;activeRevealResolve=null;
         overlay.classList.remove('is-active');overlay.setAttribute('aria-hidden','true');
         setTimeout(()=>{overlay.hidden=true;overlay.classList.remove('gentle-motion');document.body.classList.remove('spot-reveal-open');},320);
         resolve(action);
       };
       activeRevealResolve=finish;
 
-      const countToTotal=async()=>{
-        if(gentleMotion||skipped){$('spotRevealCount').textContent=String(total);return}
-        const duration=850,start=performance.now();
-        await new Promise(done=>{
-          const tick=now=>{
-            const t=Math.min(1,(now-start)/duration),ease=1-Math.pow(1-t,3);
-            $('spotRevealCount').textContent=String(Math.round(total*ease));
-            if(t<1&&!skipped)requestAnimationFrame(tick);else{$('spotRevealCount').textContent=String(total);done()}
-          };requestAnimationFrame(tick);
-        });
-      };
       const runAnimation=async()=>{
-        $('spotRevealStatus').innerHTML='SCANNING SIGHTING <span>01 / 04</span>';
-        await revealDelay(320);if(skipped)return;
+        $('spotRevealStatus').textContent='GETTING YOUR PHOTO READY';
+        await revealDelay(260);if(skipped)return;
         overlay.classList.add('stage-scan');
-        $('spotRevealStatus').innerHTML='PHOTO DETECTED <span>02 / 04</span>';
-        await revealDelay(520);if(skipped)return;
+        $('spotRevealStatus').textContent='PHOTO INCOMING';
+        await revealDelay(220);if(skipped)return;
         overlay.classList.add('stage-launch');
-        $('spotRevealStatus').innerHTML='INCOMING · PHOTO DROP';
-        await revealDelay(980);if(skipped)return;
+        await revealDelay(gentleMotion?900:1320);if(skipped)return;
+        overlay.classList.remove('stage-launch');
         overlay.classList.add('stage-slam');
-        $('spotRevealStatus').innerHTML='VERIFYING VEHICLE';
-        if(navigator.vibrate&&!gentleMotion){try{navigator.vibrate([35,30,45])}catch{}}
-        await revealDelay(610);if(skipped)return;
-        const hammer=$('spotRevealHammer');
-        const rarityLadder=[
-          {key:'common',label:'COMMON'},
-          {key:'uncommon',label:'UNCOMMON'},
-          {key:'rare',label:'RARE'},
-          {key:'epic',label:'EPIC'},
-          {key:'legendary',label:'LEGENDARY'}
-        ];
-        for(let hit=1;hit<=rank;hit++){
-          if(skipped)return;
-          // Begin with the untouched base screen. Each impact reveals one tier:
-          // strike 1 = Common, strike 2 = Uncommon, then Rare, Epic, Legendary.
-          const level=rarityLadder[Math.min(hit-1,rank-1)];
-          const levelsUp=level.key!==overlay.dataset.currentRarity;
-          $('spotRevealStatus').innerHTML=`${levelsUp?'NEXT RARITY':'FINAL CALIBRATION'} <span>${level.label} · IMPACT ${hit} / ${rank}</span>`;
-          $('spotRevealHitCount').textContent=`IMPACT ${hit} / ${rank}`;
-          overlay.dataset.impact=String(hit);
-          overlay.classList.remove('impact-flash','stage-hit');hammer.classList.remove('is-striking');
-          void overlay.offsetWidth;void hammer.offsetWidth;
-          overlay.classList.add('stage-hit');hammer.classList.add('is-striking');
-          // The backswing and acceleration are part of the 780ms arc; this pause
-          // lands the head on the photo at the 60% contact frame.
-          await revealDelay(470);if(skipped)return;
-          overlay.dataset.currentRarity=level.key;
-          $('spotRevealRarity').textContent=level.label;
-          $('spotRevealStatus').innerHTML=`${levelsUp?'RARITY LEVEL UP':'RARITY LOCKED'} <span>${level.label} · IMPACT ${hit} / ${rank}</span>`;
-          overlay.classList.add('impact-flash');
-          if(navigator.vibrate&&!gentleMotion){try{navigator.vibrate(hit===rank?[45,35,65]:[28])}catch{}}
-          await revealDelay(320);if(skipped)return;
-          overlay.classList.remove('impact-flash');
-          await revealDelay(100);if(skipped)return;
-          overlay.classList.remove('stage-hit');hammer.classList.remove('is-striking');
-          await revealDelay(90);if(skipped)return;
-        }
+        $('spotRevealStatus').textContent='LOCKING IN YOUR SIGHTING';
+        if(navigator.vibrate&&!gentleMotion){try{navigator.vibrate([18,28,24])}catch{}}
+        await revealDelay(gentleMotion?300:430);if(skipped)return;
+        overlay.classList.remove('stage-slam');
         overlay.classList.add('stage-reveal');
-        $('spotRevealStatus').innerHTML='RARITY MATCH CONFIRMED <span>03 / 04</span>';
-        await countToTotal();if(skipped)return;
-        overlay.classList.add('stage-complete','stage-confetti');
-        $('spotRevealStatus').innerHTML='SIGHTING CAPTURED <span>04 / 04</span>';
-        $('spotRevealHitCount').textContent=`${rank} / ${rank} IMPACTS · ${rarity.label.toUpperCase()}`;
-        await revealDelay(280);if(skipped)return;
-        finishVisual();
+        $('spotRevealStatus').textContent='SAVED TO YOUR GARAGE';
+        await revealDelay(gentleMotion?180:360);if(skipped)return;
+        $('spotRevealCount').textContent=String(total);
+        overlay.classList.add('stage-complete');
+        $('spotRevealSkip').hidden=true;
       };
-      runAnimation().catch(err=>{console.error('Reveal animation failed:',err);finishVisual()});
+      runAnimation().catch(err=>{console.error('Reveal animation failed:',err);finishVisual();});
     });
   }
   $('spotRevealSkip').addEventListener('click',()=>activeRevealSkip?.());
@@ -1629,4 +1520,213 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 .rarity-count.active{outline:2px solid var(--rarity-color);outline-offset:1px}
 @media(max-width:1180px){.car-image-wrap{height:190px}}
 @media(max-width:560px){.garage-grid{gap:10px}.car-image-wrap{height:158px}.car-card-body{padding:11px}.car-model{font-size:22px}.car-meta{gap:5px;flex-direction:column;align-items:flex-start}.car-rarity-overlay{font-size:7px;padding:5px 6px}}
+
+
+/* ================================================================
+   SIMPLE PHOTO REVEAL + RESPONSIVE IMAGE / SPACING REFINEMENT
+   One spin-in, one clean slam, then a calm saved screen.
+   ================================================================ */
+.spot-reveal[hidden]{display:none!important}
+.spot-reveal{
+  --reveal-glow:#79b7ff;
+  box-sizing:border-box;
+  width:100%;
+  height:100vh;height:100dvh;
+  min-height:100svh;
+  padding:clamp(13px,2.6vh,28px) clamp(14px,4vw,44px) max(14px,env(safe-area-inset-bottom));
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr) auto auto;
+  gap:clamp(8px,1.5vh,16px);
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  background:
+    radial-gradient(ellipse at 50% 43%,rgba(47,115,207,.22),transparent 43%),
+    radial-gradient(ellipse at 50% 100%,rgba(20,61,111,.28),transparent 48%),
+    linear-gradient(145deg,#0c1728 0%,#08111f 58%,#0d1d32 100%);
+  color:#edf4ff;
+  opacity:0;visibility:hidden;transform:scale(1.012);
+  transition:opacity .32s ease,visibility .32s ease,transform .42s cubic-bezier(.2,.8,.2,1);
+}
+.spot-reveal.is-active{opacity:1;visibility:visible;transform:scale(1)}
+.spot-reveal .reveal-atmosphere{opacity:.62;background-size:58px 58px;animation:revealGridDrift 28s linear infinite}
+.spot-reveal .reveal-atmosphere:before{inset:-42%;opacity:.55;animation-duration:28s}
+.spot-reveal .reveal-atmosphere:after{inset:-25% 16%;opacity:.45;animation-duration:36s}
+.spot-reveal .reveal-atmosphere i{opacity:.6}
+.reveal-topline,.reveal-bottom,.reveal-actions{position:relative;z-index:8;width:min(920px,100%);justify-self:center}
+.reveal-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:38px;color:#9eb5d3;font-size:9px;font-weight:900;letter-spacing:1.35px}
+.reveal-topline>span{display:flex;align-items:center;gap:9px;min-width:0;flex-wrap:wrap}
+.reveal-topline-divider{color:#536b8b}
+.reveal-topline button{flex:none;min-height:34px;padding:0 12px;border:1px solid rgba(159,190,232,.25);border-radius:99px;background:rgba(17,35,60,.66);color:#c1d2e9;font-size:8px;font-weight:900;letter-spacing:.8px;cursor:pointer}
+.reveal-topline button[hidden]{display:none!important}
+.reveal-center{box-sizing:border-box;width:min(850px,100%);min-width:0;justify-self:center;align-self:center;position:relative;z-index:2;padding:clamp(0px,1.6vh,14px) 0;text-align:center}
+.reveal-kicker{display:flex;justify-content:center;align-items:center;min-height:16px;margin:0 0 clamp(6px,1.4vh,13px);color:#9bb9df;font-size:9px;font-weight:900;letter-spacing:1.8px;text-align:center}
+.reveal-stage{position:relative;isolation:isolate;display:grid;place-items:center;width:100%;height:clamp(218px,40vh,360px);margin:0 auto clamp(7px,1.5vh,14px);overflow:visible}
+.reveal-orbit{width:min(500px,88vw);border-color:rgba(111,168,237,.13);box-shadow:0 0 70px rgba(57,126,211,.07);animation:revealOrbitPulse 5.5s ease-in-out infinite}
+.reveal-orbit.orbit-two{width:min(360px,68vw);border-color:rgba(129,178,235,.12);animation:revealOrbitSpin 38s linear infinite}
+.reveal-car-drawing{width:min(700px,94%);z-index:1;opacity:.45;filter:drop-shadow(0 0 12px rgba(71,147,255,.17));transition:opacity .5s ease,transform .5s ease}
+.reveal-car-line{stroke:#8fc2ff;stroke-dasharray:1550;stroke-dashoffset:1550;transition:stroke-dashoffset 1.2s ease}
+.reveal-car-detail,.reveal-wheel{stroke-dasharray:700;stroke-dashoffset:700;transition:stroke-dashoffset 1s ease .15s}
+.reveal-wheel-core{opacity:0;transition:opacity .3s ease .6s}
+.stage-scan .reveal-car-line,.stage-scan .reveal-car-detail,.stage-scan .reveal-wheel{stroke-dashoffset:0}
+.stage-scan .reveal-wheel-core{opacity:.85}
+.reveal-photo-card{
+  position:absolute;z-index:5;left:50%;top:50%;
+  width:min(560px,88vw);
+  height:clamp(178px,32vh,310px);
+  aspect-ratio:16/9;
+  transform:translate(-50%,-50%) translateY(-60vh) rotate(-720deg) scale(.58);
+  transform-origin:center center;
+  display:grid;place-items:center;
+  overflow:hidden;
+  border:1px solid rgba(177,210,251,.52);
+  border-radius:clamp(13px,2.2vw,21px);
+  background:#0a1628;
+  box-shadow:0 25px 76px rgba(0,0,0,.48),0 0 0 7px rgba(115,172,244,.055),0 0 56px rgba(75,145,230,.18);
+  opacity:0;visibility:hidden;filter:blur(7px);
+  will-change:transform,opacity,filter;
+}
+.reveal-photo-card:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(125deg,rgba(4,14,29,.04),transparent 48%,rgba(5,15,29,.23))}
+.reveal-photo-card img{position:relative;z-index:1;width:100%;height:100%;display:block;object-fit:contain;object-position:center;background:#0a1628;opacity:1;transform:none}
+.reveal-photo-card img[hidden]{display:none!important}
+.reveal-photo-empty{position:absolute;inset:0;z-index:1;display:grid;align-content:center;justify-items:center;gap:8px;background:radial-gradient(circle at 50% 35%,rgba(80,143,230,.25),transparent 40%),linear-gradient(145deg,#172d4c,#0b1729);color:#bad8ff}
+.reveal-photo-empty[hidden]{display:none!important}
+.reveal-photo-empty span{font:900 58px/.9 var(--font-display);letter-spacing:2px}
+.reveal-photo-empty small{font-size:8px;font-weight:900;letter-spacing:2px;color:#9bb8de}
+.reveal-photo-corner{position:absolute;left:12px;top:11px;z-index:4;padding:7px 9px;border:1px solid rgba(255,255,255,.2);border-radius:7px;background:rgba(5,15,29,.7);color:#fff;font-size:7px;font-weight:900;letter-spacing:1.25px}
+.reveal-photo-glint{position:absolute;z-index:5;top:-42%;bottom:-42%;left:-48%;width:24%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.32),transparent);transform:rotate(18deg);opacity:0;pointer-events:none}
+.stage-complete .reveal-photo-glint{opacity:1;animation:revealGlint .95s ease .2s both}
+.reveal-impact-ring{position:absolute;z-index:6;inset:7%;border:2px solid rgba(190,220,255,.75);border-radius:inherit;opacity:0;transform:scale(.94);pointer-events:none}
+.stage-slam .reveal-impact-ring{animation:photoSlamRing .56s cubic-bezier(.12,.72,.2,1) both}
+.reveal-sparks{position:absolute;inset:0;z-index:7;pointer-events:none;opacity:0}
+.reveal-sparks i{position:absolute;left:50%;top:52%;width:5px;height:5px;border-radius:50%;background:#d8eaff;box-shadow:0 0 14px 3px rgba(120,180,255,.55);opacity:0}
+.reveal-sparks i:nth-child(1){--dx:-48px;--dy:-36px}.reveal-sparks i:nth-child(2){--dx:48px;--dy:-36px}.reveal-sparks i:nth-child(3){--dx:-48px;--dy:36px}.reveal-sparks i:nth-child(4){--dx:48px;--dy:36px}.reveal-sparks i:nth-child(5){--dx:0px;--dy:-55px}.reveal-sparks i:nth-child(6){--dx:0px;--dy:55px}.reveal-sparks i:nth-child(7){--dx:-60px;--dy:0px}.reveal-sparks i:nth-child(8){--dx:60px;--dy:0px}
+.stage-slam .reveal-sparks{opacity:1}
+.stage-slam .reveal-sparks i{animation:photoSlamSpark .48s ease-out both}
+.stage-slam .reveal-sparks i:nth-child(2n){animation-delay:.025s}
+.reveal-copy{position:relative;z-index:6;width:100%;min-width:0;opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .42s ease,transform .48s cubic-bezier(.2,.8,.2,1),visibility .42s}
+.stage-reveal .reveal-copy,.stage-complete .reveal-copy{opacity:1;visibility:visible;transform:translateY(0)}
+.reveal-make{display:block;color:#8dbfff;font-size:9px;font-weight:900;letter-spacing:2.1px;overflow-wrap:anywhere}
+.reveal-copy h2{max-width:100%;margin:6px 0 4px;color:#f3f7ff;font:900 clamp(31px,5.7vw,52px)/1 var(--font-display);letter-spacing:.2px;text-transform:uppercase;text-shadow:0 5px 22px rgba(0,0,0,.22);overflow-wrap:anywhere}
+.reveal-trim{min-height:14px;padding:0 8px;color:#a9bdd9;font-size:10px;line-height:1.45;overflow-wrap:anywhere}
+.reveal-meta-row{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:9px 12px;margin-top:12px;padding:0 5px;color:#9bb1ce;font-size:8px;font-weight:900;letter-spacing:.9px;line-height:1.5}
+.reveal-rarity{padding:6px 10px;border:1px solid rgba(126,177,237,.33);border-radius:7px;background:rgba(70,130,204,.13);color:#b9d8ff}
+.reveal-divider{height:14px;width:1px;background:rgba(143,177,221,.25)}
+.reveal-complete{display:flex;justify-content:center;align-items:center;gap:9px;margin-top:13px;color:#91e5c1;font-size:8px;font-weight:900;letter-spacing:1.35px;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .32s ease,transform .32s ease,visibility .32s}
+.stage-complete .reveal-complete{opacity:1;visibility:visible;transform:translateY(0)}
+.reveal-check{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#1b9c70;color:#fff;font-size:12px;box-shadow:0 0 0 5px rgba(27,156,112,.14)}
+.reveal-bottom{align-self:end;margin:0 auto;width:min(560px,100%)}
+.reveal-track{height:3px;overflow:hidden;border-radius:9px;background:rgba(136,172,221,.16)}
+.reveal-track span{display:block;width:0;height:100%;background:linear-gradient(90deg,#438cf2,#9dcaff);box-shadow:0 0 12px rgba(92,159,244,.55);transition:width .7s cubic-bezier(.2,.7,.2,1)}
+.stage-complete .reveal-track span{width:100%}
+.reveal-bottom-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px;color:#8ea6c6;font-size:7px;font-weight:900;letter-spacing:1.05px;line-height:1.4}
+.reveal-bottom-row>span{min-width:0;overflow-wrap:anywhere}
+.reveal-bottom-row strong{flex:none;color:#d7e6fb;font-size:9px;letter-spacing:.7px;white-space:nowrap}
+.reveal-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:0;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(10px);transition:opacity .35s ease,transform .35s ease,visibility .35s}
+.stage-complete .reveal-actions{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+.reveal-actions button{min-width:0;min-height:46px;padding:10px 14px;border-radius:11px;font-size:8px;font-weight:900;letter-spacing:.65px;line-height:1.35;white-space:normal;overflow-wrap:anywhere;cursor:pointer;transition:transform .18s ease,filter .18s ease}
+.reveal-continue{border:0;background:linear-gradient(110deg,#377fe9,#2865c4);color:#fff;box-shadow:0 8px 22px rgba(40,113,220,.24)}
+.reveal-view{border:1px solid rgba(150,187,238,.25);background:rgba(18,39,66,.72);color:#d4e3f8}
+.reveal-actions button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+@keyframes photoSpinSlam{
+  0%{opacity:0;visibility:visible;filter:blur(8px);transform:translate(-50%,-50%) translateY(-62vh) rotate(-720deg) scale(.44)}
+  54%{opacity:1;filter:blur(0);transform:translate(-50%,-50%) translateY(15px) rotate(22deg) scale(1.045)}
+  70%{transform:translate(-50%,-50%) translateY(-7px) rotate(-7deg) scale(.985)}
+  84%{transform:translate(-50%,-50%) translateY(2px) rotate(2deg) scale(1.008)}
+  100%{opacity:1;filter:blur(0);transform:translate(-50%,-50%) translateY(0) rotate(0) scale(1)}
+}
+@keyframes photoSpinSlamGentle{
+  0%{opacity:0;visibility:visible;transform:translate(-50%,-50%) translateY(-36vh) rotate(-360deg) scale(.8)}
+  68%{opacity:1;transform:translate(-50%,-50%) translateY(5px) rotate(5deg) scale(1.015)}
+  100%{opacity:1;transform:translate(-50%,-50%) translateY(0) rotate(0) scale(1)}
+}
+@keyframes photoImpactBounce{0%,100%{transform:translate(-50%,-50%) translateY(0) scale(1)}24%{transform:translate(-50%,-50%) translateY(8px) scale(1.025,.975)}56%{transform:translate(-50%,-50%) translateY(-4px) scale(.993,1.012)}78%{transform:translate(-50%,-50%) translateY(1px) scale(1.004,.998)}}
+@keyframes photoSlamRing{0%{opacity:0;transform:scale(.92)}20%{opacity:.9}100%{opacity:0;transform:scale(1.08)}}
+@keyframes photoSlamSpark{0%{opacity:0;transform:translate(0,0) scale(.45)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx,0px),var(--dy,0px)) scale(.1)}}
+@media(max-width:850px){
+  .spot-reveal{padding-left:20px;padding-right:20px}
+  .reveal-stage{height:clamp(210px,36vh,300px)}
+  .reveal-photo-card{width:min(560px,90vw);height:clamp(175px,30vh,245px)}
+}
+@media(max-width:600px){
+  .spot-reveal{padding:12px 13px max(13px,env(safe-area-inset-bottom));grid-template-rows:auto minmax(0,1fr) auto auto;gap:8px}
+  .reveal-topline{font-size:8px;letter-spacing:1px;min-height:34px}
+  .reveal-topline button{min-height:33px;padding:0 10px;font-size:7px}
+  .reveal-center{padding:0;align-self:center}
+  .reveal-kicker{margin-bottom:5px;font-size:8px;letter-spacing:1.25px}
+  .reveal-stage{height:clamp(190px,31vh,245px);margin-bottom:5px}
+  .reveal-photo-card{width:min(560px,91vw);height:clamp(155px,25vh,205px);border-radius:14px}
+  .reveal-copy h2{font-size:clamp(30px,8.6vw,39px);margin-top:5px}
+  .reveal-meta-row{margin-top:9px;gap:7px 10px;font-size:7px}
+  .reveal-complete{margin-top:10px}
+  .reveal-bottom{width:100%}
+  .reveal-bottom-row{font-size:6.5px;letter-spacing:.65px}
+  .reveal-actions{width:100%;gap:8px}
+  .reveal-actions button{min-height:45px;padding:9px 7px;font-size:7px;letter-spacing:.35px}
+}
+@media(max-width:370px){
+  .spot-reveal{padding-left:11px;padding-right:11px;gap:7px}
+  .reveal-topline{font-size:7px;letter-spacing:.65px}
+  .reveal-topline button{padding:0 8px}
+  .reveal-stage{height:clamp(178px,28vh,210px)}
+  .reveal-photo-card{height:clamp(142px,22vh,178px);width:92vw}
+  .reveal-copy h2{font-size:29px}
+  .reveal-actions{grid-template-columns:1fr;gap:7px}
+  .reveal-actions button{min-height:41px}
+  .reveal-bottom-row{font-size:6px}
+}
+.spot-reveal.gentle-motion .reveal-atmosphere{animation:none;opacity:.42}
+.spot-reveal.gentle-motion .reveal-atmosphere:before,.spot-reveal.gentle-motion .reveal-atmosphere:after,.spot-reveal.gentle-motion .reveal-atmosphere i{animation:none}
+.spot-reveal.gentle-motion.stage-launch .reveal-photo-card{animation:photoSpinSlamGentle .9s ease-out both}
+.spot-reveal.gentle-motion.stage-slam .reveal-photo-card{animation:photoImpactBounce .32s ease-out both}
+.spot-reveal.gentle-motion .reveal-sparks{display:none}
+@media(prefers-reduced-motion:reduce){.spot-reveal:not(.gentle-motion){scroll-behavior:auto}}
+
+/* Prevent narrow phone layouts from clipping the most-used vehicle photography. */
+.car-image-wrap{height:clamp(145px,18vw,190px);min-width:0}
+.car-image{object-fit:cover;object-position:center 52%;}
+.detail-photo{display:block;width:100%;max-height:min(48vh,390px);object-fit:contain;object-position:center;background:var(--surface-2)}
+.home-hero-photo{object-fit:cover;object-position:center center}
+.photo-preview{object-fit:contain;object-position:center;background:var(--surface-2)}
+.run-car-mini img{object-fit:cover;object-position:center 52%}
+@media(max-width:560px){
+  .garage-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .car-image-wrap{height:auto;aspect-ratio:4/3;min-height:0}
+  .car-card-body{padding:11px 10px 12px}
+  .car-model{font-size:clamp(17px,5vw,23px)}
+  .car-image{object-fit:contain;object-position:center;background:var(--surface-2)}
+  .run-car-mini img,.edit-photo-row img{object-fit:contain;background:var(--surface-2)}
+  .detail-photo{max-height:45vh}
+  .home-hero-art{min-width:0}
+}
+@media(max-width:370px){
+  .garage-grid{grid-template-columns:minmax(0,1fr)}
+  .car-image-wrap{aspect-ratio:16/9}
+  .car-card-body{padding:13px 14px 14px}
+}
+
+
+/* Keep the photo card centered through every reveal state. These selectors also
+   supersede the older hammer-era stage transforms above. */
+.spot-reveal .reveal-photo-card{left:50%;top:50%;transform:translate(-50%,-50%) translateY(-60vh) rotate(-720deg) scale(.58)}
+.spot-reveal.stage-launch .reveal-photo-card{visibility:visible;opacity:1;filter:none;animation:photoSpinSlam 1.32s cubic-bezier(.13,.82,.2,1) both}
+.spot-reveal.stage-slam .reveal-photo-card{visibility:visible;opacity:1;filter:none;animation:photoImpactBounce .43s cubic-bezier(.2,.85,.22,1) both}
+.spot-reveal.stage-reveal .reveal-photo-card,.spot-reveal.stage-complete .reveal-photo-card{visibility:visible;opacity:1;filter:none;transform:translate(-50%,-50%) scale(1);animation:none}
+.spot-reveal.gentle-motion.stage-launch .reveal-photo-card{animation:photoSpinSlamGentle .9s ease-out both}
+.spot-reveal.gentle-motion.stage-slam .reveal-photo-card{animation:photoImpactBounce .32s ease-out both}
+.spot-reveal .reveal-photo-card img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;transform:none}
+.spot-reveal .reveal-photo-card img[hidden]{display:none!important}
+.spot-reveal.stage-launch .reveal-photo-card img:not([hidden]),.spot-reveal.stage-slam .reveal-photo-card img:not([hidden]),.spot-reveal.stage-reveal .reveal-photo-card img:not([hidden]),.spot-reveal.stage-complete .reveal-photo-card img:not([hidden]){transform:none!important;opacity:1!important}
+
+
+/* Final state priorities for the simplified photo-only sequence. */
+#spotReveal{--reveal-glow:#79b7ff!important}
+#spotReveal .reveal-live-dot{background:#50d7a0;box-shadow:0 0 0 5px rgba(80,215,160,.12),0 0 15px rgba(80,215,160,.7)}
+@media(max-width:850px){.car-image,.run-car-mini img,.edit-photo-row img{object-fit:contain;object-position:center;background:var(--surface-2)}}
+.spot-reveal.is-active:not(.stage-complete) .reveal-track span{width:0!important}
+.spot-reveal.stage-complete .reveal-track span{width:100%!important}
+.spot-reveal.gentle-motion.stage-launch .reveal-photo-card{animation:photoSpinSlamGentle .9s ease-out both!important}
+.spot-reveal.gentle-motion.stage-slam .reveal-photo-card{animation:photoImpactBounce .32s ease-out both!important}
+.spot-reveal.gentle-motion.stage-launch .reveal-photo-card,.spot-reveal.gentle-motion.stage-slam .reveal-photo-card{left:50%!important;top:50%!important}
+
 </style>
