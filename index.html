@@ -110,10 +110,101 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 
 
 /* Cinematic sighting capture */
-.spot-reveal[hidden]{display:none!important}.spot-reveal{--reveal-glow:#4c91ff;position:fixed;inset:0;z-index:500;display:grid;grid-template-rows:auto 1fr auto auto;gap:0;overflow:hidden;padding:clamp(18px,3vw,34px) clamp(18px,5vw,64px) max(18px,env(safe-area-inset-bottom));background:radial-gradient(ellipse at 50% 42%,rgba(36,102,202,.25),transparent 38%),radial-gradient(ellipse at 50% 110%,rgba(20,66,137,.30),transparent 45%),#08111f;color:#eef5ff;opacity:0;visibility:hidden;transform:scale(1.018);transition:opacity .35s ease,visibility .35s ease,transform .55s cubic-bezier(.2,.8,.2,1)}.spot-reveal.is-active{opacity:1;visibility:visible;transform:scale(1)}.spot-reveal[data-rarity="uncommon"]{--reveal-glow:#3fce9a}.spot-reveal[data-rarity="rare"]{--reveal-glow:#4c91ff}.spot-reveal[data-rarity="epic"]{--reveal-glow:#b47aff}.spot-reveal[data-rarity="legendary"]{--reveal-glow:#ffd05a}.reveal-atmosphere{position:absolute;inset:0;overflow:hidden;pointer-events:none;background-image:linear-gradient(rgba(114,160,222,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(114,160,222,.055) 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(ellipse at center,#000 12%,transparent 78%);animation:revealGridDrift 18s linear infinite}.reveal-atmosphere:before,.reveal-atmosphere:after{content:"";position:absolute;inset:-30%;border:1px solid rgba(116,174,255,.11);border-radius:50%;transform:rotate(-18deg) scaleX(1.5);animation:revealOrbit 13s linear infinite}.reveal-atmosphere:after{inset:-18% 7%;transform:rotate(22deg) scaleX(1.3);animation-duration:18s;animation-direction:reverse}.reveal-atmosphere i{position:absolute;width:3px;height:3px;border-radius:50%;background:#a9d3ff;box-shadow:0 0 12px 3px rgba(104,166,255,.45);animation:revealStar 3.8s ease-in-out infinite}.reveal-atmosphere i:nth-child(1){left:12%;top:23%;animation-delay:-.5s}.reveal-atmosphere i:nth-child(2){left:81%;top:18%;animation-delay:-1.2s}.reveal-atmosphere i:nth-child(3){left:22%;top:76%;animation-delay:-2s}.reveal-atmosphere i:nth-child(4){left:91%;top:71%;animation-delay:-.8s}.reveal-atmosphere i:nth-child(5){left:68%;top:86%;animation-delay:-2.6s}.reveal-atmosphere i:nth-child(6){left:43%;top:12%;animation-delay:-1.8s}.reveal-topline,.reveal-bottom,.reveal-actions{position:relative;z-index:4}.reveal-topline{display:flex;justify-content:space-between;align-items:center;gap:14px;color:#8ca9cd;font-size:9px;font-weight:900;letter-spacing:1.8px}.reveal-topline>span{display:flex;align-items:center;gap:9px}.reveal-live-dot{width:7px;height:7px;border-radius:50%;background:#50d7a0;box-shadow:0 0 0 5px rgba(80,215,160,.12),0 0 15px rgba(80,215,160,.7)}.reveal-topline button{border:1px solid rgba(159,190,232,.25);border-radius:99px;background:rgba(17,35,60,.55);color:#b7c9e1;padding:9px 13px;font-size:8px;font-weight:900;letter-spacing:1px}.reveal-center{width:min(880px,100%);justify-self:center;align-self:center;text-align:center;position:relative;z-index:2;padding:4px 0 20px}.reveal-kicker{display:flex;justify-content:center;gap:13px;align-items:center;margin-bottom:10px;color:#81a3d2;font-size:8px;font-weight:900;letter-spacing:2.1px}.reveal-kicker span{color:#506a8e}.reveal-stage{height:clamp(210px,34vh,310px);position:relative;display:grid;place-items:center;margin:0 auto 5px;isolation:isolate}.reveal-orbit{position:absolute;width:min(480px,85vw);aspect-ratio:1;border:1px solid rgba(93,151,228,.15);border-radius:50%;box-shadow:inset 0 0 50px rgba(45,106,186,.05),0 0 65px rgba(39,104,194,.06);animation:revealOrbitPulse 4s ease-in-out infinite}.orbit-two{width:min(350px,65vw);border-style:dashed;border-color:rgba(116,175,252,.16);animation:revealOrbitSpin 24s linear infinite}.reveal-car-drawing{width:min(710px,96%);position:relative;z-index:1;filter:drop-shadow(0 0 13px rgba(71,147,255,.28));opacity:.86;transition:opacity .6s ease,transform .8s ease}.reveal-car-drawing svg{width:100%;height:auto;overflow:visible}.reveal-car-line{stroke:#8fc2ff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1550;stroke-dashoffset:1550;transition:stroke-dashoffset 1.45s cubic-bezier(.2,.7,.2,1)}.reveal-window-line{stroke:#4f91e7;stroke-width:1.7;transition-delay:.13s}.reveal-car-detail{stroke:#f8d66b;stroke-width:2;stroke-linecap:round;opacity:.7;stroke-dasharray:600;stroke-dashoffset:600;transition:stroke-dashoffset .8s ease .55s}.reveal-wheel{stroke:#78a9e6;stroke-width:2;stroke-dasharray:245;stroke-dashoffset:245;transition:stroke-dashoffset .9s ease .2s}.reveal-wheel-core{fill:#8fc2ff;opacity:0;transition:opacity .35s ease .85s}.stage-scan .reveal-car-line,.stage-scan .reveal-car-detail,.stage-scan .reveal-wheel{stroke-dashoffset:0}.stage-scan .reveal-wheel-core{opacity:.9}.reveal-scan-beam{position:absolute;z-index:3;left:5%;right:5%;top:13%;height:2px;opacity:0;background:linear-gradient(90deg,transparent,var(--reveal-glow),#e6f4ff,var(--reveal-glow),transparent);box-shadow:0 0 16px 4px color-mix(in srgb,var(--reveal-glow) 55%,transparent);transform:translateY(0);transition:opacity .15s}.stage-scan .reveal-scan-beam{opacity:1;animation:revealScan 1.15s cubic-bezier(.5,0,.4,1) forwards}.reveal-photo-card{position:absolute;z-index:5;width:min(520px,82vw);height:clamp(175px,27vh,260px);overflow:hidden;border:1px solid rgba(165,203,255,.48);border-radius:18px;background:linear-gradient(140deg,#1a3153,#0b1729);box-shadow:0 28px 75px rgba(0,0,0,.5),0 0 0 7px rgba(102,165,255,.055),0 0 55px color-mix(in srgb,var(--reveal-glow) 24%,transparent);opacity:0;transform:translateY(18px) scale(.88);filter:blur(10px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .85s cubic-bezier(.16,1,.3,1),filter .7s ease}.stage-reveal .reveal-photo-card{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}.reveal-photo-card:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(125deg,rgba(4,14,29,.08),transparent 45%,rgba(5,15,29,.42))}.reveal-photo-card img{width:100%;height:100%;display:block;object-fit:cover;opacity:0;transform:scale(1.12);transition:opacity .45s ease .15s,transform 3s cubic-bezier(.2,.65,.2,1)}.stage-reveal .reveal-photo-card img:not([hidden]){opacity:1;transform:scale(1.02)}.reveal-photo-empty{position:relative;z-index:3;height:100%;display:grid;align-content:center;justify-items:center;gap:8px;background:radial-gradient(circle at 50% 35%,rgba(80,143,230,.25),transparent 40%),linear-gradient(145deg,#172d4c,#0b1729);color:#bad8ff}.reveal-photo-empty[hidden]{display:none}.reveal-photo-empty span{font:900 58px/.9 var(--font-display);letter-spacing:2px}.reveal-photo-empty small{font-size:8px;font-weight:900;letter-spacing:2px;color:#7d9fc7}.reveal-photo-corner{position:absolute;left:13px;top:12px;z-index:3;padding:7px 9px;border:1px solid rgba(255,255,255,.25);border-radius:7px;background:rgba(5,15,29,.68);color:#fff;font-size:7px;font-weight:900;letter-spacing:1.5px}.reveal-photo-glint{position:absolute;z-index:4;top:-40%;bottom:-40%;left:-45%;width:25%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transform:rotate(18deg);opacity:0}.stage-reveal .reveal-photo-glint{opacity:1;animation:revealGlint 1.1s ease .25s both}.reveal-particles{position:absolute;inset:0;z-index:4;pointer-events:none}.reveal-particles i{position:absolute;left:var(--px);top:var(--py);width:5px;height:5px;border-radius:2px;background:var(--reveal-glow);opacity:0;box-shadow:0 0 13px 3px color-mix(in srgb,var(--reveal-glow) 65%,transparent)}.reveal-particles i:nth-child(1){--px:15%;--py:35%;--dx:80px;--dy:-48px}.reveal-particles i:nth-child(2){--px:24%;--py:70%;--dx:54px;--dy:35px}.reveal-particles i:nth-child(3){--px:36%;--py:17%;--dx:-60px;--dy:54px}.reveal-particles i:nth-child(4){--px:61%;--py:23%;--dx:70px;--dy:-40px}.reveal-particles i:nth-child(5){--px:78%;--py:42%;--dx:-62px;--dy:24px}.reveal-particles i:nth-child(6){--px:83%;--py:74%;--dx:-82px;--dy:-38px}.reveal-particles i:nth-child(7){--px:49%;--py:82%;--dx:10px;--dy:-65px}.reveal-particles i:nth-child(8){--px:10%;--py:57%;--dx:95px;--dy:0px}.reveal-particles i:nth-child(9){--px:90%;--py:28%;--dx:-95px;--dy:40px}.reveal-particles i:nth-child(10){--px:30%;--py:88%;--dx:20px;--dy:-65px}.reveal-particles i:nth-child(11){--px:68%;--py:87%;--dx:-55px;--dy:-60px}.reveal-particles i:nth-child(12){--px:55%;--py:9%;--dx:10px;--dy:70px}.reveal-particles i:nth-child(13){--px:18%;--py:15%;--dx:70px;--dy:50px}.reveal-particles i:nth-child(14){--px:73%;--py:13%;--dx:-60px;--dy:65px}.reveal-particles i:nth-child(15){--px:42%;--py:92%;--dx:35px;--dy:-70px}.reveal-particles i:nth-child(16){--px:94%;--py:55%;--dx:-90px;--dy:-10px}.stage-scan .reveal-particles i{animation:revealParticle .95s ease-out var(--pd,0s) both}.reveal-particles i:nth-child(3n){--pd:.08s}.reveal-particles i:nth-child(3n + 1){--pd:.2s}.reveal-particles i:nth-child(3n + 2){--pd:.32s}.reveal-copy{position:relative;z-index:5;opacity:0;transform:translateY(18px);transition:opacity .55s ease .2s,transform .6s cubic-bezier(.2,.8,.2,1) .2s}.stage-reveal .reveal-copy{opacity:1;transform:translateY(0)}.reveal-make{display:block;color:var(--reveal-glow);font-size:9px;font-weight:900;letter-spacing:2.4px}.reveal-copy h2{margin:5px 0 3px;color:#f3f7ff;font:900 clamp(33px,5vw,52px)/.95 var(--font-display);letter-spacing:.2px;text-transform:uppercase;text-shadow:0 5px 22px rgba(0,0,0,.22)}.reveal-trim{min-height:13px;color:#9cb3d2;font-size:10px}.reveal-meta-row{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:12px;color:#7390b7;font-size:8px;font-weight:900;letter-spacing:1px}.reveal-rarity{padding:6px 9px;border:1px solid color-mix(in srgb,var(--reveal-glow) 45%,transparent);border-radius:6px;background:color-mix(in srgb,var(--reveal-glow) 13%,transparent);color:var(--reveal-glow)}.reveal-divider{height:15px;width:1px;background:rgba(143,177,221,.25)}.reveal-complete{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:16px;color:#83e0b7;font-size:8px;font-weight:900;letter-spacing:1.7px;opacity:0;transform:translateY(7px);transition:opacity .35s ease,transform .35s ease}.stage-complete .reveal-complete{opacity:1;transform:translateY(0)}.reveal-check{width:21px;height:21px;border-radius:50%;display:grid;place-items:center;background:#1b9c70;color:#fff;font-size:12px;box-shadow:0 0 0 5px rgba(27,156,112,.14)}.stage-complete .reveal-orbit{border-color:color-mix(in srgb,var(--reveal-glow) 35%,transparent);box-shadow:0 0 55px color-mix(in srgb,var(--reveal-glow) 12%,transparent)}.stage-complete[data-rarity="legendary"] .reveal-photo-card,.spot-reveal[data-rarity="legendary"] .reveal-photo-card{box-shadow:0 28px 75px rgba(0,0,0,.5),0 0 0 7px rgba(255,208,90,.12),0 0 75px rgba(255,190,53,.3)}.reveal-bottom{width:min(560px,100%);justify-self:center;align-self:end;margin:12px auto 0}.reveal-track{height:3px;overflow:hidden;border-radius:9px;background:rgba(136,172,221,.16)}.reveal-track span{display:block;width:0;height:100%;background:linear-gradient(90deg,#3b85ff,var(--reveal-glow),#f5d46b);box-shadow:0 0 12px var(--reveal-glow);transition:width 2.9s cubic-bezier(.2,.7,.2,1)}.is-active .reveal-track span{width:100%}.reveal-bottom-row{display:flex;justify-content:space-between;gap:12px;margin-top:9px;color:#718bab;font-size:7px;font-weight:900;letter-spacing:1.3px}.reveal-bottom-row strong{color:#d7e6fb;font-size:9px;letter-spacing:.8px}.reveal-actions{display:flex;justify-content:center;gap:8px;padding-top:17px;opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease}.stage-complete .reveal-actions{opacity:1;transform:translateY(0)}.reveal-actions button{min-height:41px;padding:0 16px;border-radius:10px;font-size:8px;font-weight:900;letter-spacing:.7px}.reveal-continue{border:0;background:#347ff0;color:#fff;box-shadow:0 8px 20px rgba(40,113,220,.25)}.reveal-view{border:1px solid rgba(150,187,238,.25);background:rgba(18,39,66,.72);color:#d4e3f8}.reveal-actions button:hover{transform:translateY(-2px);filter:brightness(1.08)}body.spot-reveal-open{overflow:hidden}@keyframes revealGridDrift{to{background-position:46px 46px}}@keyframes revealOrbit{to{transform:rotate(342deg) scaleX(1.5)}}@keyframes revealStar{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.5)}}@keyframes revealOrbitPulse{0%,100%{transform:scale(.96);opacity:.55}50%{transform:scale(1.035);opacity:1}}@keyframes revealOrbitSpin{to{transform:rotate(360deg)}}@keyframes revealScan{0%{top:13%;opacity:0}12%{opacity:1}88%{opacity:.85}100%{top:88%;opacity:0}}@keyframes revealGlint{0%{left:-45%}100%{left:130%}}@keyframes revealParticle{0%{opacity:0;transform:translate(0,0) scale(.4)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}}
+.spot-reveal[hidden]{display:none!important}.spot-reveal{--reveal-glow:#4c91ff;position:fixed;inset:0;z-index:500;display:grid;grid-template-rows:auto 1fr auto auto;gap:0;overflow:hidden;padding:clamp(18px,3vw,34px) clamp(18px,5vw,64px) max(18px,env(safe-area-inset-bottom));background:radial-gradient(ellipse at 50% 42%,rgba(36,102,202,.25),transparent 38%),radial-gradient(ellipse at 50% 110%,rgba(20,66,137,.30),transparent 45%),#08111f;color:#eef5ff;opacity:0;visibility:hidden;transform:scale(1.018);transition:opacity .35s ease,visibility .35s ease,transform .55s cubic-bezier(.2,.8,.2,1)}.spot-reveal.is-active{opacity:1;visibility:visible;transform:scale(1)}.spot-reveal[data-rarity="uncommon"]{--reveal-glow:#3fce9a}.spot-reveal[data-rarity="rare"]{--reveal-glow:#4c91ff}.spot-reveal[data-rarity="epic"]{--reveal-glow:#b47aff}.spot-reveal[data-rarity="legendary"]{--reveal-glow:#ffd05a}.reveal-atmosphere{position:absolute;inset:0;overflow:hidden;pointer-events:none;background-image:linear-gradient(rgba(114,160,222,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(114,160,222,.055) 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(ellipse at center,#000 12%,transparent 78%);animation:revealGridDrift 18s linear infinite}.reveal-atmosphere:before,.reveal-atmosphere:after{content:"";position:absolute;inset:-30%;border:1px solid rgba(116,174,255,.11);border-radius:50%;transform:rotate(-18deg) scaleX(1.5);animation:revealOrbit 13s linear infinite}.reveal-atmosphere:after{inset:-18% 7%;transform:rotate(22deg) scaleX(1.3);animation-duration:18s;animation-direction:reverse}.reveal-atmosphere i{position:absolute;width:3px;height:3px;border-radius:50%;background:#a9d3ff;box-shadow:0 0 12px 3px rgba(104,166,255,.45);animation:revealStar 3.8s ease-in-out infinite}.reveal-atmosphere i:nth-child(1){left:12%;top:23%;animation-delay:-.5s}.reveal-atmosphere i:nth-child(2){left:81%;top:18%;animation-delay:-1.2s}.reveal-atmosphere i:nth-child(3){left:22%;top:76%;animation-delay:-2s}.reveal-atmosphere i:nth-child(4){left:91%;top:71%;animation-delay:-.8s}.reveal-atmosphere i:nth-child(5){left:68%;top:86%;animation-delay:-2.6s}.reveal-atmosphere i:nth-child(6){left:43%;top:12%;animation-delay:-1.8s}.reveal-topline,.reveal-bottom,.reveal-actions{position:relative;z-index:4}.reveal-topline{display:flex;justify-content:space-between;align-items:center;gap:14px;color:#8ca9cd;font-size:9px;font-weight:900;letter-spacing:1.8px}.reveal-topline>span{display:flex;align-items:center;gap:9px}.reveal-live-dot{width:7px;height:7px;border-radius:50%;background:#50d7a0;box-shadow:0 0 0 5px rgba(80,215,160,.12),0 0 15px rgba(80,215,160,.7)}.reveal-topline button{border:1px solid rgba(159,190,232,.25);border-radius:99px;background:rgba(17,35,60,.55);color:#b7c9e1;padding:9px 13px;font-size:8px;font-weight:900;letter-spacing:1px}.reveal-center{width:min(880px,100%);justify-self:center;align-self:center;text-align:center;position:relative;z-index:2;padding:4px 0 20px}.reveal-kicker{display:flex;justify-content:center;gap:13px;align-items:center;margin-bottom:10px;color:#81a3d2;font-size:8px;font-weight:900;letter-spacing:2.1px}.reveal-kicker span{color:#506a8e}.reveal-stage{height:clamp(210px,34vh,310px);position:relative;display:grid;place-items:center;margin:0 auto 5px;isolation:isolate}.reveal-orbit{position:absolute;width:min(480px,85vw);aspect-ratio:1;border:1px solid rgba(93,151,228,.15);border-radius:50%;box-shadow:inset 0 0 50px rgba(45,106,186,.05),0 0 65px rgba(39,104,194,.06);animation:revealOrbitPulse 4s ease-in-out infinite}.orbit-two{width:min(350px,65vw);border-style:dashed;border-color:rgba(116,175,252,.16);animation:revealOrbitSpin 24s linear infinite}.reveal-car-drawing{width:min(710px,96%);position:relative;z-index:1;filter:drop-shadow(0 0 13px rgba(71,147,255,.28));opacity:.86;transition:opacity .6s ease,transform .8s ease}.reveal-car-drawing svg{width:100%;height:auto;overflow:visible}.reveal-car-line{stroke:#8fc2ff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1550;stroke-dashoffset:1550;transition:stroke-dashoffset 1.45s cubic-bezier(.2,.7,.2,1)}.reveal-window-line{stroke:#4f91e7;stroke-width:1.7;transition-delay:.13s}.reveal-car-detail{stroke:#f8d66b;stroke-width:2;stroke-linecap:round;opacity:.7;stroke-dasharray:600;stroke-dashoffset:600;transition:stroke-dashoffset .8s ease .55s}.reveal-wheel{stroke:#78a9e6;stroke-width:2;stroke-dasharray:245;stroke-dashoffset:245;transition:stroke-dashoffset .9s ease .2s}.reveal-wheel-core{fill:#8fc2ff;opacity:0;transition:opacity .35s ease .85s}.stage-scan .reveal-car-line,.stage-scan .reveal-car-detail,.stage-scan .reveal-wheel{stroke-dashoffset:0}.stage-scan .reveal-wheel-core{opacity:.9}.reveal-scan-beam{position:absolute;z-index:3;left:5%;right:5%;top:13%;height:2px;opacity:0;background:linear-gradient(90deg,transparent,var(--reveal-glow),#e6f4ff,var(--reveal-glow),transparent);box-shadow:0 0 16px 4px color-mix(in srgb,var(--reveal-glow) 55%,transparent);transform:translateY(0);transition:opacity .15s}.stage-scan .reveal-scan-beam{opacity:1;animation:revealScan 1.15s cubic-bezier(.5,0,.4,1) forwards}.reveal-photo-card{position:absolute;z-index:5;width:min(520px,82vw);height:clamp(175px,27vh,260px);overflow:hidden;border:1px solid rgba(165,203,255,.48);border-radius:18px;background:linear-gradient(140deg,#1a3153,#0b1729);box-shadow:0 28px 75px rgba(0,0,0,.5),0 0 0 7px rgba(102,165,255,.055),0 0 55px color-mix(in srgb,var(--reveal-glow) 24%,transparent);opacity:0;transform:translateY(18px) scale(.88);filter:blur(10px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .85s cubic-bezier(.16,1,.3,1),filter .7s ease}.stage-reveal .reveal-photo-card{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}.reveal-photo-card:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(125deg,rgba(4,14,29,.08),transparent 45%,rgba(5,15,29,.42))}.reveal-photo-card img{width:100%;height:100%;display:block;object-fit:cover;opacity:0;transform:scale(1.12);transition:opacity .45s ease .15s,transform 3s cubic-bezier(.2,.65,.2,1)}.stage-reveal .reveal-photo-card img:not([hidden]){opacity:1;transform:scale(1.02)}
+/* Keep the selected car photo visible while it drops in and during every hammer impact. */
+.stage-launch .reveal-photo-card img:not([hidden]),.stage-slam .reveal-photo-card img:not([hidden]),.stage-hit .reveal-photo-card img:not([hidden]){opacity:1;transform:scale(1.02)}.reveal-photo-empty{position:relative;z-index:3;height:100%;display:grid;align-content:center;justify-items:center;gap:8px;background:radial-gradient(circle at 50% 35%,rgba(80,143,230,.25),transparent 40%),linear-gradient(145deg,#172d4c,#0b1729);color:#bad8ff}.reveal-photo-empty[hidden]{display:none}.reveal-photo-empty span{font:900 58px/.9 var(--font-display);letter-spacing:2px}.reveal-photo-empty small{font-size:8px;font-weight:900;letter-spacing:2px;color:#7d9fc7}.reveal-photo-corner{position:absolute;left:13px;top:12px;z-index:3;padding:7px 9px;border:1px solid rgba(255,255,255,.25);border-radius:7px;background:rgba(5,15,29,.68);color:#fff;font-size:7px;font-weight:900;letter-spacing:1.5px}.reveal-photo-glint{position:absolute;z-index:4;top:-40%;bottom:-40%;left:-45%;width:25%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transform:rotate(18deg);opacity:0}.stage-reveal .reveal-photo-glint{opacity:1;animation:revealGlint 1.1s ease .25s both}.reveal-particles{position:absolute;inset:0;z-index:4;pointer-events:none}.reveal-particles i{position:absolute;left:var(--px);top:var(--py);width:5px;height:5px;border-radius:2px;background:var(--reveal-glow);opacity:0;box-shadow:0 0 13px 3px color-mix(in srgb,var(--reveal-glow) 65%,transparent)}.reveal-particles i:nth-child(1){--px:15%;--py:35%;--dx:80px;--dy:-48px}.reveal-particles i:nth-child(2){--px:24%;--py:70%;--dx:54px;--dy:35px}.reveal-particles i:nth-child(3){--px:36%;--py:17%;--dx:-60px;--dy:54px}.reveal-particles i:nth-child(4){--px:61%;--py:23%;--dx:70px;--dy:-40px}.reveal-particles i:nth-child(5){--px:78%;--py:42%;--dx:-62px;--dy:24px}.reveal-particles i:nth-child(6){--px:83%;--py:74%;--dx:-82px;--dy:-38px}.reveal-particles i:nth-child(7){--px:49%;--py:82%;--dx:10px;--dy:-65px}.reveal-particles i:nth-child(8){--px:10%;--py:57%;--dx:95px;--dy:0px}.reveal-particles i:nth-child(9){--px:90%;--py:28%;--dx:-95px;--dy:40px}.reveal-particles i:nth-child(10){--px:30%;--py:88%;--dx:20px;--dy:-65px}.reveal-particles i:nth-child(11){--px:68%;--py:87%;--dx:-55px;--dy:-60px}.reveal-particles i:nth-child(12){--px:55%;--py:9%;--dx:10px;--dy:70px}.reveal-particles i:nth-child(13){--px:18%;--py:15%;--dx:70px;--dy:50px}.reveal-particles i:nth-child(14){--px:73%;--py:13%;--dx:-60px;--dy:65px}.reveal-particles i:nth-child(15){--px:42%;--py:92%;--dx:35px;--dy:-70px}.reveal-particles i:nth-child(16){--px:94%;--py:55%;--dx:-90px;--dy:-10px}.stage-scan .reveal-particles i{animation:revealParticle .95s ease-out var(--pd,0s) both}.reveal-particles i:nth-child(3n){--pd:.08s}.reveal-particles i:nth-child(3n + 1){--pd:.2s}.reveal-particles i:nth-child(3n + 2){--pd:.32s}.reveal-copy{position:relative;z-index:5;opacity:0;transform:translateY(18px);transition:opacity .55s ease .2s,transform .6s cubic-bezier(.2,.8,.2,1) .2s}.stage-reveal .reveal-copy{opacity:1;transform:translateY(0)}.reveal-make{display:block;color:var(--reveal-glow);font-size:9px;font-weight:900;letter-spacing:2.4px}.reveal-copy h2{margin:5px 0 3px;color:#f3f7ff;font:900 clamp(33px,5vw,52px)/.95 var(--font-display);letter-spacing:.2px;text-transform:uppercase;text-shadow:0 5px 22px rgba(0,0,0,.22)}.reveal-trim{min-height:13px;color:#9cb3d2;font-size:10px}.reveal-meta-row{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:12px;color:#7390b7;font-size:8px;font-weight:900;letter-spacing:1px}.reveal-rarity{padding:6px 9px;border:1px solid color-mix(in srgb,var(--reveal-glow) 45%,transparent);border-radius:6px;background:color-mix(in srgb,var(--reveal-glow) 13%,transparent);color:var(--reveal-glow)}.reveal-divider{height:15px;width:1px;background:rgba(143,177,221,.25)}.reveal-complete{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:16px;color:#83e0b7;font-size:8px;font-weight:900;letter-spacing:1.7px;opacity:0;transform:translateY(7px);transition:opacity .35s ease,transform .35s ease}.stage-complete .reveal-complete{opacity:1;transform:translateY(0)}.reveal-check{width:21px;height:21px;border-radius:50%;display:grid;place-items:center;background:#1b9c70;color:#fff;font-size:12px;box-shadow:0 0 0 5px rgba(27,156,112,.14)}.stage-complete .reveal-orbit{border-color:color-mix(in srgb,var(--reveal-glow) 35%,transparent);box-shadow:0 0 55px color-mix(in srgb,var(--reveal-glow) 12%,transparent)}.stage-complete[data-rarity="legendary"] .reveal-photo-card,.spot-reveal[data-rarity="legendary"] .reveal-photo-card{box-shadow:0 28px 75px rgba(0,0,0,.5),0 0 0 7px rgba(255,208,90,.12),0 0 75px rgba(255,190,53,.3)}.reveal-bottom{width:min(560px,100%);justify-self:center;align-self:end;margin:12px auto 0}.reveal-track{height:3px;overflow:hidden;border-radius:9px;background:rgba(136,172,221,.16)}.reveal-track span{display:block;width:0;height:100%;background:linear-gradient(90deg,#3b85ff,var(--reveal-glow),#f5d46b);box-shadow:0 0 12px var(--reveal-glow);transition:width 2.9s cubic-bezier(.2,.7,.2,1)}.is-active .reveal-track span{width:100%}.reveal-bottom-row{display:flex;justify-content:space-between;gap:12px;margin-top:9px;color:#718bab;font-size:7px;font-weight:900;letter-spacing:1.3px}.reveal-bottom-row strong{color:#d7e6fb;font-size:9px;letter-spacing:.8px}.reveal-actions{display:flex;justify-content:center;gap:8px;padding-top:17px;opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease}.stage-complete .reveal-actions{opacity:1;transform:translateY(0)}.reveal-actions button{min-height:41px;padding:0 16px;border-radius:10px;font-size:8px;font-weight:900;letter-spacing:.7px}.reveal-continue{border:0;background:#347ff0;color:#fff;box-shadow:0 8px 20px rgba(40,113,220,.25)}.reveal-view{border:1px solid rgba(150,187,238,.25);background:rgba(18,39,66,.72);color:#d4e3f8}.reveal-actions button:hover{transform:translateY(-2px);filter:brightness(1.08)}body.spot-reveal-open{overflow:hidden}@keyframes revealGridDrift{to{background-position:46px 46px}}@keyframes revealOrbit{to{transform:rotate(342deg) scaleX(1.5)}}@keyframes revealStar{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.5)}}@keyframes revealOrbitPulse{0%,100%{transform:scale(.96);opacity:.55}50%{transform:scale(1.035);opacity:1}}@keyframes revealOrbitSpin{to{transform:rotate(360deg)}}@keyframes revealScan{0%{top:13%;opacity:0}12%{opacity:1}88%{opacity:.85}100%{top:88%;opacity:0}}@keyframes revealGlint{0%{left:-45%}100%{left:130%}}@keyframes revealParticle{0%{opacity:0;transform:translate(0,0) scale(.4)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}}
 @media(max-width:600px){.spot-reveal{padding:15px 15px max(14px,env(safe-area-inset-bottom))}.reveal-topline{font-size:7px;letter-spacing:1.2px}.reveal-topline button{padding:8px 10px}.reveal-stage{height:clamp(195px,30vh,245px)}.reveal-photo-card{width:min(440px,88vw);height:clamp(165px,26vh,215px);border-radius:14px}.reveal-center{padding-bottom:12px}.reveal-copy h2{font-size:39px}.reveal-actions{padding-top:13px}.reveal-actions button{flex:1;padding:0 9px;font-size:7px}.reveal-bottom-row{font-size:6px}}
 .spot-reveal.is-special .reveal-orbit-two{border-color:color-mix(in srgb,var(--reveal-glow) 34%,transparent);animation-duration:11s}.spot-reveal.is-special .reveal-stage:after{content:"";position:absolute;width:min(580px,96vw);aspect-ratio:1;border:1px solid color-mix(in srgb,var(--reveal-glow) 26%,transparent);border-radius:50%;opacity:0;pointer-events:none}.spot-reveal.is-special.stage-complete .reveal-stage:after{animation:rarityShockwave 1.15s cubic-bezier(.12,.72,.2,1) both}.spot-reveal.is-elite .reveal-photo-card{box-shadow:0 28px 75px rgba(0,0,0,.5),0 0 0 7px color-mix(in srgb,var(--reveal-glow) 15%,transparent),0 0 85px color-mix(in srgb,var(--reveal-glow) 35%,transparent)}.spot-reveal.is-elite.stage-complete .reveal-photo-glint{animation:revealGlint 1.2s ease .15s both}.spot-reveal[data-rarity="legendary"] .reveal-atmosphere:before{border-color:rgba(255,208,90,.2);box-shadow:0 0 0 28px rgba(255,208,90,.035),0 0 0 62px rgba(255,208,90,.025)}.spot-reveal[data-rarity="legendary"].stage-complete .reveal-orbit{border-color:rgba(255,208,90,.48);box-shadow:0 0 85px rgba(255,190,53,.2),inset 0 0 55px rgba(255,190,53,.08)}.spot-reveal[data-rarity="legendary"] .reveal-rarity{background:rgba(255,208,90,.17);border-color:rgba(255,208,90,.58);color:#ffda73}@keyframes rarityShockwave{0%{opacity:0;transform:scale(.72)}22%{opacity:.8}100%{opacity:0;transform:scale(1.12)}}
 @media(prefers-reduced-motion:reduce){.spot-reveal,.spot-reveal *{animation:none!important;transition:none!important}.spot-reveal .reveal-car-drawing{opacity:.2}.spot-reveal .reveal-photo-card,.spot-reveal .reveal-copy,.spot-reveal .reveal-complete,.spot-reveal .reveal-actions{opacity:1;filter:none;transform:none}.spot-reveal .reveal-track span{width:100%}}
+
+
+/* Searchable fields: native datalist suggestions stay editable and type-filterable. */
+.searchable-control{padding-right:36px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237889a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;background-size:14px;}
+.searchable-control:disabled{background-image:none}
+.searchable-control::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.6}
+
+/* The photo is physically launched into the reveal stage, then stamped by the rarity hammer. */
+.spot-reveal{--reveal-glow:#a7b2c2;background:radial-gradient(ellipse at 50% 48%,color-mix(in srgb,var(--reveal-glow) 17%,transparent),transparent 46%),radial-gradient(ellipse at 50% 110%,rgba(20,66,137,.30),transparent 45%),#08111f;}
+.spot-reveal[data-rarity="common"]{--reveal-glow:#a9b4c4}
+.spot-reveal[data-rarity="uncommon"]{--reveal-glow:#43d6a0}
+.spot-reveal[data-rarity="rare"]{--reveal-glow:#58a7ff}
+.spot-reveal[data-rarity="epic"]{--reveal-glow:#bd82ff}
+.spot-reveal[data-rarity="legendary"]{--reveal-glow:#ffd05a}
+.reveal-photo-card{opacity:0;visibility:hidden;filter:blur(8px);transform:translate3d(0,-115vh,0) rotate(-8deg) scale(.68);transition:none;will-change:transform,filter;}
+.stage-launch .reveal-photo-card{visibility:visible;opacity:1;filter:blur(0);animation:photoLaunchSlam .92s cubic-bezier(.13,.84,.2,1) both;}
+.stage-slam .reveal-photo-card{animation:photoImpactBounce .48s cubic-bezier(.2,.85,.22,1) both;}
+.stage-reveal .reveal-photo-card{visibility:visible;opacity:1;filter:blur(0);transform:translate3d(0,0,0) rotate(0) scale(1);}
+.reveal-hammer{position:absolute;z-index:14;top:-37px;left:calc(50% + 70px);width:clamp(115px,17vw,185px);height:clamp(130px,22vh,205px);opacity:0;transform:translate3d(90px,-180px,0) rotate(-38deg);transform-origin:84% 13%;pointer-events:none;filter:drop-shadow(0 16px 12px rgba(0,0,0,.42));}
+.reveal-hammer svg{width:100%;height:100%;overflow:visible}
+.stage-slam .reveal-hammer{opacity:1;animation:hammerEnter .42s cubic-bezier(.16,.9,.2,1) both;}
+.reveal-hammer.is-striking{opacity:1;animation:hammerStrike .42s cubic-bezier(.2,.84,.22,1) both;}
+.reveal-hit-count{position:absolute;z-index:16;left:50%;bottom:4px;transform:translateX(-50%);padding:7px 11px;border:1px solid color-mix(in srgb,var(--reveal-glow) 42%,transparent);border-radius:99px;background:rgba(4,13,26,.8);color:var(--reveal-glow);font-size:8px;font-weight:1000;letter-spacing:1.4px;white-space:nowrap;box-shadow:0 5px 22px rgba(0,0,0,.28);}
+.reveal-screen-flash{position:fixed;z-index:503;inset:0;opacity:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,color-mix(in srgb,var(--reveal-glow) 64%,transparent),transparent 57%);mix-blend-mode:screen;}
+.spot-reveal.impact-flash .reveal-screen-flash{animation:rarityScreenFlash .32s ease-out both;}
+.spot-reveal.impact-flash .reveal-stage{animation:impactJolt .24s cubic-bezier(.2,.7,.2,1) both;}
+.spot-reveal.impact-flash{box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--reveal-glow) 55%,transparent);}
+.reveal-confetti{position:fixed;z-index:508;inset:0;overflow:hidden;pointer-events:none;}
+.reveal-confetti i{position:absolute;left:50%;top:48%;width:var(--w,7px);height:calc(var(--w,7px)*1.55);border-radius:2px;background:var(--confetti-color,var(--reveal-glow));opacity:0;box-shadow:0 0 10px color-mix(in srgb,var(--confetti-color) 40%,transparent);}
+.stage-confetti .reveal-confetti i{animation:rarityConfetti var(--duration,1.8s) cubic-bezier(.12,.65,.28,1) var(--delay,0s) both;}
+.reveal-actions{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(18px);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.8,.2,1),visibility .45s;}
+.stage-complete .reveal-actions{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);}
+.stage-complete .reveal-copy{animation:revealTitlePop .58s cubic-bezier(.2,.85,.22,1) both;}
+.stage-complete .reveal-complete{animation:revealTitlePop .5s cubic-bezier(.2,.85,.22,1) .12s both;}
+.stage-complete .reveal-hit-count{animation:hitBadgePulse .55s ease-out both;}
+.stage-complete .reveal-hammer{opacity:0;transform:translate3d(110px,-190px,0) rotate(-38deg);}
+.spot-reveal .reveal-track span{background:linear-gradient(90deg,var(--reveal-glow),#fff,var(--reveal-glow));box-shadow:0 0 16px var(--reveal-glow);}
+@keyframes photoLaunchSlam{0%{opacity:0;filter:blur(8px);transform:translate3d(0,-115vh,0) rotate(-8deg) scale(.68)}62%{opacity:1;filter:blur(0);transform:translate3d(0,24px,0) rotate(2deg) scale(1.06)}78%{transform:translate3d(0,-10px,0) rotate(-1deg) scale(.985)}100%{opacity:1;filter:blur(0);transform:translate3d(0,0,0) rotate(0) scale(1)}}
+@keyframes photoImpactBounce{0%{transform:translate3d(0,0,0) scale(1)}22%{transform:translate3d(0,11px,0) scale(1.025,.97)}52%{transform:translate3d(0,-5px,0) scale(.99,1.015)}100%{transform:translate3d(0,0,0) scale(1)}}
+@keyframes hammerEnter{0%{opacity:0;transform:translate3d(90px,-180px,0) rotate(-38deg)}100%{opacity:1;transform:translate3d(0,0,0) rotate(-16deg)}}
+@keyframes hammerStrike{0%{opacity:1;transform:translate3d(0,0,0) rotate(-16deg)}48%{opacity:1;transform:translate3d(-176px,108px,0) rotate(34deg)}64%{transform:translate3d(-167px,90px,0) rotate(26deg)}100%{opacity:1;transform:translate3d(0,0,0) rotate(-16deg)}}
+@keyframes rarityScreenFlash{0%{opacity:0}18%{opacity:.68}45%{opacity:.32}100%{opacity:0}}
+@keyframes impactJolt{0%,100%{transform:translate3d(0,0,0)}22%{transform:translate3d(-5px,3px,0) rotate(-.25deg)}48%{transform:translate3d(4px,-2px,0) rotate(.2deg)}72%{transform:translate3d(-2px,1px,0)}}
+@keyframes rarityConfetti{0%{opacity:0;transform:translate3d(0,0,0) rotate(0) scale(.45)}8%{opacity:1}100%{opacity:0;transform:translate3d(var(--dx),var(--dy),0) rotate(var(--spin)) scale(1)}}
+@keyframes revealTitlePop{0%{opacity:0;transform:translateY(18px) scale(.96)}72%{opacity:1;transform:translateY(-3px) scale(1.015)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes hitBadgePulse{0%{transform:translateX(-50%) scale(.88);filter:brightness(1)}45%{transform:translateX(-50%) scale(1.08);filter:brightness(1.6)}100%{transform:translateX(-50%) scale(1);filter:brightness(1)}}
+@media(max-width:600px){.reveal-hammer{left:calc(50% + 42px);top:-23px;width:115px;height:145px}.reveal-hit-count{bottom:-1px;font-size:7px;padding:6px 9px}.reveal-photo-card{width:min(440px,88vw)}}
+@media(prefers-reduced-motion:reduce){.spot-reveal .reveal-photo-card,.spot-reveal .reveal-hammer,.spot-reveal .reveal-copy,.spot-reveal .reveal-complete,.spot-reveal .reveal-actions{opacity:1;visibility:visible;filter:none;transform:none;animation:none!important}.spot-reveal .reveal-confetti i{display:none}}
+
+
+/* Mobile-friendly photo source choice and custom home hero photography. */
+.photo-prompt{width:100%;border:0;background:transparent;color:var(--text);font:inherit;cursor:pointer;pointer-events:auto}
+.photo-prompt:focus-visible,.hero-photo-control:focus-visible,.photo-source-option:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 55%,white);outline-offset:3px}
+.photo-source-options{display:grid;gap:9px;margin-top:8px}
+.photo-source-option{display:grid;grid-template-columns:42px minmax(0,1fr) 20px;align-items:center;gap:12px;width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);color:var(--text);text-align:left;cursor:pointer;transition:border-color .18s,transform .18s,background .18s}
+.photo-source-option:hover{border-color:var(--accent-strong);transform:translateY(-1px)}
+.photo-source-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:11px;background:color-mix(in srgb,var(--accent) 13%,var(--surface));color:var(--accent-strong);font-size:21px;font-weight:900}
+.photo-source-option strong{display:block;font-size:12px}.photo-source-option small{display:block;margin-top:4px;color:var(--muted);font-size:9px;line-height:1.45}.photo-source-option>b{color:var(--accent-strong);font-size:16px}
+.detail-no-photo[hidden]{display:none!important}
+.home-hero-art{isolation:isolate}
+.home-hero-default-art{position:absolute;inset:0;display:grid;place-items:center}
+.home-hero-default-art[hidden]{display:none!important}
+.home-hero-photo{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;border:1px solid rgba(255,255,255,.3);border-radius:15px;box-shadow:0 18px 34px rgba(22,43,77,.22)}
+.home-hero-photo[hidden]{display:none!important}
+.home-hero-photo-actions{position:absolute;right:9px;bottom:8px;z-index:6;display:flex;gap:6px;align-items:center}
+.hero-photo-control{min-height:29px;padding:0 10px;border:1px solid rgba(255,255,255,.22);border-radius:8px;background:rgba(8,19,34,.78);backdrop-filter:blur(8px);color:#fff;font-size:8px;font-weight:900;letter-spacing:.6px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.hero-photo-control:hover{background:rgba(20,48,83,.92)}
+.hero-photo-reset{background:rgba(50,25,25,.8)}
+.hero-photo-control[hidden]{display:none!important}
+.edit-photo-row .text-button{flex:none}
+@media(max-width:850px){.home-hero-photo-actions{right:7px;bottom:7px}.hero-photo-control{min-height:27px;padding:0 8px;font-size:7px}}
+@media(max-width:560px){.photo-source-modal{padding:18px}.photo-source-option{grid-template-columns:38px minmax(0,1fr) 16px;gap:10px;padding:11px}.photo-source-icon{width:38px;height:38px}.home-hero-photo{border-radius:12px}.home-hero-photo-actions{right:6px;bottom:6px}}
+/* The persistent reveal must expose its two next-step buttons after the animation seals. */
+#spotReveal.stage-complete .reveal-actions{opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:translateY(0)!important}
+#spotReveal.stage-complete .reveal-complete{opacity:1!important;visibility:visible!important;transform:translateY(0)!important}
+#spotReveal.stage-complete .reveal-copy{opacity:1!important;visibility:visible!important;transform:translateY(0)!important}
+#spotReveal .reveal-actions{transition:opacity .45s ease,transform .45s cubic-bezier(.2,.8,.2,1)}
+@media(max-width:600px){#spotReveal .reveal-actions{margin-bottom:14px}}
+@media(max-width:600px){.spot-reveal{padding:12px 12px max(12px,env(safe-area-inset-bottom));grid-template-rows:auto minmax(0,1fr) auto auto}.reveal-center{padding-bottom:5px}.reveal-stage{height:clamp(175px,25vh,215px)}.reveal-photo-card{height:clamp(150px,21vh,190px)}.reveal-bottom{margin-top:7px}.reveal-actions{padding-top:10px}.reveal-copy h2{font-size:36px}}
+
+
+/* Impact tuning: visible hammer contact, a clean rebound, and a rarity-colored shock ring. */
+.reveal-stage:before{content:"";position:absolute;z-index:8;left:50%;top:50%;width:min(470px,82vw);height:min(220px,26vh);border:2px solid var(--reveal-glow);border-radius:22px;opacity:0;transform:translate(-50%,-50%) scale(.78);pointer-events:none;filter:drop-shadow(0 0 12px var(--reveal-glow))}
+.spot-reveal.stage-hit .reveal-stage:before{animation:hammerContactRing .42s cubic-bezier(.12,.72,.2,1) both}
+.spot-reveal.stage-hit .reveal-photo-card{filter:brightness(1.23) saturate(1.12);animation:photoHitShake .24s cubic-bezier(.2,.7,.2,1) both;}
+@keyframes photoHitShake{0%,100%{transform:translate3d(0,0,0) scale(1.02)}28%{transform:translate3d(0,4px,0) scale(1.035,.985)}58%{transform:translate3d(0,-2px,0) scale(.99,1.015)}82%{transform:translate3d(0,1px,0) scale(1.01,.995)}}
+.reveal-hammer{will-change:transform;}
+@keyframes hammerContactRing{0%{opacity:0;transform:translate(-50%,-50%) scale(.78)}22%{opacity:.82}100%{opacity:0;transform:translate(-50%,-50%) scale(1.16)}}
+@media(max-width:600px){.reveal-stage:before{width:88vw;height:clamp(150px,23vh,205px)}}
 
 </style>
 </head>
@@ -154,7 +245,11 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
       </div>
       <div class="home-hero panel">
         <div class="home-hero-copy"><span class="hero-kicker"><i></i> THE CAR ENTHUSIAST'S LOGBOOK</span><h2>THE ROAD IS<br><em>YOUR GALLERY.</em></h2><p>Save the cars that make you look twice. Build your collection one sighting at a time.</p><button class="home-cta" data-goto-view="spot" type="button"><span class="cta-plus">＋</span> SPOT A CAR <span class="cta-arrow">↗</span></button></div>
-        <div class="home-hero-art" aria-hidden="true"><div class="hero-speedline speedline-one"></div><div class="hero-speedline speedline-two"></div><div class="hero-disc"></div><svg class="hero-car" viewBox="0 0 620 250" fill="none"><path d="M73 157 106 119c10-13 24-21 41-24l92-15 68-48c15-10 31-15 49-15h80c24 0 44 10 60 28l55 62 45 20c18 7 28 20 28 39v25H42v-15c0-9 10-17 31-19Z" fill="url(#carPaint)" stroke="#153d83" stroke-width="5"/><path d="m252 80 62-42c9-6 22-10 37-10h81c17 0 31 7 42 19l36 43-258-10Z" fill="#a9d4ff" stroke="#153d83" stroke-width="4"/><path d="m116 121 390 0M73 158l50 1m392 0 44 0" stroke="#f5c842" stroke-width="7" stroke-linecap="round"/><path d="M50 181h520" stroke="#153d83" stroke-width="5" stroke-linecap="round"/><circle cx="166" cy="187" r="37" fill="#16243d" stroke="#f7f9fc" stroke-width="9"/><circle cx="166" cy="187" r="15" fill="#f5c842"/><circle cx="482" cy="187" r="37" fill="#16243d" stroke="#f7f9fc" stroke-width="9"/><circle cx="482" cy="187" r="15" fill="#f5c842"/><defs><linearGradient id="carPaint" x1="70" y1="35" x2="520" y2="190" gradientUnits="userSpaceOnUse"><stop stop-color="#6fb1ff"/><stop offset=".55" stop-color="#2878ef"/><stop offset="1" stop-color="#1749aa"/></linearGradient></defs></svg><span class="hero-art-label">SPOT • SAVE • REPEAT</span></div>
+        <div class="home-hero-art">
+          <div class="home-hero-default-art" id="homeHeroDefaultArt" aria-hidden="true"><div class="hero-speedline speedline-one"></div><div class="hero-speedline speedline-two"></div><div class="hero-disc"></div><svg class="hero-car" viewBox="0 0 620 250" fill="none"><path d="M73 157 106 119c10-13 24-21 41-24l92-15 68-48c15-10 31-15 49-15h80c24 0 44 10 60 28l55 62 45 20c18 7 28 20 28 39v25H42v-15c0-9 10-17 31-19Z" fill="url(#carPaint)" stroke="#153d83" stroke-width="5"/><path d="m252 80 62-42c9-6 22-10 37-10h81c17 0 31 7 42 19l36 43-258-10Z" fill="#a9d4ff" stroke="#153d83" stroke-width="4"/><path d="m116 121 390 0M73 158l50 1m392 0 44 0" stroke="#f5c842" stroke-width="7" stroke-linecap="round"/><path d="M50 181h520" stroke="#153d83" stroke-width="5" stroke-linecap="round"/><circle cx="166" cy="187" r="37" fill="#16243d" stroke="#f7f9fc" stroke-width="9"/><circle cx="166" cy="187" r="15" fill="#f5c842"/><circle cx="482" cy="187" r="37" fill="#16243d" stroke="#f7f9fc" stroke-width="9"/><circle cx="482" cy="187" r="15" fill="#f5c842"/><defs><linearGradient id="carPaint" x1="70" y1="35" x2="520" y2="190" gradientUnits="userSpaceOnUse"><stop stop-color="#6fb1ff"/><stop offset=".55" stop-color="#2878ef"/><stop offset="1" stop-color="#1749aa"/></linearGradient></defs></svg><span class="hero-art-label">SPOT • SAVE • REPEAT</span></div>
+          <img class="home-hero-photo" id="homeHeroPhoto" alt="Your chosen home hero photo" hidden>
+          <div class="home-hero-photo-actions"><button class="hero-photo-control" id="homeHeroChangePhoto" type="button">＋ SET HERO PHOTO</button><button class="hero-photo-control hero-photo-reset" id="homeHeroResetPhoto" type="button" hidden>REMOVE</button></div>
+        </div>
       </div>
       <div class="home-stat-grid">
         <article class="home-stat-card panel"><span class="home-stat-icon blue-icon">▣</span><span class="home-stat-label">TOTAL SPOTS</span><strong id="homeTotal">0</strong><small>Cars in your log</small></article>
@@ -187,20 +282,19 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
         </div>
         <form id="spotForm" class="panel form-panel" novalidate>
           <section class="form-section" aria-labelledby="vehicleSectionTitle">
-            <div class="section-head"><div class="section-index"><span class="index-box">01</span><div><h2 id="vehicleSectionTitle">What did you see?</h2><p>Choose the make and model. Trim is optional.</p></div></div><span class="section-tag">Required</span></div>
+            <div class="section-head"><div class="section-index"><span class="index-box">01</span><div><h2 id="vehicleSectionTitle">What did you see?</h2><p>Type to search or choose a make and model. Trim is optional.</p></div></div><span class="section-tag">Required</span></div>
             <div class="form-grid">
-              <div class="field"><label for="makeSelect">Make</label><select class="control" id="makeSelect" required><option value="">Choose a make</option></select><input class="control conditional-input" id="customMake" type="text" maxlength="40" placeholder="Enter make" aria-label="Custom make"></div>
-              <div class="field"><label for="modelSelect">Model</label><select class="control" id="modelSelect" required disabled><option value="">Choose make first</option></select><input class="control conditional-input" id="customModel" type="text" maxlength="50" placeholder="Enter model" aria-label="Custom model"></div>
-              <div class="field full"><label for="trimSelect">Submodel / trim <span class="optional">Optional</span></label><select class="control" id="trimSelect"><option value="">No submodel</option></select><input class="control conditional-input" id="customTrim" type="text" maxlength="50" placeholder="Enter submodel or trim" aria-label="Custom submodel"><div class="field-help">Options are matched to the selected make and model. Choose custom for an unlisted version.</div></div>
-              <div class="field"><label for="yearInput">Model year <span class="optional">Optional</span></label><input class="control" id="yearInput" type="number" inputmode="numeric" min="1886" max="2099" placeholder="e.g. 2022"></div>
-              <div class="field"><label for="colorInput">Color <span class="optional">Optional</span></label><input class="control" id="colorInput" type="text" maxlength="28" placeholder="e.g. Nardo Grey"></div>
+              <div class="field"><label for="makeSelect">Make</label><input class="control searchable-control" id="makeSelect" type="text" list="makeOptions" autocomplete="off" spellcheck="false" placeholder="Type or choose a make" required><datalist id="makeOptions"></datalist></div>
+              <div class="field"><label for="modelSelect">Model</label><input class="control searchable-control" id="modelSelect" type="text" list="modelOptions" autocomplete="off" spellcheck="false" placeholder="Choose a make first" required disabled><datalist id="modelOptions"></datalist></div>
+              <div class="field full"><label for="trimSelect">Submodel / trim <span class="optional">Optional</span></label><input class="control searchable-control" id="trimSelect" type="text" list="trimOptions" autocomplete="off" spellcheck="false" placeholder="Type or choose a submodel"><datalist id="trimOptions"></datalist><div class="field-help">Suggestions update for the selected make and model. You can also type any custom version.</div></div>
+              <div class="field"><label for="yearInput">Model year <span class="optional">Optional</span></label><input class="control searchable-control" id="yearInput" type="text" inputmode="numeric" list="yearOptions" autocomplete="off" placeholder="Type or choose a year"><datalist id="yearOptions"></datalist></div>
+              <div class="field"><label for="colorInput">Color <span class="optional">Optional</span></label><input class="control searchable-control" id="colorInput" type="text" maxlength="28" list="colorOptions" autocomplete="off" placeholder="Type or choose a color"><datalist id="colorOptions"></datalist></div>
             </div>
           </section>
           <section class="form-section" aria-labelledby="photoSectionTitle">
             <div class="section-head"><div class="section-index"><span class="index-box">02</span><div><h2 id="photoSectionTitle">Add your photo</h2><p>Choose a picture from your camera or photo library.</p></div></div><span class="section-tag">Optional</span></div>
             <div class="photo-drop" id="photoDrop">
-              <input type="file" id="photoFile" accept="image/*" capture="environment" aria-label="Choose a car photo">
-              <label class="photo-prompt" for="photoFile"><span class="photo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3v12H4z"/><circle cx="12" cy="13" r="3.4"/><path d="M8 9h.01"/></svg></span><strong>Tap to add a car photo</strong><span>Open your camera or choose from your photo library.</span></label>
+              <button class="photo-prompt" id="addPhotoButton" type="button"><span class="photo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3v12H4z"/><circle cx="12" cy="13" r="3.4"/><path d="M8 9h.01"/></svg></span><strong>Tap to add a car photo</strong><span>Open your camera or choose from your photo library.</span></button>
               <img class="photo-preview" id="photoPreview" alt="Preview of the selected car photo">
               <div class="photo-overlay"><span class="photo-chip">PHOTO READY</span><button class="photo-action" id="removePhoto" type="button">REMOVE PHOTO</button></div>
             </div>
@@ -277,6 +371,11 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
   <button data-view="profile" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>PROFILE</span></button>
 </nav>
 
+<!-- Photo source picker: let mobile users choose the library or camera explicitly. -->
+<div class="modal-backdrop" id="photoSourceModal" role="dialog" aria-modal="true" aria-labelledby="photoSourceTitle"><div class="modal photo-source-modal"><div class="modal-head"><div><h2 id="photoSourceTitle">Add a photo.</h2><p id="photoSourceCopy">Choose where your picture should come from.</p></div><button class="modal-x" data-close-modal="photoSourceModal" type="button" aria-label="Close">×</button></div><div class="photo-source-options"><button class="photo-source-option" id="choosePhotoLibrary" type="button"><span class="photo-source-icon">▧</span><span><strong>Choose from Photos</strong><small>Pick an existing picture from your library or files.</small></span><b>↗</b></button><button class="photo-source-option" id="choosePhotoCamera" type="button"><span class="photo-source-icon">◎</span><span><strong>Take a Photo</strong><small>Open your camera and capture a new picture.</small></span><b>↗</b></button></div><div class="modal-actions"><button class="secondary-btn" data-close-modal="photoSourceModal" type="button">CANCEL</button></div></div></div>
+<input type="file" id="photoLibraryInput" accept="image/*" hidden aria-label="Choose a photo from your library">
+<input type="file" id="photoCameraInput" accept="image/*" capture="environment" hidden aria-label="Take a photo with your camera">
+
 <!-- Start run -->
 <div class="modal-backdrop" id="startRunModal" role="dialog" aria-modal="true" aria-labelledby="startRunTitle"><div class="modal"><div class="modal-head"><div><h2 id="startRunTitle">Start a new run.</h2><p>Name this meet, drive or day out.</p></div><button class="modal-x" data-close-modal="startRunModal" type="button" aria-label="Close">×</button></div><div class="field"><label for="runNameInput">Run name</label><input class="control" id="runNameInput" maxlength="54" placeholder="e.g. Cars & Coffee — Raleigh"></div><div class="modal-actions"><button class="secondary-btn" data-close-modal="startRunModal" type="button">CANCEL</button><button class="primary-btn" id="confirmStartRun" type="button">START RUN ↗</button></div></div></div>
 
@@ -285,14 +384,14 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 
 <!-- Edit spot -->
 <div class="modal-backdrop" id="editSpotModal" role="dialog" aria-modal="true" aria-labelledby="editSpotTitle"><div class="modal"><div class="modal-head"><div><h2 id="editSpotTitle">Edit this spot.</h2><p>Update the car details or replace the photo.</p></div><button class="modal-x" data-close-modal="editSpotModal" type="button" aria-label="Close">×</button></div><div class="form-grid">
-  <div class="field"><label for="editMakeSelect">Make</label><select class="control" id="editMakeSelect"></select><input class="control conditional-input" id="editCustomMake" maxlength="40" placeholder="Enter make"></div>
-  <div class="field"><label for="editModelSelect">Model</label><select class="control" id="editModelSelect" disabled></select><input class="control conditional-input" id="editCustomModel" maxlength="50" placeholder="Enter model"></div>
-  <div class="field full"><label for="editTrimSelect">Submodel / trim <span class="optional">Optional</span></label><select class="control" id="editTrimSelect"></select><input class="control conditional-input" id="editCustomTrim" maxlength="50" placeholder="Enter submodel or trim"><div class="field-help">Options are matched to the selected make and model.</div></div>
-  <div class="field"><label for="editYearInput">Model year</label><input class="control" id="editYearInput" type="number" inputmode="numeric" min="1886" max="2099" placeholder="e.g. 2022"></div>
-  <div class="field"><label for="editColorInput">Color</label><input class="control" id="editColorInput" maxlength="28" placeholder="e.g. Nardo Grey"></div>
+  <div class="field"><label for="editMakeSelect">Make</label><input class="control searchable-control" id="editMakeSelect" type="text" list="editMakeOptions" autocomplete="off" spellcheck="false" placeholder="Type or choose a make"><datalist id="editMakeOptions"></datalist></div>
+  <div class="field"><label for="editModelSelect">Model</label><input class="control searchable-control" id="editModelSelect" type="text" list="editModelOptions" autocomplete="off" spellcheck="false" placeholder="Choose a make first" disabled><datalist id="editModelOptions"></datalist></div>
+  <div class="field full"><label for="editTrimSelect">Submodel / trim <span class="optional">Optional</span></label><input class="control searchable-control" id="editTrimSelect" type="text" list="editTrimOptions" autocomplete="off" spellcheck="false" placeholder="Type or choose a submodel"><datalist id="editTrimOptions"></datalist><div class="field-help">Suggestions update for the selected make and model. Custom versions are accepted.</div></div>
+  <div class="field"><label for="editYearInput">Model year</label><input class="control searchable-control" id="editYearInput" type="text" inputmode="numeric" list="editYearOptions" autocomplete="off" placeholder="Type or choose a year"><datalist id="editYearOptions"></datalist></div>
+  <div class="field"><label for="editColorInput">Color</label><input class="control searchable-control" id="editColorInput" maxlength="28" list="editColorOptions" autocomplete="off" placeholder="Type or choose a color"><datalist id="editColorOptions"></datalist></div>
   <div class="field full"><label for="editPlaceInput">Place or event</label><input class="control" id="editPlaceInput" maxlength="80" placeholder="e.g. Cars & Coffee, North Hills"></div>
   <div class="field full"><label for="editNotesInput">Spotting notes</label><textarea class="control notes-control" id="editNotesInput" maxlength="280" rows="3" placeholder="Details worth remembering…"></textarea></div>
-  <div class="field full"><label>Photo</label><div class="edit-photo-row"><img id="editPhotoPreview" alt="Current car photo"><label for="editPhotoFile">CHANGE PHOTO<input type="file" id="editPhotoFile" accept="image/*"></label><span id="editPhotoStatus" class="field-help">Current photo</span></div></div>
+  <div class="field full"><label>Photo</label><div class="edit-photo-row"><img id="editPhotoPreview" alt="Current car photo"><button class="text-button" id="editChangePhoto" type="button">CHANGE PHOTO</button><span id="editPhotoStatus" class="field-help">Current photo</span></div></div>
 </div><div class="modal-actions"><button class="secondary-btn" data-close-modal="editSpotModal" type="button">CANCEL</button><button class="primary-btn" id="saveEditButton" type="button">SAVE CHANGES</button></div></div></div>
 
 <!-- Run details -->
@@ -304,7 +403,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 
 <div class="spot-reveal" id="spotReveal" hidden aria-hidden="true">
   <div class="reveal-atmosphere" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-  <div class="reveal-topline"><span><b class="reveal-live-dot"></b> CARSPOTTER / CAPTURE SEQUENCE</span><button type="button" id="spotRevealSkip" aria-label="Skip animation">SKIP ↗</button></div>
+  <div class="reveal-topline"><span><b class="reveal-live-dot"></b> CARSPOTTER / CAPTURE SEQUENCE</span><button type="button" id="spotRevealSkip" aria-label="Skip animation">SKIP ANIMATION ↗</button></div>
   <div class="reveal-center">
     <div class="reveal-kicker" id="spotRevealStatus">IDENTIFYING VEHICLE <span>01 / 04</span></div>
     <div class="reveal-stage">
@@ -319,6 +418,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
         </svg>
       </div>
       <div class="reveal-scan-beam"></div>
+      <div class="reveal-screen-flash" aria-hidden="true"></div>
       <div class="reveal-particles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       <div class="reveal-photo-card" id="spotRevealPhotoCard">
         <img id="spotRevealPhoto" alt="Newly saved car" hidden>
@@ -326,6 +426,19 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
         <span class="reveal-photo-corner">NEW SIGHTING</span>
         <span class="reveal-photo-glint"></span>
       </div>
+      <div class="reveal-hammer" id="spotRevealHammer" aria-hidden="true">
+        <svg viewBox="0 0 190 205" role="presentation">
+          <defs><linearGradient id="hammerMetal" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#f4f8ff"/><stop offset=".45" stop-color="#aebed2"/><stop offset="1" stop-color="#64758d"/></linearGradient><linearGradient id="hammerGrip" x1="0" x2="1"><stop offset="0" stop-color="#d3a15b"/><stop offset=".5" stop-color="#80502b"/><stop offset="1" stop-color="#e0b477"/></linearGradient></defs>
+          <path d="M139 18 C132 43 126 56 112 76 L62 151" stroke="#26364c" stroke-width="30" stroke-linecap="round" fill="none"/>
+          <path d="M139 18 C132 43 126 56 112 76 L62 151" stroke="url(#hammerGrip)" stroke-width="20" stroke-linecap="round" fill="none"/>
+          <path d="M20 38 Q17 30 26 24 L122 4 Q132 2 137 10 L149 39 Q152 48 143 53 L48 76 Q38 79 34 70Z" fill="#26364c" opacity=".8"/>
+          <path d="M24 31 Q22 24 31 22 L122 5 Q131 3 135 11 L144 34 Q147 42 138 46 L48 65 Q39 68 35 60Z" fill="url(#hammerMetal)" stroke="#e6effb" stroke-width="2"/>
+          <path d="M30 31 130 12" stroke="#fff" stroke-width="3" opacity=".65" stroke-linecap="round"/>
+          <path d="M54 142 75 156" stroke="#6d4127" stroke-width="4" opacity=".75" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="reveal-hit-count" id="spotRevealHitCount">IMPACTS 0 / 0</div>
+      <div class="reveal-confetti" id="spotRevealConfetti" aria-hidden="true"></div>
     </div>
     <div class="reveal-copy">
       <span class="reveal-make" id="spotRevealMake">PORSCHE</span>
@@ -335,7 +448,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     </div>
     <div class="reveal-complete" id="spotRevealComplete"><span class="reveal-check">✓</span><span>ADDED TO YOUR GARAGE</span></div>
   </div>
-  <div class="reveal-bottom"><div class="reveal-track"><span></span></div><div class="reveal-bottom-row"><span id="spotRevealCollectionLabel">YOUR COLLECTION IS GROWING</span><strong><span id="spotRevealCount">0</span> CARS</strong></div></div>
+  <div class="reveal-bottom"><div class="reveal-track"><span></span></div><div class="reveal-bottom-row"><span id="spotRevealCollectionLabel">YOUR COLLECTION IS GROWING</span><strong><span id="spotRevealCount">0</span> <span id="spotRevealCountUnit">CARS</span></strong></div></div>
   <div class="reveal-actions"><button type="button" class="reveal-continue" id="spotRevealAnother">＋ LOG ANOTHER CAR</button><button type="button" class="reveal-view" id="spotRevealView">VIEW IN GARAGE ↗</button></div>
 </div>
 
@@ -449,9 +562,100 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     'Volkswagen': {'Golf GTI':['S','SE','Autobahn'],'Golf R':['Base','20th Anniversary','Black Edition'],'Jetta GLI':['S','Autobahn'],'Arteon':['SE','SEL R-Line','SEL Premium R-Line']},
     'Volvo': {'S60':['Core','Plus','Ultimate','Polestar Engineered'],'V60 Polestar':['Polestar Engineered'],'XC60':['Core','Plus','Ultimate','Polestar Engineered'],'XC90':['Core','Plus','Ultimate']}
   };
+  const submodelAdditions = {
+    'Acura': {
+      'ILX':['Base','Premium','Technology Plus','A-Spec'], 'RDX':['Base','Technology','A-Spec','Advance'], 'TSX':['Base','Technology','Special Edition']
+    },
+    'Alfa Romeo': {'8C':['Competizione','Spider'],'Tonale':['Sprint','Ti','Veloce']},
+    'Audi': {
+      'Q3':['Premium','Premium Plus','Prestige','S line'], 'A8':['L 55 TFSI','L 60 TFSI','S8'],
+      'TT':['Coupe','Roadster','TTS','TT RS'], 'Q7':['Premium','Premium Plus','Prestige'],
+      'SQ7':['Premium Plus','Prestige'], 'Q8':['Premium','Premium Plus','Prestige'],
+      'RS Q8':['Base','Performance'], 'A7':['Premium','Premium Plus','Prestige'],
+      'S7':['Premium Plus','Prestige'], 'A8':['Premium','Premium Plus','Prestige','S8']
+    },
+    'Bentley': {'Mulsanne':['Base','Speed','Extended Wheelbase']},
+    'BMW': {
+      '1 Series':['128i','135i','M135i','M140i'], '4 Series':['420i','430i','440i','M440i'],
+      '6 Series':['640i','650i','M6'], '7 Series':['740i','750i','760i','ALPINA B7'],
+      'X1':['sDrive28i','xDrive28i','M35i'], 'X7':['xDrive40i','M60i','ALPINA XB7'],
+      'Z3':['1.9','2.8','3.0i','M Roadster','M Coupe'], 'i4':['eDrive35','eDrive40','xDrive40','M50'],
+      'i5':['eDrive40','xDrive40','M60'], 'i7':['eDrive50','xDrive60','M70'],
+      'i8':['Coupe','Roadster'], 'X5':['xDrive35i','xDrive40i','xDrive50i','M50i','M60i','M Competition']
+    },
+    'Buick': {'Regal':['Preferred','Essence','GS'],'Grand National':['Base'],'GNX':['Base']},
+    'Cadillac': {'Celestiq':['Base','Commissioned build'],'CT5':['Luxury','Premium Luxury','Sport','V-Series']},
+    'Chevrolet': {
+      'Blazer':['LT','RS','Premier','SS EV'], 'Tahoe':['LS','LT','RST','Z71','Premier','High Country'],
+      'Monte Carlo':['LS','SS','Z34'], 'El Camino':['Base','SS'], 'Impala':['LS','LT','Premier','SS']
+    },
+    'Chrysler': {'300':['Touring','Touring L','300S','300C'],'Crossfire':['Base','Limited','SRT-6'],'Prowler':['Base']},
+    'Dodge': {'Ram SRT-10':['Regular Cab','Quad Cab'],'Neon SRT-4':['Base','ACR']},
+    'Fiat': {'500':['Pop','Sport','Lounge','Abarth','e'], '124 Spider':['Classica','Lusso','Abarth'],'X1/9':['Base']},
+    'GMC': {
+      'Sierra':['Pro','SLE','Elevation','SLT','AT4','Denali','Denali Ultimate'],
+      'Yukon':['SLE','SLT','AT4','Denali','Denali Ultimate'], 'Typhoon':['Base'],
+      'Syclone':['Base'], 'Hummer EV':['Pickup 2X','Pickup 3X','SUV 2X','SUV 3X']
+    },
+    'Infiniti': {
+      'G35':['Base','Journey','Sport','x AWD'], 'G37':['Base','Journey','Sport','IPL'],
+      'Q50':['Pure','Luxe','Sensory','Red Sport 400'], 'Q60':['Pure','Luxe','Sport','Red Sport 400'], 'QX80':['Luxe','Sensory','Autograph']
+    },
+    'Jaguar': {
+      'F-Pace':['P250','P340','P400','SVR'], 'XJ':['XJ8','XJR','XJL','XJ Supersport'],
+      'XK':['XK','XKR','XKR-S'], 'XE':['S','SE','R-Dynamic','Project 8']
+    },
+    'Jeep': {'Cherokee':['Latitude','Limited','Trailhawk','Overland']},
+    'Kia': {'K5 GT':['GT-Line','GT'],'Forte GT':['GT-Line','GT'],'Stinger':['2.0T','2.5T','3.3T GT-Line','GT1','GT2']},
+    'Land Rover': {
+      'Defender':['90','110','130','S','SE','X-Dynamic','X','V8'],
+      'Range Rover Sport':['SE','Dynamic SE','Autobiography','SV'],
+      'Range Rover':['SE','HSE','Autobiography','SV'], 'Discovery':['S','SE','HSE','Metropolitan Edition']
+    },
+    'Lexus': {'NX':['NX 250','NX 350','NX 350h','NX 450h+','F Sport'],'GX':['GX 460','GX 550 Premium','GX 550 Overtrail','GX 550 Luxury'],'LX':['LX 600','LX 700h']},
+    'Lincoln': {'Continental':['Standard','Select','Reserve','Black Label'],'Navigator':['Premiere','Reserve','Black Label'],'Aviator':['Premiere','Reserve','Black Label']},
+    'Lotus': {'Esprit':['S1','S2','Turbo','V8'],'Eletre':['Base','S','R']},
+    'Maserati': {'Grecale':['GT','Modena','Trofeo','Folgore']},
+    'Mercedes-Benz': {
+      'CLA':['CLA 250','AMG CLA 35','AMG CLA 45 S'], 'CLK':['CLK 320','CLK 430','CLK 500','CLK 55 AMG','CLK 63 AMG'],
+      'GLC':['GLC 300','AMG GLC 43','AMG GLC 63 S E Performance'], 'GLE':['GLE 350','GLE 450','AMG GLE 53','AMG GLE 63 S'],
+      'S-Class':['S 450','S 500','S 580','AMG S 63','Maybach S 580','Maybach S 680']
+    },
+    'Mitsubishi': {'Eclipse Cross':['ES','LE','SE','SEL'],'Galant VR-4':['Base']},
+    'Nissan': {
+      'Maxima':['SV','SR','Platinum'], 'Sentra Nismo':['Nismo'], 'Figaro':['Base'],
+      'Skyline':['GT-R R32','GT-R R33','GT-R R34','GTS','GTS-t','GT-X'],
+      'GT-R':['Premium','Black Edition','Track Edition','Nismo','T-Spec','Nismo Special Edition']
+    },
+    'Polestar': {'1':['Launch Edition'],'2':['Standard Range Single Motor','Long Range Single Motor','Long Range Dual Motor','Performance Pack'],'3':['Long Range Dual Motor','Performance Pack'],'4':['Long Range Single Motor','Long Range Dual Motor']},
+    'Pontiac': {'GTO':['Base','Judge'],'Firebird':['Base','Formula','Trans Am','WS6'],'Trans Am':['Base','WS6','Firehawk'],'Solstice':['Base','GXP'],'Fiero':['Base','GT','Formula'],'G8':['Base','GT','GXP']},
+    'Porsche': {
+      'Macan':['Base','T','S','GTS','Electric','Electric 4S','Electric Turbo'],
+      'Cayenne':['Base','E-Hybrid','S','S E-Hybrid','GTS','Turbo E-Hybrid','Turbo GT'],
+      'Panamera':['Base','4','4 E-Hybrid','4S','GTS','Turbo S','Turbo E-Hybrid'],
+      'Taycan':['Base','4','4S','GTS','Turbo','Turbo S','Turbo GT','Cross Turismo','Sport Turismo']
+    },
+    'Ram': {'1500':['Tradesman','Big Horn','Laramie','Rebel','Limited','Longhorn','RHO'],'1500 TRX':['Base','Sandblast Edition'],'2500':['Tradesman','Big Horn','Laramie','Power Wagon','Limited']},
+    'Rivian': {'R1T':['Adventure','Explore','Dual-Motor','Performance Dual-Motor','Quad-Motor'],'R1S':['Adventure','Explore','Dual-Motor','Performance Dual-Motor','Quad-Motor']},
+    'Rolls-Royce': {'Ghost':['Standard','Extended','Black Badge'],'Wraith':['Base','Black Badge'],'Dawn':['Base','Black Badge'],'Cullinan':['Base','Black Badge'],'Spectre':['Base','Black Badge'],'Phantom':['Standard Wheelbase','Extended Wheelbase']},
+    'Tesla': {'Cybertruck':['Rear-Wheel Drive','All-Wheel Drive','Cyberbeast'],'Roadster':['Base','Founders Series']},
+    'Toyota': {
+      'Tacoma':['SR','SR5','TRD PreRunner','TRD Sport','TRD Off-Road','Limited','Trailhunter','TRD Pro'],
+      'Celica':['GT','GT-S','All-Trac Turbo'], 'Chaser':['Tourer S','Tourer V','Avante'],
+      'Crown':['Limited','Platinum','Signia'], 'Camry':['LE','SE','XLE','XSE','TRD','Nightshade'],
+      'Corolla':['LE','SE','XLE','XSE','GR Sport','Apex Edition']
+    },
+    'Volkswagen': {'Tiguan':['S','SE','SE R-Line Black','SEL R-Line'],'Scirocco':['GT','GT TDI','R-Line','R'],'Corrado':['G60','VR6']},
+    'Volvo': {'S90':['Core','Plus','Ultimate','Recharge'],'XC60':['Core','Plus','Ultimate','Recharge'],'XC90':['Core','Plus','Ultimate','Recharge']}
+  };
+  for (const [make, models] of Object.entries(submodelAdditions)) {
+    if (!submodelCatalog[make]) submodelCatalog[make] = {};
+    Object.assign(submodelCatalog[make], models);
+  }
+
   let db = null;
   let dbMode = 'indexeddb';
-  let data = {spots:[],runs:[],activeRunId:null};
+  let data = {spots:[],runs:[],activeRunId:null,homeHeroPhoto:''};
   let currentPhoto = '';
   let currentLocation = null;
   let currentDetailId = null;
@@ -518,7 +722,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     const runIds=new Set(runs.map(r=>r.id));
     spots.forEach(s=>{if(s.runId&&!runIds.has(s.runId))s.runId=null});
     const active=runs.find(r=>r.id===saved?.activeRunId&&!r.endedAt);
-    return {spots,runs,activeRunId:active?active.id:null};
+    return {spots,runs,activeRunId:active?active.id:null,homeHeroPhoto:typeof saved?.homeHeroPhoto==='string'&&/^data:image\/(?:jpeg|png|webp);base64,/i.test(saved.homeHeroPhoto)?saved.homeHeroPhoto:''};
   }
   async function bootStorage(){
     try{
@@ -538,7 +742,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
         for(const key of LEGACY_KEYS){try{const raw=localStorage.getItem(key);if(raw){saved=JSON.parse(raw);break}}catch{}}
         if(!saved){try{const raw=localStorage.getItem(DATA_KEY);if(raw)saved=JSON.parse(raw)}catch{}}
         data=normalizeData(saved||{});
-      }catch{data={spots:[],runs:[],activeRunId:null}}
+      }catch{data={spots:[],runs:[],activeRunId:null,homeHeroPhoto:''}}
       showToast('Using basic browser storage. Export backups often, especially when saving photos.');
     }
   }
@@ -556,58 +760,73 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     return prefix + key.charAt(0).toUpperCase() + key.slice(1);
   }
   function vehicleField(prefix,key){return $(vehicleFieldId(prefix,key))}
-  function updateTrimOptions(prefix, preferredTrim=''){
-    const makeSelect=vehicleField(prefix,'makeSelect');
-    const modelSelect=vehicleField(prefix,'modelSelect');
-    const trimSelect=vehicleField(prefix,'trimSelect');
-    const make=makeSelect.value==='__custom__'?vehicleField(prefix,'customMake').value.trim():makeSelect.value;
-    const model=modelSelect.value==='__custom__'?vehicleField(prefix,'customModel').value.trim():modelSelect.value;
+  function datalistId(prefix,key){const cap=key.charAt(0).toUpperCase()+key.slice(1);return prefix?`${prefix}${cap}Options`:`${key}Options`;}
+  function fillDatalist(listId, values){
+    const list=$(listId); if(!list)return;
+    list.replaceChildren(...[...new Set(values)].filter(Boolean).map(value=>{
+      const option=document.createElement('option');option.value=value;return option;
+    }));
+  }
+  function updateTrimOptions(prefix, preferredTrim){
+    const make=vehicleField(prefix,'makeSelect').value.trim();
+    const model=vehicleField(prefix,'modelSelect').value.trim();
+    const trim=vehicleField(prefix,'trimSelect');
     const options=(submodelCatalog[make]&&submodelCatalog[make][model])||[];
-    trimSelect.innerHTML='<option value="">No submodel</option>'+options.map(t=>`<option value="${escapeHTML(t)}">${escapeHTML(t)}</option>`).join('')+'<option value="__custom__">Other / custom…</option>';
-    const known=options.includes(preferredTrim);
-    trimSelect.value=preferredTrim?(known?preferredTrim:'__custom__'):'';
-    vehicleField(prefix,'customTrim').classList.toggle('show',!!preferredTrim&&!known);
-    vehicleField(prefix,'customTrim').value=known?'':(preferredTrim||'');
+    fillDatalist(datalistId(prefix,'trim'),options);
+    if(preferredTrim!==undefined)trim.value=preferredTrim||'';
+    return options;
+  }
+  function updateModelOptions(prefix){
+    const make=vehicleField(prefix,'makeSelect').value.trim();
+    const model=vehicleField(prefix,'modelSelect');
+    fillDatalist(datalistId(prefix,'model'),modelCatalog[make]||[]);
+    model.disabled=!make;
   }
   function populateVehicle(prefix){
-    const makeSelect=vehicleField(prefix,'makeSelect'),modelSelect=vehicleField(prefix,'modelSelect'),trimSelect=vehicleField(prefix,'trimSelect');
-    makeSelect.innerHTML='<option value="">Choose a make</option>'+makes.map(m=>`<option value="${escapeHTML(m)}">${escapeHTML(m)}</option>`).join('')+'<option value="__custom__">Other / custom…</option>';
-    modelSelect.innerHTML='<option value="">Choose make first</option>';modelSelect.disabled=true;
-    trimSelect.innerHTML='<option value="">No submodel</option><option value="__custom__">Other / custom…</option>';
-    makeSelect.addEventListener('change',()=>{
-      const value=makeSelect.value;
-      vehicleField(prefix,'customMake').classList.toggle('show',value==='__custom__');
-      const items=value==='__custom__'?[]:(modelCatalog[value]||[]);
-      modelSelect.innerHTML='<option value="">Choose a model</option>'+items.map(m=>`<option value="${escapeHTML(m)}">${escapeHTML(m)}</option>`).join('')+'<option value="__custom__">Other / custom…</option>';
-      modelSelect.disabled=!value;
-      modelSelect.value='';
-      vehicleField(prefix,'customModel').classList.remove('show');vehicleField(prefix,'customModel').value='';
+    const make=vehicleField(prefix,'makeSelect'),model=vehicleField(prefix,'modelSelect'),trim=vehicleField(prefix,'trimSelect');
+    fillDatalist(datalistId(prefix,'make'),makes);
+    fillDatalist(datalistId(prefix,'model'),[]);
+    fillDatalist(datalistId(prefix,'trim'),[]);
+    model.disabled=true;
+    make.dataset.lastValue='';model.dataset.lastValue='';
+    const syncMake=()=>{
+      const value=make.value.trim();
+      if(value!==make.dataset.lastValue){
+        model.value='';trim.value='';model.dataset.lastValue='';
+        make.dataset.lastValue=value;
+      }
+      updateModelOptions(prefix);updateTrimOptions(prefix,'');
+      if(prefix==='')updateSpotProgress();
+    };
+    const syncModel=()=>{
+      const value=model.value.trim();
+      if(value!==model.dataset.lastValue){trim.value='';model.dataset.lastValue=value;}
       updateTrimOptions(prefix);
-    });
-    modelSelect.addEventListener('change',()=>{
-      vehicleField(prefix,'customModel').classList.toggle('show',modelSelect.value==='__custom__');
-      updateTrimOptions(prefix);
-    });
-    trimSelect.addEventListener('change',()=>vehicleField(prefix,'customTrim').classList.toggle('show',trimSelect.value==='__custom__'));
+      if(prefix==='')updateSpotProgress();
+    };
+    make.addEventListener('input',syncMake);make.addEventListener('change',syncMake);
+    model.addEventListener('input',syncModel);model.addEventListener('change',syncModel);
+    trim.addEventListener('input',()=>{if(prefix==='')updateSpotProgress()});
+    trim.addEventListener('change',()=>{if(prefix==='')updateSpotProgress()});
   }
   function setVehicleFields(prefix,spot){
-    const makeSelect=vehicleField(prefix,'makeSelect'),modelSelect=vehicleField(prefix,'modelSelect');
-    const makeKnown=makes.includes(spot.make);
-    makeSelect.value=makeKnown?spot.make:'__custom__';
-    vehicleField(prefix,'customMake').classList.toggle('show',!makeKnown);vehicleField(prefix,'customMake').value=makeKnown?'':spot.make;
-    const items=makeKnown?(modelCatalog[spot.make]||[]):[];
-    modelSelect.innerHTML='<option value="">Choose a model</option>'+items.map(m=>`<option value="${escapeHTML(m)}">${escapeHTML(m)}</option>`).join('')+'<option value="__custom__">Other / custom…</option>';
-    modelSelect.disabled=false;
-    const modelKnown=items.includes(spot.model);
-    modelSelect.value=modelKnown?spot.model:'__custom__';
-    vehicleField(prefix,'customModel').classList.toggle('show',!modelKnown);vehicleField(prefix,'customModel').value=modelKnown?'':spot.model;
+    const make=vehicleField(prefix,'makeSelect'),model=vehicleField(prefix,'modelSelect'),trim=vehicleField(prefix,'trimSelect');
+    make.value=spot.make||'';make.dataset.lastValue=make.value.trim();
+    updateModelOptions(prefix);
+    model.value=spot.model||'';model.dataset.lastValue=model.value.trim();
     updateTrimOptions(prefix,spot.trim||'');
   }
   function readVehicleFields(prefix){
-    const rawMake=vehicleField(prefix,'makeSelect').value,rawModel=vehicleField(prefix,'modelSelect').value,rawTrim=vehicleField(prefix,'trimSelect').value;
-    return {make:rawMake==='__custom__'?vehicleField(prefix,'customMake').value.trim():rawMake,model:rawModel==='__custom__'?vehicleField(prefix,'customModel').value.trim():rawModel,trim:rawTrim==='__custom__'?vehicleField(prefix,'customTrim').value.trim():rawTrim};
+    return {make:vehicleField(prefix,'makeSelect').value.trim(),model:vehicleField(prefix,'modelSelect').value.trim(),trim:vehicleField(prefix,'trimSelect').value.trim()};
   }
-  populateVehicle('');populateVehicle('edit');
+  function populateChoiceLists(){
+    const latest=Math.min(2099,new Date().getFullYear()+2);
+    const years=[];for(let y=latest;y>=1886;y--)years.push(String(y));
+    const colors=['Black','White','Pearl White','Ivory','Cream','Silver','Platinum Silver','Gray','Charcoal','Nardo Gray','Chalk','Aventurine Green','Blue','Navy Blue','Miami Blue','Racing Blue','Light Blue','Red','Guards Red','Rosso Corsa','Soul Red Crystal','Burgundy','Orange','Papaya Orange','Yellow','Giallo Modena','Green','British Racing Green','Lime Green','Purple','Brown','Bronze','Gold','Champagne','Beige','Tan','Copper','Two-tone','Other'];
+    ['yearOptions','editYearOptions'].forEach(id=>fillDatalist(id,years));
+    ['colorOptions','editColorOptions'].forEach(id=>fillDatalist(id,colors));
+  }
+  populateVehicle('');populateVehicle('edit');populateChoiceLists();
 
   function updateSpotProgress(){
     const vehicle=readVehicleFields('');
@@ -625,7 +844,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
       step.setAttribute('aria-label',`${step.textContent.trim()}${done?' complete':''}`);
     });
   }
-  ['makeSelect','modelSelect','customMake','customModel','trimSelect','customTrim'].forEach(key=>{
+  ['makeSelect','modelSelect','trimSelect'].forEach(key=>{
     const field=$(key);if(field){field.addEventListener('change',updateSpotProgress);field.addEventListener('input',updateSpotProgress);}
   });
   function animateHomeNumber(el,value){
@@ -649,54 +868,129 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     return {ratio,label,unlocked,next};
   }
 
-  let activeRevealResolve=null, revealAutoTimer=null;
-  function showSpotReveal(spot,total,progress){
-    const overlay=$('spotReveal'),rarity=estimateRarity(spot);
-    const reduced=document.body.classList.contains('reduce-motion')||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    $('spotRevealMake').textContent=spot.make.toUpperCase();
-    $('spotRevealModel').textContent=`${spot.year?spot.year+' ':''}${spot.model}`;
-    $('spotRevealTrim').textContent=spot.trim||spot.color||'A new addition to your sightings';
-    $('spotRevealRarity').textContent=rarity.label.toUpperCase();
-    $('spotRevealCountLabel').textContent=progress.unlocked?`${progress.unlocked}-SPOT MILESTONE`:`COLLECTION ENTRY #${String(total).padStart(3,'0')}`;
-    $('spotRevealCollectionLabel').textContent=progress.label;
-    $('spotRevealMonogram').textContent=`${(spot.make||'C').slice(0,1)}${(spot.model||'S').slice(0,1)}`.toUpperCase();
-    const photo=$('spotRevealPhoto'),empty=$('spotRevealNoPhoto');
-    if(spot.photo){photo.src=spot.photo;photo.hidden=false;empty.hidden=true;}else{photo.removeAttribute('src');photo.hidden=true;empty.hidden=false;}
-    overlay.dataset.rarity=rarity.key;
-    overlay.classList.toggle('is-special',rarity.rank>=3);
-    overlay.classList.toggle('is-elite',rarity.rank>=4);
-    $('spotRevealCount').textContent='0';
-    $('spotRevealStatus').innerHTML=`IDENTIFYING VEHICLE <span>01 / 04</span>`;
-    overlay.hidden=false;overlay.setAttribute('aria-hidden','false');
-    overlay.classList.remove('is-active','stage-scan','stage-reveal','stage-complete');
-    void overlay.offsetWidth;
-    requestAnimationFrame(()=>overlay.classList.add('is-active'));
-    if(reduced){
-      overlay.classList.add('stage-scan','stage-reveal','stage-complete');
-      $('spotRevealStatus').innerHTML='SIGHTING CAPTURED <span>04 / 04</span>';
-      $('spotRevealCount').textContent=String(total);
-    }else{
-      setTimeout(()=>{overlay.classList.add('stage-scan');$('spotRevealStatus').innerHTML='SCANNING VEHICLE <span>02 / 04</span>';},250);
-      setTimeout(()=>{overlay.classList.add('stage-reveal');$('spotRevealStatus').innerHTML='MATCH FOUND <span>03 / 04</span>';},1050);
-      setTimeout(()=>{overlay.classList.add('stage-complete');$('spotRevealStatus').innerHTML='SIGHTING CAPTURED <span>04 / 04</span>';},2050);
-      const start=performance.now(),duration=950;
-      const tick=now=>{const t=Math.min(1,(now-start)/duration),ease=1-Math.pow(1-t,3);$('spotRevealCount').textContent=String(Math.round(total*ease));if(t<1)requestAnimationFrame(tick)};
-      setTimeout(()=>requestAnimationFrame(tick),2050);
+  let activeRevealResolve=null, activeRevealSkip=null;
+  const revealDelay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+  function makeRevealConfetti(rarityKey){
+    const root=$('spotRevealConfetti');root.replaceChildren();
+    const palettes={common:['#cbd5e1','#94a3b8','#f8fafc'],uncommon:['#41d6a0','#8af0c6','#d3fff0'],rare:['#57a6ff','#9acbff','#e6f4ff'],epic:['#b47aff','#dbb7ff','#f7eaff'],legendary:['#ffd05a','#ffe5a1','#fff4d6']};
+    const palette=palettes[rarityKey]||palettes.rare;
+    for(let i=0;i<76;i++){
+      const bit=document.createElement('i');
+      const angle=(Math.PI*2*i/76)+(Math.random()-.5)*.3;
+      const distance=150+Math.random()*Math.min(370,window.innerWidth*.42);
+      bit.style.setProperty('--dx',`${Math.cos(angle)*distance}px`);
+      bit.style.setProperty('--dy',`${Math.sin(angle)*distance-80-Math.random()*140}px`);
+      bit.style.setProperty('--spin',`${Math.round((Math.random()-.5)*1100)}deg`);
+      bit.style.setProperty('--delay',`${Math.random()*.32}s`);
+      bit.style.setProperty('--duration',`${1.35+Math.random()*1.05}s`);
+      bit.style.setProperty('--confetti-color',palette[i%palette.length]);
+      bit.style.setProperty('--w',`${5+Math.random()*6}px`);
+      root.append(bit);
     }
+  }
+  function showSpotReveal(spot,total,progress){
     return new Promise(resolve=>{
-      let finished=false;
+      const overlay=$('spotReveal'),rarity=estimateRarity(spot);
+      const reduced=document.body.classList.contains('reduce-motion')||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      const rank=Math.max(1,Math.min(5,rarity.rank||1));
+      let finished=false,skipped=false,visualComplete=false;
+      $('spotRevealMake').textContent=spot.make.toUpperCase();
+      $('spotRevealModel').textContent=`${spot.year?spot.year+' ':''}${spot.model}`;
+      $('spotRevealTrim').textContent=spot.trim||spot.color||'A new addition to your sightings';
+      $('spotRevealRarity').textContent=rarity.label.toUpperCase();
+      $('spotRevealCountLabel').textContent=progress.unlocked?`${progress.unlocked}-SPOT MILESTONE`:`COLLECTION ENTRY #${String(total).padStart(3,'0')}`;
+      $('spotRevealCollectionLabel').textContent=progress.label;
+      $('spotRevealMonogram').textContent=`${(spot.make||'C').slice(0,1)}${(spot.model||'S').slice(0,1)}`.toUpperCase();
+      const photo=$('spotRevealPhoto'),empty=$('spotRevealNoPhoto');
+      if(spot.photo){photo.src=spot.photo;photo.hidden=false;empty.hidden=true;}else{photo.removeAttribute('src');photo.hidden=true;empty.hidden=false;}
+      overlay.dataset.rarity=rarity.key;
+      overlay.dataset.hits=String(rank);
+      overlay.classList.toggle('is-special',rarity.rank>=3);
+      overlay.classList.toggle('is-elite',rarity.rank>=4);
+      overlay.classList.remove('is-active','stage-scan','stage-launch','stage-slam','stage-hit','stage-reveal','stage-complete','stage-confetti','impact-flash');
+      $('spotRevealCount').textContent='0';
+      $('spotRevealCountUnit').textContent=total===1?'CAR':'CARS';
+      $('spotRevealHitCount').textContent=`IMPACTS 0 / ${rank}`;
+      $('spotRevealSkip').hidden=false;
+      overlay.hidden=false;overlay.setAttribute('aria-hidden','false');
+      document.body.classList.add('spot-reveal-open');
+      makeRevealConfetti(rarity.key);
+      void overlay.offsetWidth;
+      requestAnimationFrame(()=>overlay.classList.add('is-active'));
+
+      const finishVisual=()=>{
+        if(visualComplete)return;visualComplete=true;
+        overlay.classList.remove('impact-flash','stage-hit','stage-slam');
+        $('spotRevealHammer').classList.remove('is-striking');
+        overlay.classList.add('stage-scan','stage-launch','stage-reveal','stage-complete','stage-confetti');
+        $('spotRevealStatus').innerHTML=`RARITY SEALED <span>${rank} / ${rank} IMPACTS</span>`;
+        $('spotRevealHitCount').textContent=`${rank} / ${rank} IMPACTS · ${rarity.label.toUpperCase()}`;
+        $('spotRevealCount').textContent=String(total);
+        $('spotRevealSkip').hidden=true;
+        const actions=overlay.querySelector('.reveal-actions');
+        actions.setAttribute('aria-label','Sighting saved. Choose what to do next.');
+      };
+      activeRevealSkip=()=>{skipped=true;finishVisual()};
       const finish=action=>{
-        if(finished)return;finished=true;clearTimeout(revealAutoTimer);activeRevealResolve=null;
+        if(finished)return;finished=true;activeRevealSkip=null;activeRevealResolve=null;
         overlay.classList.remove('is-active');overlay.setAttribute('aria-hidden','true');
-        setTimeout(()=>{overlay.hidden=true;document.body.classList.remove('spot-reveal-open');},reduced?0:260);
+        setTimeout(()=>{overlay.hidden=true;document.body.classList.remove('spot-reveal-open');},320);
         resolve(action);
       };
       activeRevealResolve=finish;
-      revealAutoTimer=setTimeout(()=>finish('continue'),reduced?1100:3550);
-      document.body.classList.add('spot-reveal-open');
+
+      const countToTotal=async()=>{
+        if(reduced||skipped){$('spotRevealCount').textContent=String(total);return}
+        const duration=850,start=performance.now();
+        await new Promise(done=>{
+          const tick=now=>{
+            const t=Math.min(1,(now-start)/duration),ease=1-Math.pow(1-t,3);
+            $('spotRevealCount').textContent=String(Math.round(total*ease));
+            if(t<1&&!skipped)requestAnimationFrame(tick);else{$('spotRevealCount').textContent=String(total);done()}
+          };requestAnimationFrame(tick);
+        });
+      };
+      const runAnimation=async()=>{
+        if(reduced){finishVisual();return}
+        $('spotRevealStatus').innerHTML='SCANNING SIGHTING <span>01 / 04</span>';
+        await revealDelay(320);if(skipped)return;
+        overlay.classList.add('stage-scan');
+        $('spotRevealStatus').innerHTML='PHOTO DETECTED <span>02 / 04</span>';
+        await revealDelay(520);if(skipped)return;
+        overlay.classList.add('stage-launch');
+        $('spotRevealStatus').innerHTML='INCOMING · PHOTO DROP';
+        await revealDelay(980);if(skipped)return;
+        overlay.classList.add('stage-slam');
+        $('spotRevealStatus').innerHTML='VERIFYING VEHICLE';
+        if(navigator.vibrate){try{navigator.vibrate([35,30,45])}catch{}}
+        await revealDelay(430);if(skipped)return;
+        const hammer=$('spotRevealHammer');
+        for(let hit=1;hit<=rank;hit++){
+          if(skipped)return;
+          $('spotRevealStatus').innerHTML=`RARITY CALIBRATION <span>IMPACT ${hit} / ${rank}</span>`;
+          $('spotRevealHitCount').textContent=`IMPACT ${hit} / ${rank}`;
+          overlay.dataset.impact=String(hit);
+          overlay.classList.remove('impact-flash','stage-hit');hammer.classList.remove('is-striking');
+          void overlay.offsetWidth;void hammer.offsetWidth;
+          overlay.classList.add('impact-flash','stage-hit');hammer.classList.add('is-striking');
+          if(navigator.vibrate){try{navigator.vibrate(hit===rank?[45,35,65]:[28])}catch{}}
+          await revealDelay(450);if(skipped)return;
+          overlay.classList.remove('impact-flash','stage-hit');hammer.classList.remove('is-striking');
+          await revealDelay(145);if(skipped)return;
+        }
+        overlay.classList.add('stage-reveal');
+        $('spotRevealStatus').innerHTML='RARITY MATCH CONFIRMED <span>03 / 04</span>';
+        await countToTotal();if(skipped)return;
+        overlay.classList.add('stage-complete','stage-confetti');
+        $('spotRevealStatus').innerHTML='SIGHTING CAPTURED <span>04 / 04</span>';
+        $('spotRevealHitCount').textContent=`${rank} / ${rank} IMPACTS · ${rarity.label.toUpperCase()}`;
+        await revealDelay(280);if(skipped)return;
+        finishVisual();
+      };
+      runAnimation().catch(err=>{console.error('Reveal animation failed:',err);finishVisual()});
     });
   }
-  $('spotRevealSkip').addEventListener('click',()=>activeRevealResolve?.('continue'));
+  $('spotRevealSkip').addEventListener('click',()=>activeRevealSkip?.());
   $('spotRevealAnother').addEventListener('click',()=>activeRevealResolve?.('another'));
   $('spotRevealView').addEventListener('click',()=>activeRevealResolve?.('view'));
 
@@ -725,12 +1019,61 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     catch(err){showToast(err.message||'Could not prepare this photo.');$('photoStatus').textContent='No photo selected';currentPhoto='';$('photoDrop').classList.remove('has-photo','no-photo');updateSpotProgress();}
     finally{$('saveSpotButton').disabled=false}
   }
-  $('photoFile').addEventListener('change',e=>{const file=e.target.files?.[0];if(file)setSelectedPhoto(file)});
+  let photoPickerPurpose='spot';
+  function openPhotoSource(purpose){
+    photoPickerPurpose=purpose;
+    const copy={spot:'Add a picture of the car you spotted.',edit:'Choose a replacement picture for this sighting.',hero:'Choose a photo to replace the car-and-moon artwork on your home page.'};
+    $('photoSourceCopy').textContent=copy[purpose]||'Choose where your picture should come from.';
+    showModal('photoSourceModal');
+  }
+  function choosePhotoSource(source){
+    const input=$('photo'+(source==='camera'?'Camera':'Library')+'Input');
+    input.value='';
+    hideModal('photoSourceModal');
+    // Keep click() directly in the user-initiated handler so iOS Safari can open its picker/camera.
+    input.click();
+  }
+  $('choosePhotoLibrary').addEventListener('click',()=>choosePhotoSource('library'));
+  $('choosePhotoCamera').addEventListener('click',()=>choosePhotoSource('camera'));
+  async function handlePickedPhoto(file){
+    if(!file)return;
+    const purpose=photoPickerPurpose;
+    if(purpose==='spot'){await setSelectedPhoto(file);return;}
+    if(purpose==='edit'){
+      $('editPhotoStatus').textContent='Preparing…';
+      try{editPhoto=await compressPhoto(file);$('editPhotoPreview').src=editPhoto;$('editPhotoStatus').textContent=`New photo · ${bytesLabel(photoSize(editPhoto))}`;}
+      catch(err){editPhoto='';$('editPhotoStatus').textContent='Could not use this photo';showToast(err.message||'Could not use this photo.');}
+      return;
+    }
+    if(purpose==='hero'){
+      const previous=data.homeHeroPhoto||'';
+      $('homeHeroChangePhoto').disabled=true;$('homeHeroChangePhoto').textContent='PREPARING…';
+      try{
+        const compressed=await compressPhoto(file,1440,.76);
+        data.homeHeroPhoto=compressed;
+        await persist();renderHomeHero();showToast('Home page photo updated.');
+      }catch(err){data.homeHeroPhoto=previous;renderHomeHero();showToast(err.message||'Could not save the home page photo.');}
+      finally{$('homeHeroChangePhoto').disabled=false;}
+    }
+  }
+  ['photoLibraryInput','photoCameraInput'].forEach(inputId=>$(inputId).addEventListener('change',e=>{
+    const file=e.target.files?.[0];
+    if(file)handlePickedPhoto(file);
+    e.target.value='';
+  }));
+  $('addPhotoButton').addEventListener('click',()=>openPhotoSource('spot'));
+  $('homeHeroChangePhoto').addEventListener('click',()=>openPhotoSource('hero'));
+  $('homeHeroResetPhoto').addEventListener('click',async()=>{
+    const previous=data.homeHeroPhoto||'';data.homeHeroPhoto='';
+    try{await persist();renderHomeHero();showToast('Original car-and-moon artwork restored.');}
+    catch(err){data.homeHeroPhoto=previous;renderHomeHero();}
+  });
+  $('editChangePhoto').addEventListener('click',()=>openPhotoSource('edit'));
   $('photoDrop').addEventListener('dragover',e=>{e.preventDefault();$('photoDrop').classList.add('dragover')});
   $('photoDrop').addEventListener('dragleave',()=>$('photoDrop').classList.remove('dragover'));
   $('photoDrop').addEventListener('drop',e=>{e.preventDefault();$('photoDrop').classList.remove('dragover');const file=e.dataTransfer?.files?.[0];if(file)setSelectedPhoto(file)});
-  $('removePhoto').addEventListener('click',()=>{currentPhoto='';$('photoFile').value='';$('photoPreview').removeAttribute('src');$('photoDrop').classList.remove('has-photo','no-photo');$('photoStatus').textContent='No photo selected';updateSpotProgress()});
-  $('noPhotoButton').addEventListener('click',()=>{currentPhoto='';$('photoFile').value='';$('photoPreview').removeAttribute('src');$('photoDrop').classList.remove('has-photo');$('photoDrop').classList.add('no-photo');$('photoStatus').textContent='Saving without a photo';updateSpotProgress();});
+  $('removePhoto').addEventListener('click',()=>{currentPhoto='';$('photoLibraryInput').value='';$('photoCameraInput').value='';$('photoPreview').removeAttribute('src');$('photoDrop').classList.remove('has-photo','no-photo');$('photoStatus').textContent='No photo selected';updateSpotProgress()});
+  $('noPhotoButton').addEventListener('click',()=>{currentPhoto='';$('photoLibraryInput').value='';$('photoCameraInput').value='';$('photoPreview').removeAttribute('src');$('photoDrop').classList.remove('has-photo');$('photoDrop').classList.add('no-photo');$('photoStatus').textContent='Saving without a photo';updateSpotProgress();});
   $('notesInput').addEventListener('input',()=>{$('notesCounter').textContent=`${$('notesInput').value.length} / 280`});
   updateSpotProgress();
 
@@ -762,10 +1105,10 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 
   function resetSpotForm(){
     $('spotForm').reset();
-    $('modelSelect').innerHTML='<option value="">Choose make first</option>';$('modelSelect').disabled=true;
-    updateTrimOptions('');
-    ['customMake','customModel','customTrim'].forEach(key=>{$(key).classList.remove('show');$(key).value=''});
-    currentPhoto='';$('photoFile').value='';$('photoPreview').removeAttribute('src');$('photoDrop').classList.remove('has-photo','no-photo');$('photoStatus').textContent='No photo selected';$('yearInput').value='';$('colorInput').value='';$('placeInput').value='';$('notesInput').value='';$('notesCounter').textContent='0 / 280';clearCurrentLocation();updateSpotRunNotice();updateSpotProgress();
+    $('makeSelect').value='';$('makeSelect').dataset.lastValue='';
+    $('modelSelect').value='';$('modelSelect').dataset.lastValue='';$('modelSelect').disabled=true;
+    $('trimSelect').value='';updateModelOptions('');updateTrimOptions('','');
+    currentPhoto='';$('photoLibraryInput').value='';$('photoCameraInput').value='';$('photoPreview').removeAttribute('src');$('photoDrop').classList.remove('has-photo','no-photo');$('photoStatus').textContent='No photo selected';$('yearInput').value='';$('colorInput').value='';$('placeInput').value='';$('notesInput').value='';$('notesCounter').textContent='0 / 280';clearCurrentLocation();updateSpotRunNotice();updateSpotProgress();
   }
   $('viewLastSpotButton').addEventListener('click',()=>{const spotId=$('viewLastSpotButton').dataset.spotId;if(spotId)openSpotDetail(spotId)});
   $('spotForm').addEventListener('submit',async e=>{
@@ -916,10 +1259,9 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
   $('favoriteSpotButton').addEventListener('click',async()=>{const spot=data.spots.find(s=>s.id===currentDetailId);if(!spot)return;spot.favorite=!spot.favorite;try{await persist();renderAll();openSpotDetail(spot.id);showToast(spot.favorite?'Added to favorites.':'Removed from favorites.')}catch{spot.favorite=!spot.favorite}});
   $('editSpotButton').addEventListener('click',()=>{
     const spot=data.spots.find(s=>s.id===currentDetailId);if(!spot)return;currentEditId=spot.id;editPhoto='';
-    setVehicleFields('edit',spot);$('editPhotoPreview').src=spot.photo||'';$('editPhotoStatus').textContent=spot.photo?'Current photo':'No photo saved';$('editPhotoFile').value='';$('editYearInput').value=spot.year||'';$('editColorInput').value=spot.color||'';$('editPlaceInput').value=spot.place||'';$('editNotesInput').value=spot.notes||'';
+    setVehicleFields('edit',spot);$('editPhotoPreview').src=spot.photo||'';$('editPhotoStatus').textContent=spot.photo?'Current photo':'No photo saved';$('editYearInput').value=spot.year||'';$('editColorInput').value=spot.color||'';$('editPlaceInput').value=spot.place||'';$('editNotesInput').value=spot.notes||'';
     hideModal('spotDetailModal');showModal('editSpotModal');
   });
-  $('editPhotoFile').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;$('editPhotoStatus').textContent='Preparing…';try{editPhoto=await compressPhoto(file);$('editPhotoPreview').src=editPhoto;$('editPhotoStatus').textContent=`New photo · ${bytesLabel(photoSize(editPhoto))}`}catch(err){editPhoto='';$('editPhotoStatus').textContent='Could not use this photo';showToast(err.message)}});
   $('saveEditButton').addEventListener('click',async()=>{
     const spot=data.spots.find(s=>s.id===currentEditId);if(!spot)return;
     const fields=readVehicleFields('edit');if(!fields.make||!fields.model){showToast('Make and model are required.');return}
@@ -1004,7 +1346,15 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
     $('profileInitials').textContent=(profile.name||'Car enthusiast').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'CS';
     setProfileAvatar();$('profileThemeSelect').value=document.body.dataset.theme||'light';applyAccessibility();
   }
+  function renderHomeHero(){
+    const photo=data.homeHeroPhoto||'';
+    const img=$('homeHeroPhoto'),defaultArt=$('homeHeroDefaultArt');
+    if(!img||!defaultArt)return;
+    if(photo){img.src=photo;img.hidden=false;defaultArt.hidden=true;$('homeHeroChangePhoto').textContent='↻ CHANGE PHOTO';$('homeHeroResetPhoto').hidden=false;}
+    else{img.removeAttribute('src');img.hidden=true;defaultArt.hidden=false;$('homeHeroChangePhoto').textContent='＋ SET HERO PHOTO';$('homeHeroResetPhoto').hidden=true;}
+  }
   function renderHome(){
+    renderHomeHero();
     if(!$('homeRecentList'))return;
     const makes=new Set(data.spots.map(s=>s.make.toLowerCase())).size;
     animateHomeNumber($('homeTotal'),data.spots.length);animateHomeNumber($('homeMakes'),makes);
@@ -1055,7 +1405,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
   });
   $('clearAllButton').addEventListener('click',async()=>{
     if(!confirm('Permanently delete every saved car, photo and run from this browser? Export a backup first if you may want these later.'))return;
-    const old=data;data={spots:[],runs:[],activeRunId:null};
+    const old=data;data={spots:[],runs:[],activeRunId:null,homeHeroPhoto:''};
     try{await persist();hideModal('dataModal');renderAll();showToast('All CarSpotter data cleared.')}
     catch{data=old}
   });
