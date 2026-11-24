@@ -134,10 +134,10 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 .stage-launch .reveal-photo-card{visibility:visible;opacity:1;filter:blur(0);animation:photoLaunchSlam .92s cubic-bezier(.13,.84,.2,1) both;}
 .stage-slam .reveal-photo-card{animation:photoImpactBounce .48s cubic-bezier(.2,.85,.22,1) both;}
 .stage-reveal .reveal-photo-card{visibility:visible;opacity:1;filter:blur(0);transform:translate3d(0,0,0) rotate(0) scale(1);}
-.reveal-hammer{position:absolute;z-index:14;top:-37px;left:calc(50% + 70px);width:clamp(115px,17vw,185px);height:clamp(130px,22vh,205px);opacity:0;transform:translate3d(90px,-180px,0) rotate(-38deg);transform-origin:84% 13%;pointer-events:none;filter:drop-shadow(0 16px 12px rgba(0,0,0,.42));}
+.reveal-hammer{position:absolute;z-index:14;top:-5px;left:calc(50% + 16px);width:190px;height:220px;opacity:0;transform:translate3d(110px,-150px,0) rotate(44deg);transform-origin:68% 88%;pointer-events:none;filter:drop-shadow(0 17px 12px rgba(0,0,0,.44)) drop-shadow(0 2px 2px rgba(0,0,0,.32));will-change:transform,opacity;}
 .reveal-hammer svg{width:100%;height:100%;overflow:visible}
-.stage-slam .reveal-hammer{opacity:1;animation:hammerEnter .42s cubic-bezier(.16,.9,.2,1) both;}
-.reveal-hammer.is-striking{opacity:1;animation:hammerStrike .42s cubic-bezier(.2,.84,.22,1) both;}
+.stage-slam .reveal-hammer{opacity:1;animation:hammerReady .58s cubic-bezier(.18,.82,.22,1) both;}
+.reveal-hammer.is-striking{opacity:1;animation:hammerHumanSwing .78s cubic-bezier(.2,.74,.22,1) both;}
 .reveal-hit-count{position:absolute;z-index:16;left:50%;bottom:4px;transform:translateX(-50%);padding:7px 11px;border:1px solid color-mix(in srgb,var(--reveal-glow) 42%,transparent);border-radius:99px;background:rgba(4,13,26,.8);color:var(--reveal-glow);font-size:8px;font-weight:1000;letter-spacing:1.4px;white-space:nowrap;box-shadow:0 5px 22px rgba(0,0,0,.28);}
 .reveal-screen-flash{position:fixed;z-index:503;inset:0;opacity:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,color-mix(in srgb,var(--reveal-glow) 64%,transparent),transparent 57%);mix-blend-mode:screen;}
 .spot-reveal.impact-flash .reveal-screen-flash{animation:rarityScreenFlash .32s ease-out both;}
@@ -155,14 +155,14 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 .spot-reveal .reveal-track span{background:linear-gradient(90deg,var(--reveal-glow),#fff,var(--reveal-glow));box-shadow:0 0 16px var(--reveal-glow);}
 @keyframes photoLaunchSlam{0%{opacity:0;filter:blur(8px);transform:translate3d(0,-115vh,0) rotate(-8deg) scale(.68)}62%{opacity:1;filter:blur(0);transform:translate3d(0,24px,0) rotate(2deg) scale(1.06)}78%{transform:translate3d(0,-10px,0) rotate(-1deg) scale(.985)}100%{opacity:1;filter:blur(0);transform:translate3d(0,0,0) rotate(0) scale(1)}}
 @keyframes photoImpactBounce{0%{transform:translate3d(0,0,0) scale(1)}22%{transform:translate3d(0,11px,0) scale(1.025,.97)}52%{transform:translate3d(0,-5px,0) scale(.99,1.015)}100%{transform:translate3d(0,0,0) scale(1)}}
-@keyframes hammerEnter{0%{opacity:0;transform:translate3d(90px,-180px,0) rotate(-38deg)}100%{opacity:1;transform:translate3d(0,0,0) rotate(-16deg)}}
-@keyframes hammerStrike{0%{opacity:1;transform:translate3d(0,0,0) rotate(-16deg)}48%{opacity:1;transform:translate3d(-176px,108px,0) rotate(34deg)}64%{transform:translate3d(-167px,90px,0) rotate(26deg)}100%{opacity:1;transform:translate3d(0,0,0) rotate(-16deg)}}
+@keyframes hammerReady{0%{opacity:0;transform:translate3d(110px,-150px,0) rotate(44deg)}72%{opacity:1;transform:translate3d(-2px,4px,0) rotate(10deg)}88%{transform:translate3d(2px,-2px,0) rotate(20deg)}100%{opacity:1;transform:translate3d(0,0,0) rotate(16deg)}}
+@keyframes hammerHumanSwing{0%{opacity:1;transform:translate3d(0,0,0) rotate(16deg)}13%{transform:translate3d(14px,-17px,0) rotate(37deg)}29%{transform:translate3d(18px,-13px,0) rotate(32deg)}54%{transform:translate3d(7px,-3px,0) rotate(-36deg)}60%{transform:translate3d(-3px,4px,0) rotate(-59deg)}65%{transform:translate3d(-6px,10px,0) rotate(-63deg)}73%{transform:translate3d(-5px,5px,0) rotate(-43deg)}87%{transform:translate3d(4px,-4px,0) rotate(2deg)}100%{opacity:1;transform:translate3d(0,0,0) rotate(16deg)}}
 @keyframes rarityScreenFlash{0%{opacity:0}18%{opacity:.68}45%{opacity:.32}100%{opacity:0}}
 @keyframes impactJolt{0%,100%{transform:translate3d(0,0,0)}22%{transform:translate3d(-5px,3px,0) rotate(-.25deg)}48%{transform:translate3d(4px,-2px,0) rotate(.2deg)}72%{transform:translate3d(-2px,1px,0)}}
 @keyframes rarityConfetti{0%{opacity:0;transform:translate3d(0,0,0) rotate(0) scale(.45)}8%{opacity:1}100%{opacity:0;transform:translate3d(var(--dx),var(--dy),0) rotate(var(--spin)) scale(1)}}
 @keyframes revealTitlePop{0%{opacity:0;transform:translateY(18px) scale(.96)}72%{opacity:1;transform:translateY(-3px) scale(1.015)}100%{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes hitBadgePulse{0%{transform:translateX(-50%) scale(.88);filter:brightness(1)}45%{transform:translateX(-50%) scale(1.08);filter:brightness(1.6)}100%{transform:translateX(-50%) scale(1);filter:brightness(1)}}
-@media(max-width:600px){.reveal-hammer{left:calc(50% + 42px);top:-23px;width:115px;height:145px}.reveal-hit-count{bottom:-1px;font-size:7px;padding:6px 9px}.reveal-photo-card{width:min(440px,88vw)}}
+@media(max-width:600px){.reveal-hammer{left:calc(50% - 22px);top:-18px;width:150px;height:180px}.reveal-hit-count{bottom:-1px;font-size:7px;padding:6px 9px}.reveal-photo-card{width:min(440px,88vw)}}
 /* The reduced-motion variant keeps a small, readable hammer movement. */
 
 
@@ -218,8 +218,8 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 .spot-reveal.gentle-motion .reveal-orbit{opacity:.45}
 .spot-reveal.gentle-motion.stage-launch .reveal-photo-card{animation:photoLaunchGentle .92s ease-out both!important}
 .spot-reveal.gentle-motion.stage-slam .reveal-photo-card{animation:photoImpactGentle .38s ease-out both!important}
-.spot-reveal.gentle-motion.stage-slam .reveal-hammer{animation:hammerEnterGentle .42s ease-out both!important}
-.spot-reveal.gentle-motion .reveal-hammer.is-striking{animation:hammerStrikeGentle .42s ease-in-out both!important}
+.spot-reveal.gentle-motion.stage-slam .reveal-hammer{animation:hammerReadyGentle .58s ease-out both!important}
+.spot-reveal.gentle-motion .reveal-hammer.is-striking{animation:hammerHumanSwingGentle .78s ease-in-out both!important}
 .spot-reveal.gentle-motion.stage-hit .reveal-stage{animation:none!important}
 .spot-reveal.gentle-motion.impact-flash .reveal-stage:before{animation:none!important;opacity:.22;transform:translate(-50%,-50%) scale(1)}
 .spot-reveal.gentle-motion.impact-flash .reveal-photo-card{animation:photoImpactGentle .24s ease-out both!important;filter:none!important}
@@ -228,8 +228,8 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 .spot-reveal.gentle-motion .reveal-confetti{display:none!important}
 @keyframes photoLaunchGentle{0%{opacity:0;filter:none;transform:translate3d(0,-32vh,0) scale(.96)}70%{opacity:1;transform:translate3d(0,5px,0) scale(1.01)}100%{opacity:1;filter:none;transform:translate3d(0,0,0) scale(1)}}
 @keyframes photoImpactGentle{0%,100%{transform:translate3d(0,0,0) scale(1)}45%{transform:translate3d(0,3px,0) scale(1.008)}70%{transform:translate3d(0,-1px,0) scale(.998)}}
-@keyframes hammerEnterGentle{0%{opacity:0;transform:translate3d(24px,-42px,0) rotate(-28deg)}100%{opacity:1;transform:translate3d(0,0,0) rotate(-16deg)}}
-@keyframes hammerStrikeGentle{0%,100%{opacity:1;transform:translate3d(0,0,0) rotate(-16deg)}48%{opacity:1;transform:translate3d(-66px,43px,0) rotate(9deg)}66%{transform:translate3d(-58px,34px,0) rotate(4deg)}}
+@keyframes hammerReadyGentle{0%{opacity:0;transform:translate3d(48px,-60px,0) rotate(40deg)}75%{opacity:1;transform:translate3d(0,0,0) rotate(12deg)}100%{opacity:1;transform:translate3d(0,0,0) rotate(16deg)}}
+@keyframes hammerHumanSwingGentle{0%{opacity:1;transform:translate3d(0,0,0) rotate(16deg)}14%{transform:translate3d(9px,-11px,0) rotate(33deg)}30%{transform:translate3d(12px,-8px,0) rotate(28deg)}54%{transform:translate3d(4px,-2px,0) rotate(-32deg)}61%{transform:translate3d(-2px,3px,0) rotate(-55deg)}67%{transform:translate3d(-4px,6px,0) rotate(-58deg)}75%{transform:translate3d(-2px,3px,0) rotate(-40deg)}88%{transform:translate3d(2px,-2px,0) rotate(2deg)}100%{opacity:1;transform:translate3d(0,0,0) rotate(16deg)}}
 
 
 /* Rarity reveal ladder: the whole screen advances from Common through the earned tier. */
@@ -247,6 +247,14 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
 .reveal-hit-count{transition:color .45s ease,border-color .45s ease,box-shadow .45s ease;}
 .reveal-orbit{transition:border-color .45s ease,box-shadow .45s ease;}
 
+
+/* Hammer redesign: readable claw-hammer silhouette and a deliberate, human swing arc. */
+.reveal-hammer svg{display:block;overflow:visible;transform-origin:68% 88%;}
+.reveal-hammer{transform-origin:68% 88%;}
+.spot-reveal.impact-flash .reveal-hammer{filter:drop-shadow(0 20px 14px rgba(0,0,0,.48)) drop-shadow(0 0 10px color-mix(in srgb,var(--reveal-glow) 34%,transparent));}
+.spot-reveal.impact-flash .reveal-photo-card{box-shadow:0 34px 82px rgba(0,0,0,.55),0 0 0 8px color-mix(in srgb,var(--reveal-glow) 18%,transparent),0 0 58px color-mix(in srgb,var(--reveal-glow) 42%,transparent);}
+@media(max-width:600px){.reveal-hammer{left:calc(50% - 22px);top:-18px;width:150px;height:180px;}}
+@media(min-width:601px){.reveal-hammer{left:calc(50% + 16px);top:-5px;width:190px;height:220px;}}
 </style>
 </head>
 <body data-theme="light">
@@ -469,14 +477,42 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
         <span class="reveal-photo-glint"></span>
       </div>
       <div class="reveal-hammer" id="spotRevealHammer" aria-hidden="true">
-        <svg viewBox="0 0 190 205" role="presentation">
-          <defs><linearGradient id="hammerMetal" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#f4f8ff"/><stop offset=".45" stop-color="#aebed2"/><stop offset="1" stop-color="#64758d"/></linearGradient><linearGradient id="hammerGrip" x1="0" x2="1"><stop offset="0" stop-color="#d3a15b"/><stop offset=".5" stop-color="#80502b"/><stop offset="1" stop-color="#e0b477"/></linearGradient></defs>
-          <path d="M139 18 C132 43 126 56 112 76 L62 151" stroke="#26364c" stroke-width="30" stroke-linecap="round" fill="none"/>
-          <path d="M139 18 C132 43 126 56 112 76 L62 151" stroke="url(#hammerGrip)" stroke-width="20" stroke-linecap="round" fill="none"/>
-          <path d="M20 38 Q17 30 26 24 L122 4 Q132 2 137 10 L149 39 Q152 48 143 53 L48 76 Q38 79 34 70Z" fill="#26364c" opacity=".8"/>
-          <path d="M24 31 Q22 24 31 22 L122 5 Q131 3 135 11 L144 34 Q147 42 138 46 L48 65 Q39 68 35 60Z" fill="url(#hammerMetal)" stroke="#e6effb" stroke-width="2"/>
-          <path d="M30 31 130 12" stroke="#fff" stroke-width="3" opacity=".65" stroke-linecap="round"/>
-          <path d="M54 142 75 156" stroke="#6d4127" stroke-width="4" opacity=".75" stroke-linecap="round"/>
+        <svg viewBox="0 0 220 250" role="presentation" focusable="false">
+          <defs>
+            <linearGradient id="hammerSteel" x1="0" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".18" stop-color="#dce8f5"/><stop offset=".48" stop-color="#8799ad"/><stop offset=".72" stop-color="#e8f0f8"/><stop offset="1" stop-color="#52657d"/></linearGradient>
+            <linearGradient id="hammerFace" x1="0" y1="0" x2="1" y2=".1"><stop offset="0" stop-color="#9aabc0"/><stop offset=".42" stop-color="#f8fbff"/><stop offset="1" stop-color="#788ba2"/></linearGradient>
+            <linearGradient id="hammerWood" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#70401f"/><stop offset=".28" stop-color="#d49a58"/><stop offset=".53" stop-color="#f0c17c"/><stop offset=".78" stop-color="#9b5c2d"/><stop offset="1" stop-color="#543019"/></linearGradient>
+            <linearGradient id="hammerRubber" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#111b2b"/><stop offset=".45" stop-color="#42536a"/><stop offset="1" stop-color="#172335"/></linearGradient>
+            <linearGradient id="hammerGlove" x1="0" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#50647b"/><stop offset=".55" stop-color="#26384e"/><stop offset="1" stop-color="#142235"/></linearGradient>
+            <filter id="hammerHeadShadow" x="-35%" y="-50%" width="180%" height="210%"><feGaussianBlur in="SourceAlpha" stdDeviation="3.5" result="blur"/><feOffset dy="4" result="offset"/><feComponentTransfer><feFuncA type="linear" slope=".42"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <!-- Long wooden haft, with a rubberized end grip. -->
+          <path d="M105 53 C111 99 125 155 146 218" fill="none" stroke="#201a18" stroke-width="31" stroke-linecap="round"/>
+          <path d="M105 53 C111 99 125 155 146 218" fill="none" stroke="url(#hammerWood)" stroke-width="23" stroke-linecap="round"/>
+          <path d="M99 66 C107 111 122 164 141 208" fill="none" stroke="#ffe0a6" stroke-width="3" stroke-linecap="round" opacity=".72"/>
+          <path d="M132 178 Q139 174 147 178 L163 214 Q166 223 157 230 L146 234 Q137 232 134 223 L123 193 Q121 184 132 178Z" fill="url(#hammerRubber)" stroke="#0a1422" stroke-width="3"/>
+          <path d="M130 190 156 183 M134 201 160 194 M138 212 163 205 M144 222 164 216" stroke="#71839a" stroke-width="2.3" opacity=".6" stroke-linecap="round"/>
+          <path d="M139 183 158 178" stroke="#b5c2d1" stroke-width="2" opacity=".6" stroke-linecap="round"/>
+          <!-- A gloved hand visibly grips the handle. -->
+          <path d="M153 185 C163 178 173 184 179 195 L196 238 L174 250 L148 214Z" fill="#1d3552" stroke="#0b1728" stroke-width="4"/>
+          <path d="M152 190 174 180 182 194 160 207Z" fill="#91a8c3" stroke="#263b55" stroke-width="3"/>
+          <path d="M128 157 C133 148 145 145 155 151 L170 162 Q177 169 171 181 L162 194 Q156 201 145 194 L126 182 Q117 175 121 165Z" fill="url(#hammerGlove)" stroke="#0b1728" stroke-width="4"/>
+          <path d="M124 164 Q136 158 146 169 L161 180 M126 174 Q139 171 151 184 M137 151 Q146 149 155 158" fill="none" stroke="#8294a9" stroke-width="3" stroke-linecap="round" opacity=".72"/>
+          <path d="M147 157 Q157 154 164 163" fill="none" stroke="#d0d9e3" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+          <!-- Forked claw on the left and a flat striking face on the right. -->
+          <g transform="translate(220 0) scale(-1 1)" filter="url(#hammerHeadShadow)">
+            <path d="M82 38 C64 22 49 11 34 14 C20 16 18 28 27 36 Q33 42 48 40" fill="none" stroke="#53677f" stroke-width="22" stroke-linecap="round"/>
+            <path d="M82 60 C63 76 49 88 35 84 C21 82 19 70 28 62 Q34 56 48 57" fill="none" stroke="#53677f" stroke-width="22" stroke-linecap="round"/>
+            <path d="M82 38 C64 22 49 11 34 14 C20 16 18 28 27 36 Q33 42 48 40" fill="none" stroke="url(#hammerSteel)" stroke-width="16" stroke-linecap="round"/>
+            <path d="M82 60 C63 76 49 88 35 84 C21 82 19 70 28 62 Q34 56 48 57" fill="none" stroke="url(#hammerSteel)" stroke-width="16" stroke-linecap="round"/>
+            <path d="M58 30 Q53 38 57 49 Q57 62 65 69 L174 80 Q187 81 191 68 L202 43 Q205 31 193 27 L79 17 Q65 16 58 30Z" fill="url(#hammerSteel)" stroke="#dfeaf5" stroke-width="3"/>
+            <path d="M174 24 Q188 20 196 28 L210 45 Q214 52 209 61 L195 76 Q188 83 179 77 L184 51Z" fill="url(#hammerFace)" stroke="#f6fbff" stroke-width="2.5"/>
+            <path d="M187 32 Q198 36 201 49 Q201 61 190 70" fill="none" stroke="#60738b" stroke-width="3" opacity=".8"/>
+            <path d="M67 27 178 31" stroke="#fff" stroke-width="3.5" stroke-linecap="round" opacity=".78"/>
+            <path d="M68 67 177 72" stroke="#53677f" stroke-width="2" stroke-linecap="round" opacity=".48"/>
+            <path d="M104 26 Q119 38 132 69" fill="none" stroke="#6e8299" stroke-width="3" opacity=".65"/>
+            <circle cx="113" cy="46" r="5.5" fill="#dce7f2" stroke="#71869c" stroke-width="2"/>
+          </g>
         </svg>
       </div>
       <div class="reveal-hit-count" id="spotRevealHitCount">IMPACTS 0 / 0</div>
@@ -1012,7 +1048,7 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
         overlay.classList.add('stage-slam');
         $('spotRevealStatus').innerHTML='VERIFYING VEHICLE';
         if(navigator.vibrate&&!gentleMotion){try{navigator.vibrate([35,30,45])}catch{}}
-        await revealDelay(430);if(skipped)return;
+        await revealDelay(610);if(skipped)return;
         const hammer=$('spotRevealHammer');
         const rarityLadder=[
           {key:'common',label:'COMMON'},
@@ -1033,17 +1069,19 @@ body.reduce-motion .spot-success-note.is-celebrating,body.reduce-motion .is-cele
           overlay.classList.remove('impact-flash','stage-hit');hammer.classList.remove('is-striking');
           void overlay.offsetWidth;void hammer.offsetWidth;
           overlay.classList.add('stage-hit');hammer.classList.add('is-striking');
-          // The hammer's head reaches the photo about halfway through its swing.
-          // Advance the full-screen rarity color precisely at that contact point.
-          await revealDelay(200);if(skipped)return;
+          // The backswing and acceleration are part of the 780ms arc; this pause
+          // lands the head on the photo at the 60% contact frame.
+          await revealDelay(470);if(skipped)return;
           overlay.dataset.currentRarity=level.key;
           $('spotRevealRarity').textContent=level.label;
           $('spotRevealStatus').innerHTML=`${levelsUp?'RARITY LEVEL UP':'RARITY LOCKED'} <span>${level.label} · IMPACT ${hit} / ${rank}</span>`;
           overlay.classList.add('impact-flash');
           if(navigator.vibrate&&!gentleMotion){try{navigator.vibrate(hit===rank?[45,35,65]:[28])}catch{}}
-          await revealDelay(250);if(skipped)return;
-          overlay.classList.remove('impact-flash','stage-hit');hammer.classList.remove('is-striking');
-          await revealDelay(145);if(skipped)return;
+          await revealDelay(320);if(skipped)return;
+          overlay.classList.remove('impact-flash');
+          await revealDelay(100);if(skipped)return;
+          overlay.classList.remove('stage-hit');hammer.classList.remove('is-striking');
+          await revealDelay(90);if(skipped)return;
         }
         overlay.classList.add('stage-reveal');
         $('spotRevealStatus').innerHTML='RARITY MATCH CONFIRMED <span>03 / 04</span>';
