@@ -10359,13 +10359,14 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
 <style>
 
 /* Hands-on visual coachmarks for the first-run guide. */
-.coach-layer{position:fixed;inset:0;z-index:16000;pointer-events:none;}
-.coach-spotlight{position:fixed;left:0;top:0;width:1px;height:1px;border:2px solid rgba(255,255,255,.98);border-radius:15px;background:transparent;box-shadow:0 0 0 9999px rgba(3,9,18,.76),0 0 0 5px rgba(105,169,255,.22),0 0 30px rgba(103,169,255,.72);pointer-events:none;transition:top .22s ease,left .22s ease,width .22s ease,height .22s ease;}
+.coach-layer{position:fixed;inset:0;z-index:16000;pointer-events:none;isolation:isolate;}
+.coach-blocker{position:fixed;z-index:1;display:block;background:rgba(3,9,18,.76);pointer-events:auto;touch-action:none;overscroll-behavior:contain;cursor:not-allowed;}
+.coach-spotlight{position:fixed;z-index:2;left:0;top:0;width:1px;height:1px;border:2px solid rgba(255,255,255,.98);border-radius:15px;background:transparent;box-shadow:0 0 0 5px rgba(105,169,255,.22),0 0 30px rgba(103,169,255,.72);pointer-events:none;transition:top .22s ease,left .22s ease,width .22s ease,height .22s ease;}
 .coach-spotlight:after{content:"";position:absolute;inset:-7px;border:1px solid rgba(126,185,255,.76);border-radius:inherit;animation:coach-ring 1.55s ease-out infinite;}
 @keyframes coach-ring{0%{transform:scale(.98);opacity:.8}100%{transform:scale(1.07);opacity:0}}
 .coach-pointer{position:fixed;z-index:2;font-size:30px;line-height:1;filter:drop-shadow(0 3px 7px rgba(0,0,0,.55));animation:coach-tap 1s ease-in-out infinite;pointer-events:none;}
 @keyframes coach-tap{0%,100%{transform:translateY(0) rotate(-13deg)}50%{transform:translateY(7px) rotate(-13deg)}}
-.coach-card{position:fixed;z-index:3;width:min(310px,calc(100vw - 24px));padding:12px 13px 10px;border:1px solid rgba(157,193,242,.26);border-radius:19px;background:linear-gradient(145deg,#14243a 0%,#0a1424 100%);color:#f7faff;box-shadow:0 18px 52px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.08);pointer-events:auto;overflow:hidden;}
+.coach-card{position:fixed;z-index:5;width:min(310px,calc(100vw - 24px));padding:12px 13px 10px;border:1px solid rgba(157,193,242,.26);border-radius:19px;background:linear-gradient(145deg,#14243a 0%,#0a1424 100%);color:#f7faff;box-shadow:0 18px 52px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.08);pointer-events:auto;overflow:hidden;}
 .coach-card:before{content:"";position:absolute;left:-35px;top:-62px;width:150px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(75,147,255,.24),transparent 70%);pointer-events:none;}
 .coach-card-head{position:relative;display:flex;align-items:center;gap:11px;min-height:58px;}
 .coach-visual{position:relative;flex:none;width:54px;height:54px;display:grid;place-items:center;border-radius:15px;border:1px solid rgba(140,188,255,.32);background:linear-gradient(145deg,rgba(91,157,245,.25),rgba(38,72,116,.15));color:#a9ceff;box-shadow:inset 0 1px rgba(255,255,255,.12);}
@@ -10386,6 +10387,13 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
 .coach-back:disabled{opacity:.3;cursor:default;}
 .coach-next{border:1px solid rgba(139,190,255,.5);background:linear-gradient(135deg,#347bd1,#24569c);color:white;box-shadow:0 5px 13px rgba(25,82,155,.3);}
 .coach-card button:focus-visible{outline:2px solid #acd0ff;outline-offset:2px;}
+
+.coach-select-menu{position:fixed;z-index:4;max-height:min(280px,42vh);overflow:auto;padding:6px;border:1px solid rgba(143,190,255,.55);border-radius:14px;background:linear-gradient(145deg,#f8fbff,#e8f1ff);box-shadow:0 18px 48px rgba(0,0,0,.42),0 0 0 2px rgba(105,169,255,.24);pointer-events:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;}
+.coach-select-option{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:40px;padding:9px 11px;border:0;border-radius:9px;background:transparent;color:#14243a;text-align:left;font-family:inherit;font-size:12px;line-height:1.2;font-weight:800;cursor:pointer;}
+.coach-select-option+.coach-select-option{margin-top:2px;}
+.coach-select-option:hover,.coach-select-option[aria-selected="true"]{background:linear-gradient(100deg,rgba(63,133,220,.19),rgba(63,133,220,.08));color:#164b8b;}
+.coach-select-option[aria-selected="true"]:after{content:"✓";flex:none;color:#1e70bd;font-weight:1000;}
+
 @media(max-width:520px){
  .coach-card{width:min(300px,calc(100vw - 24px));padding:10px 11px 9px;border-radius:17px;}
  .coach-visual{width:48px;height:48px;border-radius:13px;}
@@ -10637,6 +10645,10 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
 
 
 <div class="coach-layer" id="coachLayer" hidden aria-live="polite">
+  <div class="coach-blocker" data-coach-blocker="top" aria-hidden="true"></div>
+  <div class="coach-blocker" data-coach-blocker="left" aria-hidden="true"></div>
+  <div class="coach-blocker" data-coach-blocker="right" aria-hidden="true"></div>
+  <div class="coach-blocker" data-coach-blocker="bottom" aria-hidden="true"></div>
   <div class="coach-spotlight" id="coachSpotlight" aria-hidden="true"></div>
   <div class="coach-pointer" id="coachPointer" aria-hidden="true">👆</div>
   <section class="coach-card" id="coachCard" role="dialog" aria-label="Visual app walkthrough">
@@ -12940,6 +12952,53 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     let coachStepIndex = 0;
     let coachOpenedModal = null;
     let coachPositionFrame = 0;
+    let activeCoachSelect = null;
+
+    function closeCoachSelectMenu() {
+        const menu = $('coachSelectMenu');
+        if (menu) menu.remove();
+        activeCoachSelect = null;
+    }
+
+    function openCoachSelectMenu(select) {
+        if (!activeCoachTour || !select || select.tagName !== 'SELECT') return;
+        closeCoachSelectMenu();
+        activeCoachSelect = select;
+        const menu = document.createElement('div');
+        menu.id = 'coachSelectMenu';
+        menu.className = 'coach-select-menu';
+        menu.setAttribute('role', 'listbox');
+        menu.setAttribute('aria-label', select.getAttribute('aria-label') || 'Choose an option');
+        Array.from(select.options).forEach(option => {
+            if (option.disabled) return;
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'coach-select-option';
+            button.setAttribute('role', 'option');
+            button.setAttribute('aria-selected', String(option.value === select.value));
+            button.textContent = option.textContent.trim();
+            button.addEventListener('click', () => {
+                select.value = option.value;
+                select.dispatchEvent(new Event('input', { bubbles: true }));
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+                closeCoachSelectMenu();
+                try { select.focus({ preventScroll: true }); } catch { select.focus(); }
+                queueCoachPosition();
+            });
+            menu.appendChild(button);
+        });
+        $('coachLayer').appendChild(menu);
+        const rect = select.getBoundingClientRect();
+        const width = Math.min(Math.max(rect.width, 180), window.innerWidth - 24);
+        menu.style.width = `${width}px`;
+        menu.style.left = `${Math.max(12, Math.min(rect.left, window.innerWidth - width - 12))}px`;
+        const availableBelow = window.innerHeight - rect.bottom - 18;
+        const estimatedHeight = Math.min(menu.scrollHeight || 220, Math.min(280, window.innerHeight * .42));
+        const placeAbove = availableBelow < Math.min(estimatedHeight, 150) && rect.top > availableBelow;
+        const top = placeAbove ? Math.max(8, rect.top - estimatedHeight - 8) : Math.min(window.innerHeight - estimatedHeight - 8, rect.bottom + 8);
+        menu.style.top = `${Math.max(8, top)}px`;
+        queueCoachPosition();
+    }
 
     function getTripCoachSteps() {
         if (data.activeRunId) return [
@@ -12957,12 +13016,76 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     }
 
     function coachTargetRect(target) {
-        const r = target.getBoundingClientRect();
+        let r = target.getBoundingClientRect();
+        const guideSelectMenu = target === activeCoachSelect ? $('coachSelectMenu') : null;
+        const isSuggestionField = target.matches('#makeSelect, #modelSelect, #trimSelect');
+        let dropdownOpen = false;
+        if (guideSelectMenu && guideSelectMenu.getBoundingClientRect().height > 0) {
+            const menuRect = guideSelectMenu.getBoundingClientRect();
+            r = {
+                left: Math.min(r.left, menuRect.left),
+                top: Math.min(r.top, menuRect.top),
+                right: Math.max(r.right, menuRect.right),
+                bottom: Math.max(r.bottom, menuRect.bottom),
+                width: Math.max(r.right, menuRect.right) - Math.min(r.left, menuRect.left),
+                height: Math.max(r.bottom, menuRect.bottom) - Math.min(r.top, menuRect.top)
+            };
+            dropdownOpen = true;
+        }
+        if (isSuggestionField) {
+            const wrap = target.closest('.autocomplete-wrap');
+            const menu = wrap?.querySelector('.autocomplete-menu');
+            if (wrap) {
+                const inputRect = wrap.getBoundingClientRect();
+                dropdownOpen = wrap.classList.contains('is-open') && !!menu && menu.getBoundingClientRect().height > 0;
+                if (dropdownOpen) {
+                    const menuRect = menu.getBoundingClientRect();
+                    // One continuous spotlight covers the input/toggle and the live
+                    // suggestion list, so neither gets trapped behind the click shield.
+                    r = {
+                        left: Math.min(inputRect.left, menuRect.left),
+                        top: Math.min(inputRect.top, menuRect.top),
+                        right: Math.max(inputRect.right, menuRect.right),
+                        bottom: Math.max(inputRect.bottom, menuRect.bottom),
+                        width: Math.max(inputRect.right, menuRect.right) - Math.min(inputRect.left, menuRect.left),
+                        height: Math.max(inputRect.bottom, menuRect.bottom) - Math.min(inputRect.top, menuRect.top)
+                    };
+                }
+                else r = inputRect;
+            }
+        }
         let top = r.top, height = r.height;
-        if (height > 150) { height = Math.min(112, height); top = r.top + Math.max(0, (r.height - height) / 2); }
+        if (!dropdownOpen && height > 150) { height = Math.min(112, height); top = r.top + Math.max(0, (r.height - height) / 2); }
+        if (dropdownOpen && height > window.innerHeight - 170) {
+            height = Math.max(120, window.innerHeight - 190);
+            top = Math.max(8, Math.min(top, window.innerHeight - height - 150));
+        }
         const width = Math.min(Math.max(r.width, 44), window.innerWidth - 24);
         const left = Math.max(12, Math.min(r.left + (r.width - width) / 2, window.innerWidth - width - 12));
-        return { top: Math.max(8, top - 6), left: left - 6, width: width + 12, height: Math.max(42, height) + 12, raw: r };
+        return { top: Math.max(8, top - 6), left: Math.max(6, left - 6), width: width + 12, height: Math.max(42, height) + 12, raw: r, dropdownOpen };
+    }
+
+    function updateCoachBlockers(box) {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const left = Math.max(0, Math.min(viewportWidth, box.left));
+        const top = Math.max(0, Math.min(viewportHeight, box.top));
+        const right = Math.max(left, Math.min(viewportWidth, box.left + box.width));
+        const bottom = Math.max(top, Math.min(viewportHeight, box.top + box.height));
+        const rects = {
+            top: { left: 0, top: 0, width: viewportWidth, height: top },
+            left: { left: 0, top, width: left, height: bottom - top },
+            right: { left: right, top, width: viewportWidth - right, height: bottom - top },
+            bottom: { left: 0, top: bottom, width: viewportWidth, height: viewportHeight - bottom }
+        };
+        Object.entries(rects).forEach(([name, rect]) => {
+            const blocker = document.querySelector(`[data-coach-blocker="${name}"]`);
+            if (!blocker) return;
+            blocker.style.left = `${rect.left}px`;
+            blocker.style.top = `${rect.top}px`;
+            blocker.style.width = `${Math.max(0, rect.width)}px`;
+            blocker.style.height = `${Math.max(0, rect.height)}px`;
+        });
     }
 
     function positionCoach() {
@@ -12976,11 +13099,14 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         spotlight.style.left = `${box.left}px`;
         spotlight.style.width = `${box.width}px`;
         spotlight.style.height = `${box.height}px`;
-        spotlight.style.borderRadius = getComputedStyle(target).borderRadius || '14px';
+        const radiusTarget = target.closest('.autocomplete-wrap') || target;
+        spotlight.style.borderRadius = getComputedStyle(radiusTarget).borderRadius || '14px';
+        updateCoachBlockers(box);
 
         const pointer = $('coachPointer');
-        pointer.style.left = `${Math.max(5, Math.min(box.raw.right - 8, window.innerWidth - 38))}px`;
-        pointer.style.top = `${Math.max(5, Math.min(box.raw.bottom - 12, window.innerHeight - 45))}px`;
+        const pointerRect = box.dropdownOpen ? target.getBoundingClientRect() : box.raw;
+        pointer.style.left = `${Math.max(5, Math.min(pointerRect.right - 8, window.innerWidth - 38))}px`;
+        pointer.style.top = `${Math.max(5, Math.min(pointerRect.bottom - 12, window.innerHeight - 45))}px`;
 
         const card = $('coachCard');
         const cardWidth = Math.min(310, window.innerWidth - 24);
@@ -13007,6 +13133,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
 
     async function showCoachStep(index) {
         if (!activeCoachTour) return;
+        closeCoachSelectMenu();
         if (index < 0) index = 0;
         if (index >= activeCoachTour.steps.length) { finishCoachTour(); return; }
         coachStepIndex = index;
@@ -13049,6 +13176,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     }
 
     function finishCoachTour(closeOwnedModal = true) {
+        closeCoachSelectMenu();
         if (closeOwnedModal && coachOpenedModal && $(coachOpenedModal)?.classList.contains('show')) hideModal(coachOpenedModal);
         coachOpenedModal = null;
         activeCoachTour = null;
@@ -13056,6 +13184,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         $('coachSpotlight').style.cssText = '';
         $('coachPointer').style.cssText = '';
         $('coachCard').style.cssText = '';
+        document.querySelectorAll('[data-coach-blocker]').forEach(blocker => blocker.style.cssText = '');
     }
 
     $('coachNext').addEventListener('click', () => showCoachStep(coachStepIndex + 1));
@@ -13066,13 +13195,43 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         if (event.key === 'Escape' && activeCoachTour) {
             event.preventDefault();
             event.stopImmediatePropagation();
-            finishCoachTour();
+            if (activeCoachSelect) { closeCoachSelectMenu(); queueCoachPosition(); }
+            else finishCoachTour();
         }
     }, true);
     window.addEventListener('resize', queueCoachPosition, { passive: true });
     window.addEventListener('scroll', queueCoachPosition, { passive: true, capture: true });
+    // The searchable Make / Model / Trim controls build their menus dynamically.
+    // Follow the open/closed state so the entire live list is inside the spotlight.
+    const coachDropdownObserver = new MutationObserver(() => {
+        if (activeCoachTour?.name === 'spot') queueCoachPosition();
+    });
+    coachDropdownObserver.observe($('spotForm'), { subtree: true, attributes: true, attributeFilter: ['class'] });
+    document.querySelectorAll('[data-coach-blocker]').forEach(blocker => {
+        blocker.addEventListener('wheel', event => event.preventDefault(), { passive: false });
+    });
     document.addEventListener('submit', () => {
         if (activeCoachTour && activeCoachTour.name === 'spot') finishCoachTour();
+    }, true);
+    document.addEventListener('click', event => {
+        if (!activeCoachTour) return;
+        const step = activeCoachTour.steps[coachStepIndex];
+        const target = step && document.querySelector(step.selector);
+        if (target && target.tagName === 'SELECT' && event.target === target) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            openCoachSelectMenu(target);
+        }
+    }, true);
+    document.addEventListener('keydown', event => {
+        if (!activeCoachTour) return;
+        const step = activeCoachTour.steps[coachStepIndex];
+        const target = step && document.querySelector(step.selector);
+        if (target && target.tagName === 'SELECT' && event.target === target && ['Enter', ' ', 'ArrowDown'].includes(event.key)) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            openCoachSelectMenu(target);
+        }
     }, true);
     document.addEventListener('click', event => {
         if (!activeCoachTour) return;
