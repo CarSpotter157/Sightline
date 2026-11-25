@@ -10251,6 +10251,71 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
   }
 }
 
+
+/* First-run guide and editable sighting / road-trip timestamps. */
+.guide-help-btn svg { width: 16px; height: 16px; }
+.datetime-local { width: 100%; }
+.spot-date-field { margin-top: 17px; max-width: 520px; }
+.guide-date-field { margin-top: 16px; }
+input[type="datetime-local"] { color-scheme: light; min-width: 0; }
+body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
+.run-time-editor { margin: 4px 0 20px; padding: 17px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface-2); }
+.run-time-editor-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:14px; }
+.run-time-editor-head h3 { margin:4px 0 3px; font-size:16px; color:var(--text); }
+.run-time-editor-head p { margin:0; color:var(--muted); font-size:12px; }
+.run-time-icon { display:grid; place-items:center; width:38px; height:38px; border-radius:12px; background:color-mix(in srgb,var(--accent) 13%,var(--surface)); color:var(--accent); font-size:22px; }
+.run-time-grid { gap:12px; }
+.run-time-save-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; }
+.run-time-save-row .secondary-btn { white-space:nowrap; }
+.guide-backdrop { z-index: 1300; }
+.guide-modal { width:min(100%,590px); max-width:590px; overflow:hidden; padding:0; border-radius:24px; }
+.guide-topline { display:flex; align-items:center; gap:10px; padding:18px 22px; color:var(--muted); font-size:9px; font-weight:900; letter-spacing:1.8px; }
+.guide-brand-mark { display:grid; place-items:center; width:30px; height:30px; border-radius:9px; background:linear-gradient(135deg,#397ee9,#174a99); color:#fff; font-size:10px; font-weight:950; letter-spacing:-.5px; }
+.guide-topline .modal-x { margin-left:auto; }
+.guide-visual { position:relative; display:grid; place-items:center; height:148px; overflow:hidden; background:radial-gradient(ellipse at 50% 95%,rgba(61,132,238,.34),transparent 58%),linear-gradient(120deg,#101d32,#172b49 54%,#10192a); }
+.guide-visual:before,.guide-visual:after { content:""; position:absolute; height:1px; width:130%; left:-15%; background:linear-gradient(90deg,transparent,rgba(140,188,255,.48),transparent); transform:rotate(-12deg); }
+.guide-visual:before { top:44px; }.guide-visual:after { top:104px; opacity:.45; }
+.guide-visual-orbit { position:absolute; width:220px; height:110px; border:1px solid rgba(133,183,255,.34); border-radius:50%; transform:rotate(-12deg); box-shadow:0 0 35px rgba(66,135,234,.18); }
+.guide-visual-car { position:relative; z-index:1; width:min(76%,420px); transform:translateY(7px); filter:drop-shadow(0 12px 17px rgba(46,117,212,.38)); }.guide-visual-car svg { display:block; width:100%; height:auto; overflow:visible; }
+.guide-visual-spark { position:absolute; color:#f5c965; }.spark-a { top:28px; right:24%; font-size:18px; }.spark-b { bottom:31px; left:23%; font-size:23px; color:#9fc4ff; }
+.guide-visual-label { position:absolute; right:20px; bottom:13px; color:rgba(220,234,255,.58); font-size:8px; font-weight:900; letter-spacing:2px; }
+.guide-progress-row { display:flex; align-items:center; gap:12px; padding:20px 26px 0; color:var(--muted); font-size:9px; font-weight:900; letter-spacing:1.3px; }
+.guide-progress-track { flex:1; height:4px; overflow:hidden; border-radius:99px; background:var(--surface-3); }
+.guide-progress-track span { display:block; width:16.66%; height:100%; border-radius:inherit; background:linear-gradient(90deg,#347fe9,#80b9ff); transition:width .25s ease; }
+.guide-copy { padding:17px 26px 9px; }
+.guide-kicker { color:var(--accent); font-size:9px; font-weight:950; letter-spacing:1.8px; }
+.guide-copy h2 { margin:8px 0 9px; color:var(--text); font-size:clamp(24px,5vw,32px); line-height:1.08; letter-spacing:-1.1px; }
+.guide-copy p { max-width:490px; margin:0; color:var(--muted); font-size:13px; line-height:1.65; }
+.guide-points { display:grid; gap:8px; margin-top:17px; }
+.guide-point { display:flex; align-items:flex-start; gap:10px; color:var(--text); font-size:12px; line-height:1.45; }
+.guide-point:before { content:"✓"; display:grid; place-items:center; flex:none; width:19px; height:19px; border-radius:6px; background:color-mix(in srgb,var(--accent) 13%,var(--surface)); color:var(--accent); font-size:11px; font-weight:950; }
+.guide-action-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:17px 26px 12px; border-top:1px solid var(--line); margin-top:14px; }
+.guide-explore { font-size:10px; padding:11px 13px; }
+.guide-navigation { display:flex; align-items:center; justify-content:flex-end; gap:13px; margin-left:auto; }
+.guide-navigation .primary-btn { min-width:145px; }
+.guide-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:0 26px 18px; }
+.guide-footer span { color:var(--soft); font-size:10px; text-align:right; }
+.guide-modal .text-button { color:var(--muted); font-size:10px; font-weight:850; letter-spacing:1px; }
+.guide-modal button:disabled { opacity:.38; cursor:not-allowed; }
+@media (max-width:600px) {
+  .guide-modal { max-height:min(90dvh,780px); overflow-y:auto; border-radius:22px 22px 0 0; }
+  .guide-backdrop { align-items:end; padding:0; }
+  .guide-topline { padding:13px 17px; }
+  .guide-visual { height:116px; }
+  .guide-progress-row { padding:16px 19px 0; }
+  .guide-copy { padding:14px 19px 8px; }
+  .guide-copy h2 { font-size:25px; }
+  .guide-action-row { padding:14px 19px 10px; flex-wrap:wrap; }
+  .guide-explore { width:100%; }
+  .guide-navigation { width:100%; justify-content:space-between; }
+  .guide-navigation .primary-btn { flex:1; }
+  .guide-footer { padding:0 19px 16px; }
+  .run-time-editor { padding:13px; }
+  .run-time-grid { grid-template-columns:1fr; }
+  .run-time-save-row { align-items:flex-start; flex-direction:column; }
+  .run-time-save-row .secondary-btn { width:100%; }
+  .spot-date-field { max-width:none; }
+}
 </style>
 </head>
 <body data-theme="light">
@@ -10278,6 +10343,7 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
       <div class="breadcrumb">CARSPOTTER <span aria-hidden="true">/</span> <strong id="currentSection">HOME</strong></div>
       <div class="top-actions">
         <div class="top-pill" title="Your data is stored in this browser"><i class="live-dot"></i><span>ON THIS DEVICE</span></div>
+        <button class="icon-btn guide-help-btn" id="helpGuideButton" type="button" aria-label="Open the CarSpotter guide" title="Open the CarSpotter guide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.7 9a2.35 2.35 0 1 1 4.25 1.4c-.9 1.1-1.95 1.35-1.95 2.85M12 17h.01" stroke-linecap="round"/></svg><span>GUIDE</span></button>
         <button class="icon-btn" id="dataButton" type="button" aria-label="Backup and data" title="Backup and data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg><span>DATA</span></button>
         <button class="theme-btn" id="themeToggle" type="button" aria-label="Switch to light mode"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg><span id="themeText">LIGHT</span></button>
       </div>
@@ -10335,6 +10401,7 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
               <div class="field"><label for="yearInput">Model year <span class="optional">Optional</span></label><input class="control searchable-control" id="yearInput" type="text" inputmode="numeric" list="yearOptions" autocomplete="off" placeholder="Type or choose a year"><datalist id="yearOptions"></datalist></div>
               <div class="field"><label for="colorInput">Color <span class="optional">Optional</span></label><input class="control searchable-control" id="colorInput" type="text" maxlength="28" list="colorOptions" autocomplete="off" placeholder="Type or choose a color"><datalist id="colorOptions"></datalist></div>
             </div>
+            <div class="field full spot-date-field"><label for="spottedAtInput">Date &amp; time spotted <span class="optional">Editable</span></label><input class="control" id="spottedAtInput" type="datetime-local" required><div class="field-help">Defaults to now. Change it when you’re logging a car after the moment you saw it.</div></div>
           </section>
           <section class="form-section" aria-labelledby="photoSectionTitle">
             <div class="section-head"><div class="section-index"><span class="index-box">02</span><div><h2 id="photoSectionTitle">Add your photo</h2><p>Choose a picture from your camera or photo library.</p></div></div><span class="section-tag">Optional</span></div>
@@ -10422,7 +10489,7 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
 <input type="file" id="photoCameraInput" accept="image/*" capture="environment" hidden aria-label="Take a photo with your camera">
 
 <!-- Start run -->
-<div class="modal-backdrop" id="startRunModal" role="dialog" aria-modal="true" aria-labelledby="startRunTitle"><div class="modal"><div class="modal-head"><div><h2 id="startRunTitle">Start a new run.</h2><p>Name this meet, drive or day out.</p></div><button class="modal-x" data-close-modal="startRunModal" type="button" aria-label="Close">×</button></div><div class="field"><label for="runNameInput">Run name</label><input class="control" id="runNameInput" maxlength="54" placeholder="e.g. Cars & Coffee — Raleigh"></div><div class="modal-actions"><button class="secondary-btn" data-close-modal="startRunModal" type="button">CANCEL</button><button class="primary-btn" id="confirmStartRun" type="button">START RUN ↗</button></div></div></div>
+<div class="modal-backdrop" id="startRunModal" role="dialog" aria-modal="true" aria-labelledby="startRunTitle"><div class="modal"><div class="modal-head"><div><h2 id="startRunTitle">Start a new run.</h2><p>Name this meet, drive or day out.</p></div><button class="modal-x" data-close-modal="startRunModal" type="button" aria-label="Close">×</button></div><div class="field"><label for="runNameInput">Run name</label><input class="control" id="runNameInput" maxlength="54" placeholder="e.g. Cars & Coffee — Raleigh"></div><div class="field guide-date-field"><label for="runStartedAtInput">Road trip start date &amp; time</label><input class="control" id="runStartedAtInput" type="datetime-local" required><div class="field-help">Defaults to now. You can backdate a trip or correct the start time.</div></div><div class="modal-actions"><button class="secondary-btn" data-close-modal="startRunModal" type="button">CANCEL</button><button class="primary-btn" id="confirmStartRun" type="button">START RUN ↗</button></div></div></div>
 
 <!-- Spot details -->
 <div class="modal-backdrop" id="spotDetailModal" role="dialog" aria-modal="true" aria-labelledby="spotDetailTitle"><div class="modal wide"><div class="modal-head"><div><h2 id="spotDetailTitle">Car details.</h2><p id="spotDetailSubtitle">Saved sighting</p></div><button class="modal-x" data-close-modal="spotDetailModal" type="button" aria-label="Close">×</button></div><img id="detailPhoto" class="detail-photo" alt="Saved car"><div class="detail-no-photo" id="detailNoPhoto" hidden>PHOTO NOT ADDED FOR THIS SIGHTING</div><div class="detail-specs"><div class="detail-spec"><span>Make</span><strong id="detailMake">—</strong></div><div class="detail-spec"><span>Model</span><strong id="detailModel">—</strong></div><div class="detail-spec"><span>Submodel / trim</span><strong id="detailTrim">—</strong></div><div class="detail-spec"><span>Model year</span><strong id="detailYear">Not noted</strong></div><div class="detail-spec"><span>Color</span><strong id="detailColor">Not noted</strong></div><div class="detail-spec"><span>Spotted</span><strong id="detailDate">—</strong></div><div class="detail-spec"><span>Place / event</span><strong id="detailPlace">Not noted</strong></div><div class="detail-spec"><span>Location</span><strong id="detailLocation">Not saved</strong><a id="detailMapLink" target="_blank" rel="noopener" hidden>OPEN IN MAPS ↗</a></div><div class="detail-spec"><span>Road trip</span><strong id="detailRun">Not part of a run</strong></div></div><div class="detail-notes-wrap" id="detailNotesWrap" hidden><span>SPOTTING NOTES</span><p id="detailNotes"></p></div><div class="modal-actions"><button class="secondary-btn" id="favoriteSpotButton" type="button">☆ SAVE AS FAVORITE</button><button class="secondary-btn danger-btn" id="deleteSpotButton" type="button">DELETE SPOT</button><button class="secondary-btn" id="editSpotButton" type="button">EDIT DETAILS</button><button class="primary-btn" data-close-modal="spotDetailModal" type="button">DONE</button></div></div></div>
@@ -10434,17 +10501,30 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
   <div class="field full"><label for="editTrimSelect">Submodel / trim <span class="optional">Optional</span></label><input class="control searchable-control" id="editTrimSelect" type="text" list="editTrimOptions" autocomplete="off" spellcheck="false" placeholder="Type or choose a submodel"><datalist id="editTrimOptions"></datalist><div class="field-help">Suggestions update for the selected make and model. Custom versions are accepted.</div></div>
   <div class="field"><label for="editYearInput">Model year</label><input class="control searchable-control" id="editYearInput" type="text" inputmode="numeric" list="editYearOptions" autocomplete="off" placeholder="Type or choose a year"><datalist id="editYearOptions"></datalist></div>
   <div class="field"><label for="editColorInput">Color</label><input class="control searchable-control" id="editColorInput" maxlength="28" list="editColorOptions" autocomplete="off" placeholder="Type or choose a color"><datalist id="editColorOptions"></datalist></div>
+  <div class="field full"><label for="editSpottedAtInput">Date &amp; time spotted</label><input class="control" id="editSpottedAtInput" type="datetime-local" required><div class="field-help">Correct the date or time this car was originally spotted.</div></div>
   <div class="field full"><label for="editPlaceInput">Place or event</label><input class="control" id="editPlaceInput" maxlength="80" placeholder="e.g. Cars & Coffee, North Hills"></div>
   <div class="field full"><label for="editNotesInput">Spotting notes</label><textarea class="control notes-control" id="editNotesInput" maxlength="280" rows="3" placeholder="Details worth remembering…"></textarea></div>
   <div class="field full"><label>Photo</label><div class="edit-photo-row"><img id="editPhotoPreview" alt="Current car photo"><button class="text-button" id="editChangePhoto" type="button" aria-label="Choose a replacement photo for this car">CHANGE PHOTO</button><span id="editPhotoStatus" class="field-help">Current photo</span></div></div>
 </div><div class="modal-actions"><button class="secondary-btn" data-close-modal="editSpotModal" type="button">CANCEL</button><button class="primary-btn" id="saveEditButton" type="button">SAVE CHANGES</button></div></div></div>
 
 <!-- Run details -->
-<div class="modal-backdrop" id="runDetailModal" role="dialog" aria-modal="true" aria-labelledby="runDetailTitle"><div class="modal wide"><div class="modal-head"><div><h2 id="runDetailTitle">Run details.</h2><p id="runDetailSubtitle"></p></div><button class="modal-x" data-close-modal="runDetailModal" type="button" aria-label="Close">×</button></div><div id="runCarGrid" class="run-car-grid"></div><p id="runNoCars" class="modal-note" hidden>No cars have been added to this run yet. New spots will appear here while the run is active.</p><div class="modal-actions"><button class="secondary-btn danger-btn" id="deleteRunButton" type="button">DELETE RUN</button><button class="primary-btn" data-close-modal="runDetailModal" type="button">DONE</button></div></div></div>
+<div class="modal-backdrop" id="runDetailModal" role="dialog" aria-modal="true" aria-labelledby="runDetailTitle"><div class="modal wide"><div class="modal-head"><div><h2 id="runDetailTitle">Run details.</h2><p id="runDetailSubtitle"></p></div><button class="modal-x" data-close-modal="runDetailModal" type="button" aria-label="Close">×</button></div><section class="run-time-editor" aria-labelledby="runTimeEditorTitle"><div class="run-time-editor-head"><div><span class="eyebrow">TRIP TIMELINE</span><h3 id="runTimeEditorTitle">Dates &amp; times</h3><p>Adjust when this road trip started or finished.</p></div><span class="run-time-icon" aria-hidden="true">◷</span></div><div class="form-grid run-time-grid"><div class="field"><label for="runStartedAtEdit">Start date &amp; time</label><input class="control" id="runStartedAtEdit" type="datetime-local" required></div><div class="field"><label for="runEndedAtEdit">Finish date &amp; time <span class="optional">Leave blank if active</span></label><input class="control" id="runEndedAtEdit" type="datetime-local"></div></div><div class="run-time-save-row"><span class="field-help">The cars grouped in this trip will stay attached.</span><button class="secondary-btn" id="saveRunTimesButton" type="button">SAVE TRIP TIMES</button></div></section><div id="runCarGrid" class="run-car-grid"></div><p id="runNoCars" class="modal-note" hidden>No cars have been added to this run yet. New spots will appear here while the run is active.</p><div class="modal-actions"><button class="secondary-btn danger-btn" id="deleteRunButton" type="button">DELETE RUN</button><button class="primary-btn" data-close-modal="runDetailModal" type="button">DONE</button></div></div></div>
 
 <!-- Data / backup -->
 <div class="modal-backdrop" id="dataModal" role="dialog" aria-modal="true" aria-labelledby="dataTitle"><div class="modal"><div class="modal-head"><div><h2 id="dataTitle">Your data.</h2><p>Your collection lives in this browser, not in an online account.</p></div><button class="modal-x" data-close-modal="dataModal" type="button" aria-label="Close">×</button></div><div class="data-actions"><button class="data-action" id="exportButton" type="button"><strong>↓ Export backup</strong><span>Download all cars, photos, locations and runs as one JSON file.</span></button><button class="data-action" id="importButton" type="button"><strong>↑ Import backup</strong><span>Restore a CarSpotter backup on this browser.</span></button></div><input id="importFile" type="file" accept=".json,application/json" hidden><p class="modal-note">Use Export before clearing browser data or moving to another device. Import replaces the collection currently saved in this browser. Photos are stored in browser database storage to handle larger collections more reliably than localStorage.</p><div class="modal-actions"><button class="secondary-btn danger-btn" id="clearAllButton" type="button">CLEAR ALL DATA</button><button class="primary-btn" data-close-modal="dataModal" type="button">DONE</button></div></div></div>
 
+
+<!-- First-run interactive guide. It can always be reopened from the GUIDE button. -->
+<div class="modal-backdrop guide-backdrop" id="onboardingModal" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+  <div class="modal guide-modal">
+    <div class="guide-topline"><span class="guide-brand-mark" aria-hidden="true">CS</span><span>CARSPOTTER QUICK START</span><button class="modal-x" id="guideCloseButton" type="button" aria-label="Close guide">×</button></div>
+    <div class="guide-visual" aria-hidden="true"><div class="guide-visual-orbit"></div><div class="guide-visual-car"><svg viewBox="0 0 620 190" fill="none"><path d="M48 128 73 119l37-8 47-39c12-10 28-16 44-18l105-12 53-34c12-8 26-12 41-12h85c23 0 42 9 57 26l38 43 45 14c16 5 25 17 25 34v18H48v-11c0-7 0-10 0-10Z" fill="url(#guidePaint)" stroke="#b9d5ff" stroke-width="3.5" stroke-linejoin="round"/><path d="m204 71 91-12 55-35c8-5 17-8 27-8h85c16 0 29 6 40 18l29 37H204Z" fill="#172b45" stroke="#9fc5ff" stroke-width="3" stroke-linejoin="round"/><path d="m354 18-17 52m-132 2h325M63 123l72-9m389 0 42 10" stroke="#a9cfff" stroke-width="2.5" stroke-linecap="round" opacity=".7"/><path d="M62 138h503" stroke="#081321" stroke-width="5" stroke-linecap="round"/><circle cx="176" cy="139" r="31" fill="#081321" stroke="#91acd0" stroke-width="5"/><circle cx="176" cy="139" r="17" fill="#294665" stroke="#d5e5fb" stroke-width="2"/><circle cx="176" cy="139" r="5" fill="#a9ceff"/><circle cx="488" cy="139" r="31" fill="#081321" stroke="#91acd0" stroke-width="5"/><circle cx="488" cy="139" r="17" fill="#294665" stroke="#d5e5fb" stroke-width="2"/><circle cx="488" cy="139" r="5" fill="#a9ceff"/><defs><linearGradient id="guidePaint" x1="70" y1="28" x2="560" y2="155" gradientUnits="userSpaceOnUse"><stop stop-color="#bedaff"/><stop offset=".48" stop-color="#6199e4"/><stop offset="1" stop-color="#24508c"/></linearGradient></defs></svg></div><span class="guide-visual-spark spark-a">✦</span><span class="guide-visual-spark spark-b">✧</span><span class="guide-visual-label">SPOT · SAVE · REMEMBER</span></div>
+    <div class="guide-progress-row"><span id="guideStepCounter">WELCOME</span><div class="guide-progress-track"><span id="guideProgressFill"></span></div><span id="guideStepFraction">1 / 6</span></div>
+    <div class="guide-copy"><span class="guide-kicker" id="guideKicker">YOUR PERSONAL CAR LOGBOOK</span><h2 id="guideTitle">Every car has a story.</h2><p id="guideDescription">CarSpotter helps you remember the cars you notice, the places you find them and the days you spend spotting.</p><div class="guide-points" id="guidePoints"></div></div>
+    <div class="guide-action-row"><button class="secondary-btn guide-explore" id="guideExploreButton" type="button" hidden>OPEN THIS SECTION ↗</button><div class="guide-navigation"><button class="text-button" id="guideBackButton" type="button" disabled>BACK</button><button class="primary-btn" id="guideNextButton" type="button">LET’S GO ↗</button></div></div>
+    <div class="guide-footer"><button class="text-button" id="guideSkipButton" type="button">SKIP THE TOUR</button><span>You can open this guide again any time.</span></div>
+  </div>
+</div>
 
 <div class="spot-reveal" id="spotReveal" hidden aria-hidden="true">
   <div class="reveal-rarity-wash" aria-hidden="true"></div>
@@ -10716,6 +10796,18 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
     const id = () => (window.crypto?.randomUUID ? window.crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
     const clone = value => (typeof structuredClone === 'function' ? structuredClone(value) : JSON.parse(JSON.stringify(value)));
     const fmtDate = (value, opts = { month: 'short', day: 'numeric', year: 'numeric' }) => value ? new Date(value).toLocaleDateString(undefined, opts) : '—';
+    const fmtDateTime = value => { const date = value ? new Date(value) : null; return date && Number.isFinite(date.getTime()) ? date.toLocaleString(undefined, { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : '—'; };
+    function toLocalDateTimeInput(value = new Date()) {
+        const date = value instanceof Date ? value : new Date(value);
+        if (!Number.isFinite(date.getTime())) return '';
+        const pad = number => String(number).padStart(2, '0');
+        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    }
+    function fromLocalDateTimeInput(value) {
+        if (!value) return null;
+        const date = new Date(value);
+        return Number.isFinite(date.getTime()) ? date.toISOString() : null;
+    }
     const fmtMonth = value => value ? new Date(value).toLocaleDateString(undefined, { month: 'short' }).toUpperCase() : '';
     const bytesLabel = bytes => bytes < 1024 ? `${bytes} B` : bytes < 1024 * 1024 ? `${(bytes / 1024).toFixed(0)} KB` : `${(bytes / 1024 / 1024).toFixed(1)} MB`;
     function showToast(message) { const el = $('toast'); el.textContent = message; el.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 3000); }
@@ -11749,6 +11841,7 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
         $('photoDrop').classList.remove('has-photo', 'no-photo');
         $('photoStatus').textContent = 'No photo selected';
         $('yearInput').value = '';
+        $('spottedAtInput').value = toLocalDateTimeInput();
         $('colorInput').value = '';
         $('placeInput').value = '';
         $('notesInput').value = '';
@@ -11772,7 +11865,13 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
             showToast('Enter a valid model year.');
             return;
         }
-        const spot = { id: id(), ...vehicle, year, color: $('colorInput').value.trim(), place: $('placeInput').value.trim(), notes: $('notesInput').value.trim(), favorite: false, photo: currentPhoto, location: currentLocation ? { ...currentLocation } : null, createdAt: new Date().toISOString(), runId: activeRun()?.id || null };
+        const spottedAt = fromLocalDateTimeInput($('spottedAtInput').value);
+        if (!spottedAt) {
+            $('spottedAtInput').focus();
+            showToast('Choose a valid date and time for this sighting.');
+            return;
+        }
+        const spot = { id: id(), ...vehicle, year, color: $('colorInput').value.trim(), place: $('placeInput').value.trim(), notes: $('notesInput').value.trim(), favorite: false, photo: currentPhoto, location: currentLocation ? { ...currentLocation } : null, createdAt: spottedAt, runId: activeRun()?.id || null };
         const button = $('saveSpotButton'), form = $('spotForm');
         button.disabled = true;
         button.classList.add('is-saving');
@@ -12165,13 +12264,13 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
         $('detailPhoto').hidden = !spot.photo;
         $('detailNoPhoto').hidden = !!spot.photo;
         $('spotDetailTitle').textContent = `${spot.year ? spot.year + ' ' : ''}${spot.make} ${spot.model}`;
-        $('spotDetailSubtitle').textContent = `${spot.favorite ? '★ Favorite sighting · ' : ''}${fmtDate(spot.createdAt, { month: 'long', day: 'numeric', year: 'numeric' })}`;
+        $('spotDetailSubtitle').textContent = `${spot.favorite ? '★ Favorite sighting · ' : ''}${fmtDateTime(spot.createdAt)}`;
         $('detailMake').textContent = spot.make;
         $('detailModel').textContent = spot.model;
         $('detailTrim').textContent = spot.trim || 'Not specified';
         $('detailYear').textContent = spot.year || 'Not noted';
         $('detailColor').textContent = spot.color || 'Not noted';
-        $('detailDate').textContent = fmtDate(spot.createdAt, { month: 'long', day: 'numeric', year: 'numeric' });
+        $('detailDate').textContent = fmtDateTime(spot.createdAt);
         $('detailPlace').textContent = spot.place || 'Not noted';
         $('detailLocation').textContent = spot.location ? `${spot.location.lat.toFixed(5)}, ${spot.location.lng.toFixed(5)}` : 'Not saved';
         $('detailMapLink').hidden = !spot.location;
@@ -12204,6 +12303,7 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
         $('editPhotoPreview').src = spot.photo || '';
         $('editPhotoStatus').textContent = spot.photo ? 'Current photo' : 'No photo saved';
         $('editYearInput').value = spot.year || '';
+        $('editSpottedAtInput').value = toLocalDateTimeInput(spot.createdAt);
         $('editColorInput').value = spot.color || '';
         $('editPlaceInput').value = spot.place || '';
         $('editNotesInput').value = spot.notes || '';
@@ -12224,8 +12324,14 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
             showToast('Enter a valid model year.');
             return;
         }
+        const editedSpottedAt = fromLocalDateTimeInput($('editSpottedAtInput').value);
+        if (!editedSpottedAt) {
+            $('editSpottedAtInput').focus();
+            showToast('Choose a valid date and time for this sighting.');
+            return;
+        }
         const old = clone(spot);
-        Object.assign(spot, fields, { year, color: $('editColorInput').value.trim(), place: $('editPlaceInput').value.trim(), notes: $('editNotesInput').value.trim() });
+        Object.assign(spot, fields, { year, color: $('editColorInput').value.trim(), place: $('editPlaceInput').value.trim(), notes: $('editNotesInput').value.trim(), createdAt: editedSpottedAt });
         if (editPhoto)
             spot.photo = editPhoto;
         $('saveEditButton').disabled = true;
@@ -12272,7 +12378,7 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
         if (active) {
             $('runStatus').innerHTML = '<i class="live-dot"></i> RUN IN PROGRESS';
             $('runHeroTitle').textContent = active.name;
-            $('runHeroCopy').textContent = `Started ${fmtDate(active.startedAt, { month: 'long', day: 'numeric', year: 'numeric' })}. ${activeSpots.length} ${activeSpots.length === 1 ? 'car' : 'cars'} spotted. New spots are being added automatically.`;
+            $('runHeroCopy').textContent = `Started ${fmtDateTime(active.startedAt)}. ${activeSpots.length} ${activeSpots.length === 1 ? 'car' : 'cars'} spotted. New spots are being added automatically.`;
             $('runActionButton').textContent = 'FINISH THIS RUN';
             $('runActionButton').dataset.action = 'finish';
         }
@@ -12290,7 +12396,7 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
         }
         list.innerHTML = [...data.runs].sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt)).map(run => {
             const cars = spotsForRun(run.id), date = new Date(run.startedAt), thumbs = cars.slice(0, 3).map(s => s.photo ? `<img src="${escapeHTML(s.photo)}" alt="" loading="lazy">` : `<span class="run-thumb-empty" aria-label="No photo">${escapeHTML((s.make || 'C').slice(0, 1))}</span>`).join('');
-            return `<article class="run-card" data-open-run="${escapeHTML(run.id)}" tabindex="0" role="button" aria-label="View run ${escapeHTML(run.name)}"><div class="run-date"><b>${date.getDate()}</b><span>${fmtMonth(run.startedAt)}</span></div><div class="run-info"><strong>${escapeHTML(run.name)}</strong><p>${fmtDate(run.startedAt, { month: 'long', day: 'numeric', year: 'numeric' })} · ${run.endedAt ? 'Completed' : 'In progress'}</p></div><div class="run-thumbs">${thumbs}${cars.length > 3 ? `<span class="thumb-more">+${cars.length - 3}</span>` : ''}</div><div class="run-count"><b>${cars.length}</b> ${cars.length === 1 ? 'CAR' : 'CARS'}</div></article>`;
+            return `<article class="run-card" data-open-run="${escapeHTML(run.id)}" tabindex="0" role="button" aria-label="View run ${escapeHTML(run.name)}"><div class="run-date"><b>${date.getDate()}</b><span>${fmtMonth(run.startedAt)}</span></div><div class="run-info"><strong>${escapeHTML(run.name)}</strong><p>${fmtDateTime(run.startedAt)} · ${run.endedAt ? `Finished ${fmtDateTime(run.endedAt)}` : 'In progress'}</p></div><div class="run-thumbs">${thumbs}${cars.length > 3 ? `<span class="thumb-more">+${cars.length - 3}</span>` : ''}</div><div class="run-count"><b>${cars.length}</b> ${cars.length === 1 ? 'CAR' : 'CARS'}</div></article>`;
         }).join('');
     }
     $('runList').addEventListener('click', e => { const card = e.target.closest('[data-open-run]'); if (card)
@@ -12299,19 +12405,27 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
         e.preventDefault();
         openRunDetail(e.target.dataset.openRun);
     } });
+    function openStartRunModal() {
+        $('runNameInput').value = `Run — ${fmtDate(new Date().toISOString(), { month: 'short', day: 'numeric' })}`;
+        $('runStartedAtInput').value = toLocalDateTimeInput();
+        showModal('startRunModal');
+    }
     $('runActionButton').addEventListener('click', () => {
         if (activeRun()) {
             if (confirm('Finish this run? New spots will no longer be added to it.'))
                 finishActiveRun();
         }
-        else {
-            $('runNameInput').value = `Run — ${fmtDate(new Date().toISOString(), { month: 'short', day: 'numeric' })}`;
-            showModal('startRunModal');
-        }
+        else openStartRunModal();
     });
     $('confirmStartRun').addEventListener('click', async () => {
         const name = $('runNameInput').value.trim() || `Run — ${fmtDate(new Date().toISOString())}`;
-        const run = { id: id(), name, startedAt: new Date().toISOString(), endedAt: null };
+        const startedAt = fromLocalDateTimeInput($('runStartedAtInput').value);
+        if (!startedAt) {
+            $('runStartedAtInput').focus();
+            showToast('Choose a valid start date and time.');
+            return;
+        }
+        const run = { id: id(), name, startedAt, endedAt: null };
         data.runs.unshift(run);
         data.activeRunId = run.id;
         try {
@@ -12342,11 +12456,62 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
         currentRunDetailId = run.id;
         const cars = spotsForRun(run.id);
         $('runDetailTitle').textContent = run.name;
-        $('runDetailSubtitle').textContent = `${fmtDate(run.startedAt, { month: 'long', day: 'numeric', year: 'numeric' })} · ${run.endedAt ? 'Completed' : 'In progress'} · ${cars.length} ${cars.length === 1 ? 'car' : 'cars'}`;
+        $('runDetailSubtitle').textContent = `${fmtDateTime(run.startedAt)} · ${run.endedAt ? `Finished ${fmtDateTime(run.endedAt)}` : 'In progress'} · ${cars.length} ${cars.length === 1 ? 'car' : 'cars'}`;
+        $('runStartedAtEdit').value = toLocalDateTimeInput(run.startedAt);
+        $('runEndedAtEdit').value = run.endedAt ? toLocalDateTimeInput(run.endedAt) : '';
         $('runCarGrid').innerHTML = cars.map(s => `<button class="run-car-mini" type="button" data-open-spot-from-run="${escapeHTML(s.id)}">${s.photo ? `<img src="${escapeHTML(s.photo)}" alt="">` : '<span class="run-no-photo">NO PHOTO</span>'}<strong>${escapeHTML(s.year ? `${s.year} ` : '')}${escapeHTML(s.make)} ${escapeHTML(s.model)}</strong><span>${escapeHTML(s.trim || s.color || '')}</span></button>`).join('');
         $('runNoCars').hidden = !!cars.length;
         showModal('runDetailModal');
     }
+    $('saveRunTimesButton').addEventListener('click', async () => {
+        const run = data.runs.find(item => item.id === currentRunDetailId);
+        if (!run) return;
+        const startedAt = fromLocalDateTimeInput($('runStartedAtEdit').value);
+        const endedAt = $('runEndedAtEdit').value ? fromLocalDateTimeInput($('runEndedAtEdit').value) : null;
+        if (!startedAt) {
+            $('runStartedAtEdit').focus();
+            showToast('Choose a valid road trip start date and time.');
+            return;
+        }
+        if ($('runEndedAtEdit').value && !endedAt) {
+            $('runEndedAtEdit').focus();
+            showToast('Choose a valid finish date and time, or leave it blank.');
+            return;
+        }
+        if (endedAt && new Date(endedAt) < new Date(startedAt)) {
+            $('runEndedAtEdit').focus();
+            showToast('The finish time must be after the start time.');
+            return;
+        }
+        if (!endedAt && activeRun() && activeRun().id !== run.id) {
+            showToast('Finish the other active trip before reopening this one.');
+            return;
+        }
+        const oldStartedAt = run.startedAt, oldEndedAt = run.endedAt, oldActiveRunId = data.activeRunId;
+        run.startedAt = startedAt;
+        run.endedAt = endedAt;
+        data.activeRunId = endedAt ? (data.activeRunId === run.id ? null : data.activeRunId) : run.id;
+        $('saveRunTimesButton').disabled = true;
+        $('saveRunTimesButton').textContent = 'SAVING…';
+        try {
+            await persist();
+            renderAll();
+            const cars = spotsForRun(run.id);
+            $('runDetailSubtitle').textContent = `${fmtDateTime(run.startedAt)} · ${run.endedAt ? `Finished ${fmtDateTime(run.endedAt)}` : 'In progress'} · ${cars.length} ${cars.length === 1 ? 'car' : 'cars'}`;
+            $('runStartedAtEdit').value = toLocalDateTimeInput(run.startedAt);
+            $('runEndedAtEdit').value = run.endedAt ? toLocalDateTimeInput(run.endedAt) : '';
+            showToast('Road trip dates and times updated.');
+        }
+        catch {
+            run.startedAt = oldStartedAt;
+            run.endedAt = oldEndedAt;
+            data.activeRunId = oldActiveRunId;
+        }
+        finally {
+            $('saveRunTimesButton').disabled = false;
+            $('saveRunTimesButton').textContent = 'SAVE TRIP TIMES';
+        }
+    });
     $('runCarGrid').addEventListener('click', e => { const card = e.target.closest('[data-open-spot-from-run]'); if (card) {
         hideModal('runDetailModal');
         openSpotDetail(card.dataset.openSpotFromRun);
@@ -12483,10 +12648,7 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
         openSpotDetail(item.dataset.homeSpot); });
     $('homeRunButton').addEventListener('click', () => { if ($('homeRunButton').dataset.go === 'trips')
         navigate('trips');
-    else {
-        $('runNameInput').value = `Run — ${fmtDate(new Date().toISOString(), { month: 'short', day: 'numeric' })}`;
-        showModal('startRunModal');
-    } });
+    else openStartRunModal(); });
     $('saveProfileButton').addEventListener('click', () => { profile.name = $('profileNameInput').value.trim().slice(0, 32) || 'Car enthusiast'; saveProfileLocal(); renderProfile(); showToast('Profile saved on this device.'); });
     $('profilePhotoInput').addEventListener('change', async (e) => { const file = e.target.files?.[0]; if (!file)
         return; try {
@@ -12576,11 +12738,69 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
             data = old;
         }
     });
+
+    // A compact, step-by-step guide for first-time users. It is always available from GUIDE.
+    const ONBOARDING_KEY = 'carspotter.onboarding.v1';
+    const guideSteps = [
+        { counter: 'WELCOME', kicker: 'YOUR PERSONAL CAR LOGBOOK', title: 'Every car has a story.', description: 'CarSpotter helps you remember the cars you notice, the places you find them and the days you spend spotting.', points: ['Save everyday favorites and rare supercars alike.', 'Keep photos, notes, dates and places with each sighting.', 'Your collection stays on this device.'], action: '', target: '' },
+        { counter: 'SPOT A CAR', kicker: '01 / LOG A SIGHTING', title: 'Start with the car.', description: 'Open Spot a Car and enter the make and model. Everything else is optional, so logging a car stays quick.', points: ['Add a photo from your camera or library, or skip it.', 'Add a place, notes or a map pin when you have them.', 'Set the date and time you saw it — even if you are logging it later.'], action: 'OPEN SPOT A CAR ↗', target: 'spot' },
+        { counter: 'RARITY REVEAL', kicker: '02 / THE COLLECTING GAME', title: 'See what rarity you found.', description: 'Each sighting receives an estimated rarity based on the vehicle. After saving, the reveal shows the matching tier color.', points: ['Common · gray', 'Uncommon · green · Rare · blue', 'Epic · purple · Legendary · gold · Cosmic · rainbow'], action: 'VIEW YOUR GARAGE ↗', target: 'garage' },
+        { counter: 'YOUR GARAGE', kicker: '03 / THE COLLECTION', title: 'Your sightings, organized.', description: 'The Garage is your collection. Search by make or model, sort your sightings and filter by rarity or favorites.', points: ['Open any car to see its details.', 'Edit the car, photo, notes or original spotting date.', 'Use the map view to see sightings with saved locations.'], action: 'OPEN THE GARAGE ↗', target: 'garage' },
+        { counter: 'ROAD TRIPS', kicker: '04 / MAKE A DAY OF IT', title: 'Keep a whole day together.', description: 'Start a road trip for a car meet, a drive or a day out. Any new sightings you log while it is active are grouped into it automatically.', points: ['Choose the trip start date and time.', 'Finish the trip when you are done.', 'Open a saved trip to correct its start or finish date and time.'], action: 'OPEN ROAD TRIPS ↗', target: 'trips' },
+        { counter: 'BACKUP & PRIVACY', kicker: '05 / KEEP YOUR LOG SAFE', title: 'Your collection belongs to you.', description: 'CarSpotter stores your collection in this browser on this device. It does not automatically sync to another device.', points: ['Export a backup regularly to keep a copy of your cars and photos.', 'Import a backup to restore a collection in this browser.', 'You can reopen this guide any time from the GUIDE button.'], action: 'OPEN BACKUP SETTINGS ↗', target: 'data' }
+    ];
+    let guideStepIndex = 0;
+    function renderGuideStep() {
+        const step = guideSteps[guideStepIndex];
+        $('guideStepCounter').textContent = step.counter;
+        $('guideStepFraction').textContent = `${guideStepIndex + 1} / ${guideSteps.length}`;
+        $('guideProgressFill').style.width = `${((guideStepIndex + 1) / guideSteps.length) * 100}%`;
+        $('guideKicker').textContent = step.kicker;
+        $('guideTitle').textContent = step.title;
+        $('guideDescription').textContent = step.description;
+        $('guidePoints').innerHTML = step.points.map(point => `<div class="guide-point">${escapeHTML(point)}</div>`).join('');
+        $('guideBackButton').disabled = guideStepIndex === 0;
+        $('guideNextButton').textContent = guideStepIndex === guideSteps.length - 1 ? 'FINISH GUIDE ✓' : 'NEXT STEP ↗';
+        $('guideExploreButton').hidden = !step.target;
+        $('guideExploreButton').textContent = step.action;
+        $('guideExploreButton').dataset.target = step.target || '';
+    }
+    function openGuide() {
+        guideStepIndex = 0;
+        renderGuideStep();
+        showModal('onboardingModal');
+    }
+    function finishGuide() {
+        try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch { }
+        hideModal('onboardingModal');
+    }
+    $('helpGuideButton').addEventListener('click', openGuide);
+    $('guideCloseButton').addEventListener('click', finishGuide);
+    $('guideSkipButton').addEventListener('click', finishGuide);
+    $('guideBackButton').addEventListener('click', () => { if (guideStepIndex > 0) { guideStepIndex--; renderGuideStep(); } });
+    $('guideNextButton').addEventListener('click', () => {
+        if (guideStepIndex < guideSteps.length - 1) { guideStepIndex++; renderGuideStep(); }
+        else finishGuide();
+    });
+    $('guideExploreButton').addEventListener('click', () => {
+        const target = $('guideExploreButton').dataset.target;
+        finishGuide();
+        if (target === 'data') showModal('dataModal');
+        else if (target) navigate(target);
+    });
     async function init() {
         loadProfile();
         await bootStorage();
+        $('spottedAtInput').value = toLocalDateTimeInput();
         renderAll();
         renderProfile();
+        let guideSeen = false;
+        try { guideSeen = !!localStorage.getItem(ONBOARDING_KEY); } catch { }
+        if (!guideSeen && data.spots.length === 0 && data.runs.length === 0) {
+            // Mark it shown immediately so dismissing with Escape does not make it recur.
+            try { localStorage.setItem(ONBOARDING_KEY, 'shown'); } catch { }
+            openGuide();
+        }
         if (window.L)
             initSpotMap();
         // Saved counts are already visible in the Garage; avoid a startup toast
