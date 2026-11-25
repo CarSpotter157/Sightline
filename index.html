@@ -6994,7 +6994,7 @@ body.spot-reveal-open {
 /*Final state priorities for the simplified photo-only sequence.*/
 
 #spotReveal {
-  --reveal-glow: #79b7ff !important;
+  --reveal-glow: #83a6d2;
 }
 #spotReveal .reveal-live-dot {
   background: #50d7a0;
@@ -10137,6 +10137,120 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
   *,*::before,*::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
+
+
+/* Rarity reveal: make the earned tier unmistakable. */
+#spotReveal {
+  background:
+    radial-gradient(ellipse at 50% 40%,color-mix(in srgb,var(--reveal-glow) 28%,transparent),transparent 62%),
+    radial-gradient(ellipse at 8% 100%,color-mix(in srgb,var(--reveal-glow) 34%,transparent),transparent 58%),
+    linear-gradient(132deg,var(--reveal-screen-a) 0%,var(--reveal-screen-b) 53%,var(--reveal-screen-c) 100%);
+}
+#spotReveal[data-current-rarity="base"] {
+  --reveal-glow: #83a6d2;
+  --reveal-screen-a: #182b45;
+  --reveal-screen-b: #091625;
+  --reveal-screen-c: #142941;
+}
+#spotReveal[data-current-rarity="common"] {
+  --reveal-glow: #d0d9e4;
+  --reveal-screen-a: #626f80;
+  --reveal-screen-b: #222e3d;
+  --reveal-screen-c: #4b5b6e;
+}
+#spotReveal[data-current-rarity="uncommon"] {
+  --reveal-glow: #65efb5;
+  --reveal-screen-a: #197653;
+  --reveal-screen-b: #09291f;
+  --reveal-screen-c: #1b6045;
+}
+#spotReveal[data-current-rarity="rare"] {
+  --reveal-glow: #83c3ff;
+  --reveal-screen-a: #1d6ab7;
+  --reveal-screen-b: #0a2040;
+  --reveal-screen-c: #285a91;
+}
+#spotReveal[data-current-rarity="epic"] {
+  --reveal-glow: #d3a4ff;
+  --reveal-screen-a: #7542a9;
+  --reveal-screen-b: #241440;
+  --reveal-screen-c: #5b358f;
+}
+#spotReveal[data-current-rarity="legendary"] {
+  --reveal-glow: #ffe18a;
+  --reveal-screen-a: #9c711d;
+  --reveal-screen-b: #33240b;
+  --reveal-screen-c: #80571a;
+}
+#spotReveal[data-current-rarity="cosmic"] {
+  --reveal-glow: #efa5ff;
+  --reveal-screen-a: #713e91;
+  --reveal-screen-b: #211b3f;
+  --reveal-screen-c: #1b6574;
+}
+#spotReveal .reveal-rarity-wash {
+  opacity: .76;
+  background:
+    radial-gradient(ellipse at 50% 42%, color-mix(in srgb,var(--reveal-glow) 43%,transparent),transparent 63%),
+    linear-gradient(125deg,color-mix(in srgb,var(--reveal-glow) 25%,transparent),transparent 47%,color-mix(in srgb,var(--reveal-glow) 33%,transparent));
+  mix-blend-mode: screen;
+  filter: saturate(1.22);
+}
+#spotReveal[data-current-rarity="base"] .reveal-rarity-wash {
+  opacity: 0;
+}
+#spotReveal[data-current-rarity="cosmic"] .reveal-rarity-wash {
+  opacity: .82;
+  background: linear-gradient(118deg,rgba(255,91,122,.52),rgba(255,176,69,.45),rgba(237,224,79,.38),rgba(70,212,145,.43),rgba(76,154,255,.48),rgba(164,103,239,.52),rgba(255,102,196,.48));
+  mix-blend-mode: screen;
+}
+#spotReveal .reveal-meta-row {
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+#spotReveal .reveal-rarity-kicker {
+  color: color-mix(in srgb,var(--reveal-glow) 88%,#ffffff);
+  font-size: 8px;
+  font-weight: 950;
+  letter-spacing: 1.7px;
+  text-shadow: 0 0 18px color-mix(in srgb,var(--reveal-glow) 30%,transparent);
+}
+#spotReveal .reveal-rarity {
+  padding: 8px 15px;
+  border: 1px solid color-mix(in srgb,var(--reveal-glow) 75%,#ffffff 12%);
+  border-radius: 8px;
+  background: linear-gradient(135deg,color-mix(in srgb,var(--reveal-glow) 30%,#0b1422),color-mix(in srgb,var(--reveal-glow) 48%,#111a29));
+  color: #fff;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 1.5px;
+  text-shadow: 0 1px 5px rgba(0,0,0,.38);
+  box-shadow: 0 0 0 3px color-mix(in srgb,var(--reveal-glow) 14%,transparent),0 5px 22px color-mix(in srgb,var(--reveal-glow) 24%,transparent);
+  transition: color .45s ease,border-color .45s ease,background .45s ease,box-shadow .45s ease;
+}
+#spotReveal[data-current-rarity="cosmic"] .reveal-rarity {
+  color: #181426;
+  border-color: rgba(255,255,255,.66);
+  background: linear-gradient(105deg,#ff7188,#ffb34e,#f0e56a,#58d99b,#65b5ff,#a77af5,#f17acb);
+  text-shadow: 0 1px rgba(255,255,255,.38);
+  box-shadow: 0 0 0 3px rgba(196,126,255,.18),0 6px 26px rgba(141,113,255,.27);
+}
+@media (max-width: 600px) {
+  #spotReveal .reveal-meta-row {
+    gap: 7px;
+    margin-top: 12px;
+  }
+  #spotReveal .reveal-rarity {
+    padding: 7px 12px;
+    font-size: 10px;
+  }
+  #spotReveal .reveal-rarity-kicker {
+    font-size: 7px;
+    letter-spacing: 1.3px;
+  }
+}
+
 </style>
 </head>
 <body data-theme="light">
@@ -10368,7 +10482,7 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
       <span class="reveal-make" id="spotRevealMake">PORSCHE</span>
       <h2 id="spotRevealModel">911 GT3</h2>
       <div class="reveal-trim" id="spotRevealTrim"></div>
-      <div class="reveal-meta-row"><span class="reveal-rarity" id="spotRevealRarity">RARE</span><span class="reveal-divider"></span><span id="spotRevealCountLabel">COLLECTION ENTRY #001</span></div>
+      <div class="reveal-meta-row"><span class="reveal-rarity-kicker">YOU GOT</span><span class="reveal-rarity" id="spotRevealRarity">RARE</span><span class="reveal-divider"></span><span id="spotRevealCountLabel">COLLECTION ENTRY #001</span></div>
     </div>
     <div class="reveal-complete" id="spotRevealComplete"><span class="reveal-check">✓</span><span>ADDED TO YOUR GARAGE</span></div>
   </div>
@@ -11253,6 +11367,7 @@ body.large-text .field-help, body.large-text .page-head p, body.large-text .home
             $('spotRevealModel').textContent = `${spot.year ? spot.year + ' ' : ''}${spot.model || ''}`;
             $('spotRevealTrim').textContent = spot.trim || spot.color || 'A new addition to your sightings';
             $('spotRevealRarity').textContent = rarity.label.toUpperCase();
+            $('spotRevealRarity').setAttribute('aria-label', `You got ${rarity.label} rarity`);
             $('spotRevealCountLabel').textContent = progress.unlocked ? `${progress.unlocked}-SPOT MILESTONE` : `COLLECTION ENTRY #${String(total).padStart(3, '0')}`;
             $('spotRevealCollectionLabel').textContent = progress.label;
             $('spotRevealMonogram').textContent = `${(spot.make || 'C').slice(0, 1)}${(spot.model || 'S').slice(0, 1)}`.toUpperCase();
