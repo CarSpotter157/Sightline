@@ -10363,6 +10363,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
 .coach-blocker{position:fixed;z-index:1;display:block;background:rgba(3,9,18,.76);pointer-events:auto;touch-action:none;overscroll-behavior:contain;cursor:not-allowed;}
 .coach-spotlight{position:fixed;z-index:2;left:0;top:0;width:1px;height:1px;border:2px solid rgba(255,255,255,.98);border-radius:15px;background:transparent;box-shadow:0 0 0 5px rgba(105,169,255,.22),0 0 30px rgba(103,169,255,.72);pointer-events:none;transition:top .22s ease,left .22s ease,width .22s ease,height .22s ease;}
 .coach-spotlight:after{content:"";position:absolute;inset:-7px;border:1px solid rgba(126,185,255,.76);border-radius:inherit;animation:coach-ring 1.55s ease-out infinite;}
+.coach-spotlight.is-dropdown{background:rgba(72,143,232,.075);box-shadow:0 0 0 6px rgba(105,169,255,.28),0 0 36px rgba(103,169,255,.9);}
 @keyframes coach-ring{0%{transform:scale(.98);opacity:.8}100%{transform:scale(1.07);opacity:0}}
 .coach-pointer{position:fixed;z-index:2;font-size:30px;line-height:1;filter:drop-shadow(0 3px 7px rgba(0,0,0,.55));animation:coach-tap 1s ease-in-out infinite;pointer-events:none;}
 @keyframes coach-tap{0%,100%{transform:translateY(0) rotate(-13deg)}50%{transform:translateY(7px) rotate(-13deg)}}
@@ -10659,7 +10660,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     </div>
     <div class="coach-progress" id="coachProgress" aria-hidden="true"></div>
     <div class="coach-card-foot">
-      <button type="button" class="coach-skip" id="coachSkip">SKIP TOUR</button>
+      <button type="button" class="coach-skip" id="coachSkip">SKIP ALL</button>
       <div class="coach-nav"><button type="button" class="coach-back" id="coachBack">BACK</button><button type="button" class="coach-next" id="coachNext">NEXT ↗</button></div>
     </div>
   </section>
@@ -12878,30 +12879,23 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         }
     });
 
-    // Visual first-run launchpad. The photo cards jump straight into the real app sections.
-    const ONBOARDING_KEY = 'carspotter.onboarding.visual.v2';
+    // One continuous first-run walkthrough: Spot → Garage → Road Trips → Backups.
+    // The sequence is also replayed from the GUIDE button; Skip exits the whole sequence.
+    const ONBOARDING_KEY = 'carspotter.onboarding.visual.v3';
     function finishGuide() {
         try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch { }
         hideModal('onboardingModal');
     }
     function openGuide() {
-        showModal('onboardingModal');
+        startFullCoachSequence();
     }
     $('helpGuideButton').addEventListener('click', openGuide);
     $('guideCloseButton').addEventListener('click', finishGuide);
     $('guideSkipButton').addEventListener('click', finishGuide);
+    // Keep the visual cards as alternate entry points, but always launch the
+    // complete ordered tour rather than making people choose each section.
     document.querySelectorAll('[data-guide-target]').forEach(card => {
-        card.addEventListener('click', () => {
-            const target = card.dataset.guideTarget;
-            finishGuide();
-            if (target === 'data') {
-                showModal('dataModal');
-                startCoachTour('data', 'dataModal');
-            } else if (target) {
-                navigate(target);
-                setTimeout(() => startCoachTour(target), 80);
-            }
-        });
+        card.addEventListener('click', () => startFullCoachSequence());
     });
 
     // Visual, page-specific walkthroughs. Each step spotlights the real control;
@@ -12930,6 +12924,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         spot: [
             { selector: '#makeSelect', title: 'MAKE', icon: 'car' },
             { selector: '#modelSelect', title: 'MODEL', icon: 'model' },
+            { selector: '#trimSelect', title: 'TRIM', icon: 'model' },
             { selector: '#spottedAtInput', title: 'DATE & TIME', icon: 'clock' },
             { selector: '#addPhotoButton', title: 'PHOTO', icon: 'camera' },
             { selector: '#locateButton', title: 'PIN', icon: 'pin', closeModal: 'photoSourceModal' },
@@ -12953,6 +12948,10 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     let coachOpenedModal = null;
     let coachPositionFrame = 0;
     let activeCoachSelect = null;
+    const coachSequence = ['spot', 'garage', 'trips', 'data'];
+    let activeCoachSequence = false;
+    let coachSequenceIndex = -1;
+    let coachSequenceTimer = 0;
 
     function closeCoachSelectMenu() {
         const menu = $('coachSelectMenu');
@@ -13017,52 +13016,53 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
 
     function coachTargetRect(target) {
         let r = target.getBoundingClientRect();
+        let dropdownElement = null;
         const guideSelectMenu = target === activeCoachSelect ? $('coachSelectMenu') : null;
-        const isSuggestionField = target.matches('#makeSelect, #modelSelect, #trimSelect');
+        const suggestionWrap = target.closest('.autocomplete-wrap');
         let dropdownOpen = false;
+
+        // When a menu is open, spotlight the actual selectable list by itself.
+        // This makes every visible option part of the clear area in the click shield.
         if (guideSelectMenu && guideSelectMenu.getBoundingClientRect().height > 0) {
-            const menuRect = guideSelectMenu.getBoundingClientRect();
-            r = {
-                left: Math.min(r.left, menuRect.left),
-                top: Math.min(r.top, menuRect.top),
-                right: Math.max(r.right, menuRect.right),
-                bottom: Math.max(r.bottom, menuRect.bottom),
-                width: Math.max(r.right, menuRect.right) - Math.min(r.left, menuRect.left),
-                height: Math.max(r.bottom, menuRect.bottom) - Math.min(r.top, menuRect.top)
-            };
+            dropdownElement = guideSelectMenu;
+            r = guideSelectMenu.getBoundingClientRect();
             dropdownOpen = true;
         }
-        if (isSuggestionField) {
-            const wrap = target.closest('.autocomplete-wrap');
-            const menu = wrap?.querySelector('.autocomplete-menu');
-            if (wrap) {
-                const inputRect = wrap.getBoundingClientRect();
-                dropdownOpen = wrap.classList.contains('is-open') && !!menu && menu.getBoundingClientRect().height > 0;
-                if (dropdownOpen) {
-                    const menuRect = menu.getBoundingClientRect();
-                    // One continuous spotlight covers the input/toggle and the live
-                    // suggestion list, so neither gets trapped behind the click shield.
-                    r = {
-                        left: Math.min(inputRect.left, menuRect.left),
-                        top: Math.min(inputRect.top, menuRect.top),
-                        right: Math.max(inputRect.right, menuRect.right),
-                        bottom: Math.max(inputRect.bottom, menuRect.bottom),
-                        width: Math.max(inputRect.right, menuRect.right) - Math.min(inputRect.left, menuRect.left),
-                        height: Math.max(inputRect.bottom, menuRect.bottom) - Math.min(inputRect.top, menuRect.top)
-                    };
-                }
-                else r = inputRect;
+        if (suggestionWrap) {
+            const menu = suggestionWrap.querySelector('.autocomplete-menu');
+            if (suggestionWrap.classList.contains('is-open') && menu && menu.getBoundingClientRect().height > 0) {
+                dropdownElement = menu;
+                r = menu.getBoundingClientRect();
+                dropdownOpen = true;
+            } else {
+                dropdownElement = null;
+                r = suggestionWrap.getBoundingClientRect();
             }
         }
+
         let top = r.top, height = r.height;
-        if (!dropdownOpen && height > 150) { height = Math.min(112, height); top = r.top + Math.max(0, (r.height - height) / 2); }
-        if (dropdownOpen && height > window.innerHeight - 170) {
-            height = Math.max(120, window.innerHeight - 190);
-            top = Math.max(8, Math.min(top, window.innerHeight - height - 150));
+        if (!dropdownOpen && height > 150) {
+            height = Math.min(112, height);
+            top = r.top + Math.max(0, (r.height - height) / 2);
+        }
+        // Menus are already internally scrollable and height-limited; keep their
+        // measured rectangle intact so the spotlight follows the complete visible list.
+        if (dropdownOpen) {
+            top = Math.max(4, top);
+            height = Math.min(height, window.innerHeight - top - 4);
         }
         const width = Math.min(Math.max(r.width, 44), window.innerWidth - 24);
         const left = Math.max(12, Math.min(r.left + (r.width - width) / 2, window.innerWidth - width - 12));
-        return { top: Math.max(8, top - 6), left: Math.max(6, left - 6), width: width + 12, height: Math.max(42, height) + 12, raw: r, dropdownOpen };
+        return {
+            top: Math.max(4, top - 4),
+            left: Math.max(4, left - 4),
+            width: width + 8,
+            height: Math.max(42, height) + 8,
+            raw: r,
+            dropdownOpen,
+            pointerRect: dropdownElement ? dropdownElement.getBoundingClientRect() : r,
+            radiusTarget: dropdownElement || target.closest('.autocomplete-wrap') || target
+        };
     }
 
     function updateCoachBlockers(box) {
@@ -13099,12 +13099,13 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         spotlight.style.left = `${box.left}px`;
         spotlight.style.width = `${box.width}px`;
         spotlight.style.height = `${box.height}px`;
-        const radiusTarget = target.closest('.autocomplete-wrap') || target;
+        const radiusTarget = box.radiusTarget || target;
         spotlight.style.borderRadius = getComputedStyle(radiusTarget).borderRadius || '14px';
+        spotlight.classList.toggle('is-dropdown', box.dropdownOpen);
         updateCoachBlockers(box);
 
         const pointer = $('coachPointer');
-        const pointerRect = box.dropdownOpen ? target.getBoundingClientRect() : box.raw;
+        const pointerRect = box.pointerRect || box.raw;
         pointer.style.left = `${Math.max(5, Math.min(pointerRect.right - 8, window.innerWidth - 38))}px`;
         pointer.style.top = `${Math.max(5, Math.min(pointerRect.bottom - 12, window.innerHeight - 45))}px`;
 
@@ -13131,11 +13132,82 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         });
     }
 
+    function clearCoachPresentation(closeOwnedModal = true, preserveModal = null) {
+        closeCoachSelectMenu();
+        if (closeOwnedModal && coachOpenedModal && coachOpenedModal !== preserveModal && $(coachOpenedModal)?.classList.contains('show')) {
+            hideModal(coachOpenedModal);
+        }
+        coachOpenedModal = preserveModal;
+        activeCoachTour = null;
+        $('coachLayer').hidden = true;
+        $('coachSpotlight').style.cssText = '';
+        $('coachSpotlight').classList.remove('is-dropdown');
+        $('coachPointer').style.cssText = '';
+        $('coachCard').style.cssText = '';
+        document.querySelectorAll('[data-coach-blocker]').forEach(blocker => blocker.style.cssText = '');
+    }
+
+    function finishCoachTour(closeOwnedModal = true) {
+        activeCoachSequence = false;
+        coachSequenceIndex = -1;
+        if (coachSequenceTimer) clearTimeout(coachSequenceTimer);
+        coachSequenceTimer = 0;
+        clearCoachPresentation(closeOwnedModal);
+        try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch { }
+    }
+
+    function launchCoachSequenceSection(index) {
+        if (!activeCoachSequence) return;
+        if (index >= coachSequence.length) {
+            finishCoachTour();
+            showToast('You’re ready to use CarSpotter.');
+            return;
+        }
+        const name = coachSequence[index];
+        if (name === 'data') {
+            showModal('dataModal');
+            startCoachTour('data', 'dataModal');
+            return;
+        }
+        if (coachOpenedModal && $(coachOpenedModal)?.classList.contains('show')) {
+            hideModal(coachOpenedModal);
+            coachOpenedModal = null;
+        }
+        navigate(name);
+        coachSequenceTimer = setTimeout(() => {
+            coachSequenceTimer = 0;
+            if (activeCoachSequence && coachSequenceIndex === index) startCoachTour(name);
+        }, 130);
+    }
+
+    function advanceCoachSequence() {
+        if (!activeCoachSequence) {
+            finishCoachTour();
+            return;
+        }
+        coachSequenceIndex += 1;
+        launchCoachSequenceSection(coachSequenceIndex);
+    }
+
+    function startFullCoachSequence() {
+        if (coachSequenceTimer) clearTimeout(coachSequenceTimer);
+        coachSequenceTimer = 0;
+        clearCoachPresentation(true);
+        hideModal('onboardingModal');
+        activeCoachSequence = true;
+        coachSequenceIndex = 0;
+        try { localStorage.setItem(ONBOARDING_KEY, 'shown'); } catch { }
+        launchCoachSequenceSection(0);
+    }
+
     async function showCoachStep(index) {
         if (!activeCoachTour) return;
         closeCoachSelectMenu();
         if (index < 0) index = 0;
-        if (index >= activeCoachTour.steps.length) { finishCoachTour(); return; }
+        if (index >= activeCoachTour.steps.length) {
+            advanceCoachSequence();
+            return;
+        }
         coachStepIndex = index;
         const step = activeCoachTour.steps[index];
         if (step.closeModal && $(step.closeModal)?.classList.contains('show')) {
@@ -13159,32 +13231,26 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         $('coachStepCount').textContent = `${String(index + 1).padStart(2, '0')} / ${String(activeCoachTour.steps.length).padStart(2, '0')}`;
         $('coachProgress').innerHTML = activeCoachTour.steps.map((_, i) => `<i class="${i <= index ? 'active' : ''}"></i>`).join('');
         $('coachBack').disabled = index === 0;
-        $('coachNext').textContent = index === activeCoachTour.steps.length - 1 ? 'DONE ✓' : 'NEXT ↗';
+        $('coachNext').textContent = index === activeCoachTour.steps.length - 1
+            ? (activeCoachSequence && coachSequenceIndex < coachSequence.length - 1 ? 'NEXT GUIDE ↗' : 'FINISH ✓')
+            : 'NEXT ↗';
+        $('coachSkip').textContent = 'SKIP ALL';
         $('coachLayer').hidden = false;
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         if (activeCoachTour && coachStepIndex === index) positionCoach();
     }
 
     function startCoachTour(name, alreadyOpenedModal = null) {
-        finishCoachTour(false);
+        clearCoachPresentation(true, alreadyOpenedModal);
         const steps = name === 'trips' ? getTripCoachSteps() : coachTours[name];
-        if (!steps?.length) return;
+        if (!steps?.length) {
+            if (activeCoachSequence) advanceCoachSequence();
+            return;
+        }
         activeCoachTour = { name, steps };
         coachOpenedModal = alreadyOpenedModal;
         $('coachLayer').hidden = false;
         showCoachStep(0);
-    }
-
-    function finishCoachTour(closeOwnedModal = true) {
-        closeCoachSelectMenu();
-        if (closeOwnedModal && coachOpenedModal && $(coachOpenedModal)?.classList.contains('show')) hideModal(coachOpenedModal);
-        coachOpenedModal = null;
-        activeCoachTour = null;
-        $('coachLayer').hidden = true;
-        $('coachSpotlight').style.cssText = '';
-        $('coachPointer').style.cssText = '';
-        $('coachCard').style.cssText = '';
-        document.querySelectorAll('[data-coach-blocker]').forEach(blocker => blocker.style.cssText = '');
     }
 
     $('coachNext').addEventListener('click', () => showCoachStep(coachStepIndex + 1));
@@ -13206,7 +13272,12 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     const coachDropdownObserver = new MutationObserver(() => {
         if (activeCoachTour?.name === 'spot') queueCoachPosition();
     });
-    coachDropdownObserver.observe($('spotForm'), { subtree: true, attributes: true, attributeFilter: ['class'] });
+    coachDropdownObserver.observe($('spotForm'), {
+        subtree: true,
+        childList: true,
+        attributes: true,
+        attributeFilter: ['class', 'style', 'aria-expanded']
+    });
     document.querySelectorAll('[data-coach-blocker]').forEach(blocker => {
         blocker.addEventListener('wheel', event => event.preventDefault(), { passive: false });
     });
@@ -13265,9 +13336,8 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         let guideSeen = false;
         try { guideSeen = !!localStorage.getItem(ONBOARDING_KEY); } catch { }
         if (!guideSeen && data.spots.length === 0 && data.runs.length === 0) {
-            // Mark it shown immediately so dismissing with Escape does not make it recur.
-            try { localStorage.setItem(ONBOARDING_KEY, 'shown'); } catch { }
-            openGuide();
+            // Start the complete four-part onboarding on a genuinely fresh collection.
+            startFullCoachSequence();
         }
         if (window.L)
             initSpotMap();
