@@ -10406,6 +10406,38 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
 }
 @media(prefers-reduced-motion:reduce){.coach-spotlight,.coach-spotlight:after,.coach-pointer{transition:none!important;animation:none!important}}
 
+
+/* First-run car choice and concise, action-focused coach copy. */
+.first-spot-backdrop{z-index:15000;}
+.first-spot-choice-modal{width:min(880px,100%);max-width:880px;padding:clamp(16px,2.6vw,25px);max-height:min(91vh,940px);overflow:auto;}
+.first-spot-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px;}
+.first-spot-brand{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:9px;font-weight:950;letter-spacing:1.7px;}
+.first-spot-brand>span{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:var(--accent);color:var(--accent-ink);font:900 13px var(--font-display);letter-spacing:0;}
+.first-spot-intro{margin:0 2px 17px;}
+.first-spot-intro .eyebrow{margin-bottom:7px;}
+.first-spot-intro h2{max-width:650px;margin:0;font:900 clamp(27px,4.4vw,42px)/.98 var(--font-display);letter-spacing:.2px;text-transform:uppercase;color:var(--text);}
+.first-spot-intro p{margin:7px 0 0;color:var(--muted);font-size:11px;}
+.first-car-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;}
+.first-car-choice{min-width:0;overflow:hidden;padding:0;border:1px solid var(--line);border-radius:14px;background:var(--surface-2);color:var(--text);text-align:left;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s;}
+.first-car-choice:hover,.first-car-choice:focus-visible{transform:translateY(-3px);border-color:var(--accent-strong);box-shadow:var(--shadow);outline:none;}
+.first-car-image{display:block;width:100%;height:150px;background-color:var(--surface-3);background-position:center;background-size:cover;background-repeat:no-repeat;}
+.first-car-copy{display:grid;gap:5px;padding:11px 12px 12px;}
+.first-car-make{color:var(--accent-strong);font-size:8px;font-weight:950;letter-spacing:1.35px;}
+.first-car-copy strong{min-height:36px;font:800 20px/.95 var(--font-display);text-transform:uppercase;}
+.first-car-action{display:flex;align-items:center;justify-content:space-between;margin-top:4px;padding-top:8px;border-top:1px solid var(--line);color:var(--muted);font-size:8px;font-weight:950;letter-spacing:1px;}
+.first-car-action b{color:var(--accent-strong);font-size:14px;}
+.first-spot-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:15px;color:var(--soft);font-size:9px;}
+.first-spot-footer .text-button{flex:none;}
+.coach-step-hint{position:relative;display:block;margin:6px 2px 10px 65px;color:rgba(226,237,252,.78);font-size:9px;line-height:1.4;font-weight:600;}
+.photo-actions{display:flex;align-items:center;gap:6px;}
+.photo-action.change{background:rgba(20,75,125,.9);}
+@media(max-width:760px){.first-spot-choice-modal{padding:15px;}.first-car-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}.first-car-image{height:clamp(105px,27vw,150px);}.first-car-copy{padding:9px 10px 10px;}.first-car-copy strong{font-size:18px;min-height:32px;}.first-spot-footer{align-items:flex-start;flex-direction:column;gap:6px;}.coach-step-hint{margin-left:59px;}}
+@media(max-width:380px){.first-car-image{height:105px;}.first-car-copy strong{font-size:16px;}.first-spot-intro h2{font-size:27px;}}
+
+
+.first-car-choice:focus-visible{outline:3px solid var(--accent-strong);outline-offset:3px;}
+.photo-actions .photo-action{white-space:nowrap;}
+
 </style>
 </head>
 <body data-theme="light">
@@ -10498,7 +10530,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
             <div class="photo-drop" id="photoDrop">
               <button class="photo-prompt" id="addPhotoButton" type="button"><span class="photo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3v12H4z"/><circle cx="12" cy="13" r="3.4"/><path d="M8 9h.01"/></svg></span><strong>Tap to add a car photo</strong><span>Open your camera or choose from your photo library.</span></button>
               <img class="photo-preview" id="photoPreview" alt="Preview of the selected car photo">
-              <div class="photo-overlay"><span class="photo-chip">PHOTO READY</span><button class="photo-action" id="removePhoto" type="button">REMOVE PHOTO</button></div>
+              <div class="photo-overlay"><span class="photo-chip">PHOTO READY</span><div class="photo-actions"><button class="photo-action change" id="changeSpotPhotoButton" type="button">CHANGE PHOTO</button><button class="photo-action" id="removePhoto" type="button">REMOVE</button></div></div>
             </div>
             <div class="photo-status"><span>Photos are resized before saving.</span><span id="photoStatus">No photo selected</span></div>
             <div class="photo-optional-row"><span>No photo? That's okay — you can still save the sighting.</span><button id="noPhotoButton" type="button">CONTINUE WITHOUT PHOTO</button></div>
@@ -10604,6 +10636,29 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
 <div class="modal-backdrop" id="dataModal" role="dialog" aria-modal="true" aria-labelledby="dataTitle"><div class="modal"><div class="modal-head"><div><h2 id="dataTitle">Your data.</h2><p>Your collection lives in this browser, not in an online account.</p></div><button class="modal-x" data-close-modal="dataModal" type="button" aria-label="Close">×</button></div><div class="data-actions"><button class="data-action" id="exportButton" type="button"><strong>↓ Export backup</strong><span>Download all cars, photos, locations and runs as one JSON file.</span></button><button class="data-action" id="importButton" type="button"><strong>↑ Import backup</strong><span>Restore a CarSpotter backup on this browser.</span></button></div><input id="importFile" type="file" accept=".json,application/json" hidden><p class="modal-note">Use Export before clearing browser data or moving to another device. Import replaces the collection currently saved in this browser. Photos are stored in browser database storage to handle larger collections more reliably than localStorage.</p><div class="modal-actions"><button class="secondary-btn danger-btn" id="clearAllButton" type="button">CLEAR ALL DATA</button><button class="primary-btn" data-close-modal="dataModal" type="button">DONE</button></div></div></div>
 
 
+<!-- First-run: choose a sample sighting to learn the logging flow. -->
+<div class="modal-backdrop first-spot-backdrop" id="firstSpotChoiceModal" role="dialog" aria-modal="true" aria-labelledby="firstSpotChoiceTitle">
+  <div class="modal first-spot-choice-modal">
+    <div class="first-spot-topline"><span class="first-spot-brand"><span>CS</span> CARSPOTTER · FIRST SPOT</span><button class="modal-x" id="firstSpotCloseButton" type="button" aria-label="Skip the introduction">×</button></div>
+    <div class="first-spot-intro"><span class="eyebrow">YOUR FIRST SIGHTING</span><h2 id="firstSpotChoiceTitle">If you were walking by these, which would you log?</h2><p>Pick a car to try your first spot.</p></div>
+    <div class="first-car-grid" aria-label="Choose a car to practice logging">
+      <button class="first-car-choice" type="button" data-first-spot-choice data-demo-photo-key="corvette" data-demo-make="Chevrolet" data-demo-model="Corvette" data-demo-trim="C8 Stingray" data-demo-color="Blue" aria-label="Choose the blue Chevrolet Corvette C8 Stingray">
+        <span class="first-car-image" data-sample-photo aria-hidden="true"></span><span class="first-car-copy"><span class="first-car-make">CHEVROLET</span><strong>Corvette C8 Stingray</strong><span class="first-car-action">LOG THIS CAR <b>↗</b></span></span>
+      </button>
+      <button class="first-car-choice" type="button" data-first-spot-choice data-demo-photo-key="porsche" data-demo-make="Porsche" data-demo-model="911" data-demo-trim="GT3" data-demo-color="Green" aria-label="Choose the green Porsche 911 GT3">
+        <span class="first-car-image" data-sample-photo aria-hidden="true"></span><span class="first-car-copy"><span class="first-car-make">PORSCHE</span><strong>911 GT3</strong><span class="first-car-action">LOG THIS CAR <b>↗</b></span></span>
+      </button>
+      <button class="first-car-choice" type="button" data-first-spot-choice data-demo-photo-key="mazda" data-demo-make="Mazda" data-demo-model="MX-5 Miata" data-demo-trim="Club" data-demo-color="Red" aria-label="Choose the red Mazda MX-5 Miata">
+        <span class="first-car-image" data-sample-photo aria-hidden="true"></span><span class="first-car-copy"><span class="first-car-make">MAZDA</span><strong>MX-5 Miata</strong><span class="first-car-action">LOG THIS CAR <b>↗</b></span></span>
+      </button>
+      <button class="first-car-choice" type="button" data-first-spot-choice data-demo-photo-key="bmw" data-demo-make="BMW" data-demo-model="M3" data-demo-trim="Competition" data-demo-color="Silver" aria-label="Choose the silver BMW M3 Competition">
+        <span class="first-car-image" data-sample-photo aria-hidden="true"></span><span class="first-car-copy"><span class="first-car-make">BMW</span><strong>M3 Competition</strong><span class="first-car-action">LOG THIS CAR <b>↗</b></span></span>
+      </button>
+    </div>
+    <div class="first-spot-footer"><span>Choose one to see how logging works.</span><button class="text-button" id="firstSpotSkipButton" type="button">SKIP SAMPLE · LOG MY OWN CAR</button></div>
+  </div>
+</div>
+
 <!-- Visual first-run guide: photo-led launchpad with tappable app sections. -->
 <div class="modal-backdrop guide-backdrop" id="onboardingModal" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
   <div class="modal guide-modal">
@@ -10660,6 +10715,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
       <div class="coach-step-copy"><span class="coach-step-count" id="coachStepCount">01 / 05</span><strong class="coach-step-title" id="coachStepTitle">MAKE</strong></div>
       <button type="button" class="coach-close" id="coachClose" aria-label="Close walkthrough">×</button>
     </div>
+    <p class="coach-step-hint" id="coachStepHint">Follow the highlighted area.</p>
     <div class="coach-progress" id="coachProgress" aria-hidden="true"></div>
     <div class="coach-card-foot">
       <button type="button" class="coach-skip" id="coachSkip">SKIP ALL</button>
@@ -10924,6 +10980,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     let data = { spots: [], runs: [], activeRunId: null, homeHeroPhoto: '' };
     let currentPhoto = '';
     let currentLocation = null;
+    let guidedDemoCar = null;
     let currentDetailId = null;
     let currentEditId = null;
     let currentRunDetailId = null;
@@ -11469,6 +11526,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
                 input.dispatchEvent(new Event('input', { bubbles: true }));
                 input.dispatchEvent(new Event('change', { bubbles: true }));
                 setOpen(false);
+                input.dispatchEvent(new CustomEvent('carspotter:suggestion-selected', { bubbles: true, detail: { value } }));
                 // Mouse/keyboard activation can return focus to the text field without
                 // reopening the list. Touch pointer-up deliberately does not refocus,
                 // avoiding a mobile keyboard/menu jump after the user picks a value.
@@ -11891,6 +11949,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         const copy = { spot: 'Add a picture of the car you spotted.', edit: 'Choose a replacement picture for this sighting.', hero: 'Choose a photo to replace the car-and-moon artwork on your home page.' };
         $('photoSourceCopy').textContent = copy[purpose] || 'Choose where your picture should come from.';
         showModal('photoSourceModal');
+        if (activeCoachTour?.name === 'spot' && !$('coachLayer').hidden) $('photoSourceModal').style.zIndex = '16020';
     }
     function choosePhotoSource(source) {
         const input = $('photo' + (source === 'camera' ? 'Camera' : 'Library') + 'Input');
@@ -11951,6 +12010,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         e.target.value = '';
     }));
     $('addPhotoButton').addEventListener('click', () => openPhotoSource('spot'));
+    $('changeSpotPhotoButton').addEventListener('click', () => openPhotoSource('spot'));
     $('homeHeroChangePhoto').addEventListener('click', () => openPhotoSource('hero'));
     $('homeHeroResetPhoto').addEventListener('click', async () => {
         const previous = data.homeHeroPhoto || '';
@@ -12002,6 +12062,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
             map.setView([lat, lng], 15, { animate: true });
         }
         updateSpotProgress();
+        if (activeCoachTour?.name === 'spot' && coachStepIndex === 4) showCoachStep(5);
     }
     function clearCurrentLocation() {
         currentLocation = null;
@@ -12025,6 +12086,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     });
     $('clearLocationButton').addEventListener('click', clearCurrentLocation);
     function resetSpotForm() {
+        guidedDemoCar = null;
         $('spotForm').reset();
         $('makeSelect').value = '';
         $('makeSelect').dataset.lastValue = '';
@@ -12955,7 +13017,66 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
 
     // One continuous first-run walkthrough: Spot → Garage → Road Trips → Backups.
     // The sequence is also replayed from the GUIDE button; Skip exits the whole sequence.
-    const ONBOARDING_KEY = 'carspotter.onboarding.visual.v3';
+    const ONBOARDING_KEY = 'carspotter.onboarding.visual.v4';
+
+    function readEmbeddedGuidePhoto(target) {
+        const tile = document.querySelector(`[data-guide-target="${target}"]`);
+        const value = tile?.style.getPropertyValue('--guide-photo') || '';
+        const match = value.match(/^url\(["']?(.*?)["']?\)$/s);
+        return match?.[1] || '';
+    }
+
+    function setupFirstSpotChoices() {
+        const photos = {
+            corvette: readEmbeddedGuidePhoto('spot'),
+            porsche: readEmbeddedGuidePhoto('garage'),
+            mazda: readEmbeddedGuidePhoto('trips'),
+            bmw: 'https://mediapool.bmwgroup.com/cache/P9/202103/P90416655/P90416655-the-all-new-bmw-m3-competition-sedan-with-m-xdrive-04-2021-2250px.jpg'
+        };
+        document.querySelectorAll('[data-first-spot-choice]').forEach(card => {
+            const photo = photos[card.dataset.demoPhotoKey] || '';
+            const image = card.querySelector('[data-sample-photo]');
+            if (image && photo) image.style.backgroundImage = `url("${photo}")`;
+            card.addEventListener('click', () => startFirstSpotDemo(card, photo));
+        });
+    }
+
+    function startFirstSpotDemo(card, photo) {
+        if (!photo) {
+            showToast('That sample photo could not be loaded. Choose another car.');
+            return;
+        }
+        resetSpotForm();
+        guidedDemoCar = {
+            make: card.dataset.demoMake || '',
+            model: card.dataset.demoModel || '',
+            trim: card.dataset.demoTrim || '',
+            color: card.dataset.demoColor || ''
+        };
+        $('colorInput').value = guidedDemoCar.color;
+        $('spottedAtInput').value = toLocalDateTimeInput();
+        currentPhoto = photo;
+        $('photoPreview').src = photo;
+        $('photoDrop').classList.remove('no-photo');
+        $('photoDrop').classList.add('has-photo');
+        $('photoStatus').textContent = 'Sample photo ready · you can change it';
+        updateSpotProgress();
+        hideModal('firstSpotChoiceModal');
+        hideModal('onboardingModal');
+        activeCoachSequence = true;
+        coachSequenceIndex = 0;
+        navigate('spot');
+        coachSequenceTimer = setTimeout(() => {
+            coachSequenceTimer = 0;
+            if (activeCoachSequence && coachSequenceIndex === 0) startCoachTour('spot');
+        }, 150);
+    }
+
+    function skipFirstSpotSample() {
+        hideModal('firstSpotChoiceModal');
+        startFullCoachSequence();
+    }
+
     function finishGuide() {
         try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch { }
         hideModal('onboardingModal');
@@ -12966,6 +13087,9 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     $('helpGuideButton').addEventListener('click', openGuide);
     $('guideCloseButton').addEventListener('click', finishGuide);
     $('guideSkipButton').addEventListener('click', finishGuide);
+    $('firstSpotCloseButton').addEventListener('click', finishGuide);
+    $('firstSpotSkipButton').addEventListener('click', skipFirstSpotSample);
+    setupFirstSpotChoices();
     // Keep the visual cards as alternate entry points, but always launch the
     // complete ordered tour rather than making people choose each section.
     document.querySelectorAll('[data-guide-target]').forEach(card => {
@@ -12996,12 +13120,11 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     };
     const coachTours = {
         spot: [
-            { selector: '#makeSelect', title: 'MAKE', icon: 'car' },
-            { selector: '#modelSelect', title: 'MODEL', icon: 'model' },
-            { selector: '#trimSelect', title: 'TRIM', icon: 'model' },
+            { selector: '#makeSelect', title: 'MAKE', icon: 'car', focus: true },
+            { selector: '#modelSelect', title: 'MODEL', icon: 'model', focus: true },
             { selector: '#spottedAtInput', title: 'DATE & TIME', icon: 'clock' },
-            { selector: '#addPhotoButton', title: 'PHOTO', icon: 'camera' },
-            { selector: '#locateButton', title: 'PIN', icon: 'pin', closeModal: 'photoSourceModal' },
+            { selector: '#photoDrop', title: 'PHOTO', icon: 'camera' },
+            { selector: '.location-card', title: 'LOCATION', icon: 'pin' },
             { selector: '#saveSpotButton', title: 'SAVE CAR', icon: 'save' }
         ],
         garage: [
@@ -13026,6 +13149,47 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     let activeCoachSequence = false;
     let coachSequenceIndex = -1;
     let coachSequenceTimer = 0;
+
+    function coachHintForStep(step) {
+        if (activeCoachTour?.name !== 'spot') return 'Use the highlighted control to explore this part of CarSpotter.';
+        switch (step.title) {
+            case 'MAKE': return guidedDemoCar ? `Type ${guidedDemoCar.make}, then tap it in the list.` : 'Type a make, then tap the matching suggestion.';
+            case 'MODEL': return guidedDemoCar ? `Type ${guidedDemoCar.model}, then tap it in the list.` : 'Type a model, then tap the matching suggestion.';
+            case 'DATE & TIME': return 'Already set to now. Change it if you need to.';
+            case 'PHOTO': return currentPhoto ? 'Sample photo added. Tap CHANGE PHOTO to use your own.' : 'Add a photo, or continue without one. You can replace it here.';
+            case 'LOCATION': return 'Tap USE MY LOCATION, or tap the map to choose a spot.';
+            case 'SAVE CAR': return 'Your first spot is ready. Tap SAVE TO GARAGE.';
+            default: return 'Follow the highlighted area.';
+        }
+    }
+
+    function onGuidedSuggestionSelected(event) {
+        if (activeCoachTour?.name !== 'spot') return;
+        const field = event.currentTarget;
+        const value = String(event.detail?.value || field.value || '').trim();
+        if (field.id === 'makeSelect' && coachStepIndex === 0) {
+            if (guidedDemoCar && value.toLowerCase() !== guidedDemoCar.make.toLowerCase()) {
+                showToast(`Choose ${guidedDemoCar.make} for this sample car.`);
+                return;
+            }
+            showCoachStep(1);
+            return;
+        }
+        if (field.id === 'modelSelect' && coachStepIndex === 1) {
+            if (guidedDemoCar && value.toLowerCase() !== guidedDemoCar.model.toLowerCase()) {
+                showToast(`Choose ${guidedDemoCar.model} for this sample car.`);
+                return;
+            }
+            if (guidedDemoCar) {
+                updateTrimOptions('', guidedDemoCar.trim);
+                $('colorInput').value = guidedDemoCar.color;
+            }
+            $('spottedAtInput').value = toLocalDateTimeInput();
+            showCoachStep(2);
+        }
+    }
+    $('makeSelect').addEventListener('carspotter:suggestion-selected', onGuidedSuggestionSelected);
+    $('modelSelect').addEventListener('carspotter:suggestion-selected', onGuidedSuggestionSelected);
 
     function closeCoachSelectMenu() {
         const menu = $('coachSelectMenu');
@@ -13145,7 +13309,8 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         }
 
         let top = r.top, height = r.height;
-        if (!dropdownOpen && height > 150) {
+        const keepFullTarget = target.id === 'photoDrop' || target.classList.contains('location-card');
+        if (!dropdownOpen && height > 150 && !keepFullTarget) {
             height = Math.min(112, height);
             top = r.top + Math.max(0, (r.height - height) / 2);
         }
@@ -13305,6 +13470,8 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         coachSequenceTimer = 0;
         clearCoachPresentation(true);
         hideModal('onboardingModal');
+        hideModal('firstSpotChoiceModal');
+        guidedDemoCar = null;
         activeCoachSequence = true;
         coachSequenceIndex = 0;
         try { localStorage.setItem(ONBOARDING_KEY, 'shown'); } catch { }
@@ -13339,6 +13506,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         target.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'nearest' });
         $('coachVisual').innerHTML = coachIcons[step.icon] || coachIcons.spark;
         $('coachStepTitle').textContent = step.title;
+        $('coachStepHint').textContent = coachHintForStep(step);
         $('coachStepCount').textContent = `${String(index + 1).padStart(2, '0')} / ${String(activeCoachTour.steps.length).padStart(2, '0')}`;
         $('coachProgress').innerHTML = activeCoachTour.steps.map((_, i) => `<i class="${i <= index ? 'active' : ''}"></i>`).join('');
         $('coachBack').disabled = index === 0;
@@ -13350,7 +13518,13 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         $('coachSkip').textContent = 'SKIP ALL';
         $('coachLayer').hidden = false;
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-        if (activeCoachTour && coachStepIndex === index) positionCoach();
+        if (activeCoachTour && coachStepIndex === index) {
+            positionCoach();
+            if (step.focus && !target.disabled) {
+                try { target.focus({ preventScroll: true }); } catch { target.focus(); }
+                queueCoachPosition();
+            }
+        }
     }
 
     function startCoachTour(name, alreadyOpenedModal = null) {
@@ -13448,8 +13622,11 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         let guideSeen = false;
         try { guideSeen = !!localStorage.getItem(ONBOARDING_KEY); } catch { }
         if (!guideSeen && data.spots.length === 0 && data.runs.length === 0) {
-            // Start the complete four-part onboarding on a genuinely fresh collection.
-            startFullCoachSequence();
+            // Let a new user choose a real-looking sample car before walking through logging.
+            // Clear the fallback-storage warning so it cannot cover the photo choices on mobile.
+            $('toast').classList.remove('show');
+            clearTimeout(toastTimer);
+            showModal('firstSpotChoiceModal');
         }
         if (window.L)
             initSpotMap();
