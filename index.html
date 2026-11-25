@@ -10390,6 +10390,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
 .coach-card button:focus-visible{outline:2px solid #acd0ff;outline-offset:2px;}
 
 .coach-select-menu{position:fixed;z-index:4;max-height:min(280px,42vh);overflow:auto;padding:6px;border:1px solid rgba(143,190,255,.55);border-radius:14px;background:linear-gradient(145deg,#f8fbff,#e8f1ff);box-shadow:0 18px 48px rgba(0,0,0,.42),0 0 0 2px rgba(105,169,255,.24);pointer-events:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;}
+.coach-layer > .autocomplete-menu[data-coach-dropdown-for]{position:fixed!important;display:block!important;z-index:4!important;pointer-events:auto!important;overflow-y:auto!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important;}
 .coach-select-option{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:40px;padding:9px 11px;border:0;border-radius:9px;background:transparent;color:#14243a;text-align:left;font-family:inherit;font-size:12px;line-height:1.2;font-weight:800;cursor:pointer;}
 .coach-select-option+.coach-select-option{margin-top:2px;}
 .coach-select-option:hover,.coach-select-option[aria-selected="true"]{background:linear-gradient(100deg,rgba(63,133,220,.19),rgba(63,133,220,.08));color:#164b8b;}
@@ -11284,6 +11285,50 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
             menu.setAttribute('role', 'listbox');
             menu.setAttribute('aria-label', 'Suggestions');
             wrap.appendChild(menu);
+
+            // While the coach is active, move the live menu into the coach layer.
+            // The original wrapper creates an isolated stacking context, which puts
+            // the real menu underneath the full-screen dimmer even when its geometry
+            // is measured correctly. Portalling the same live node keeps its handlers
+            // and options intact while drawing it above the dimmer.
+            function positionCoachPortalMenu() {
+                const coachLayer = document.getElementById('coachLayer');
+                if (!coachLayer || coachLayer.hidden || menu.parentElement !== coachLayer) return;
+                const anchor = wrap.getBoundingClientRect();
+                const gap = 7;
+                const below = Math.max(0, window.innerHeight - anchor.bottom - gap - 8);
+                const above = Math.max(0, anchor.top - gap - 8);
+                const useBelow = below >= above || below >= 150;
+                const available = Math.max(110, Math.max(below, above));
+                const maxHeight = Math.max(110, Math.min(330, Math.floor(window.innerHeight * 0.42), Math.floor(available)));
+                menu.style.position = 'fixed';
+                menu.style.display = 'block';
+                menu.style.left = `${Math.max(12, Math.min(anchor.left, window.innerWidth - Math.min(anchor.width, window.innerWidth - 24) - 12))}px`;
+                menu.style.right = 'auto';
+                menu.style.width = `${Math.min(anchor.width, window.innerWidth - 24)}px`;
+                menu.style.maxHeight = `${maxHeight}px`;
+                menu.style.zIndex = '4';
+                menu.style.pointerEvents = 'auto';
+                const desiredHeight = Math.min(menu.scrollHeight || 180, maxHeight);
+                const top = useBelow
+                    ? Math.min(window.innerHeight - desiredHeight - 8, anchor.bottom + gap)
+                    : Math.max(8, anchor.top - desiredHeight - gap);
+                menu.style.top = `${top}px`;
+                menu.style.bottom = 'auto';
+            }
+            function portalCoachMenuIfNeeded() {
+                const coachLayer = document.getElementById('coachLayer');
+                if (!coachLayer || coachLayer.hidden) return false;
+                if (menu.parentElement !== coachLayer) coachLayer.appendChild(menu);
+                menu.dataset.coachDropdownFor = input.id;
+                positionCoachPortalMenu();
+                return true;
+            }
+            function restoreCoachPortalMenu() {
+                if (menu.parentElement !== wrap) wrap.appendChild(menu);
+                delete menu.dataset.coachDropdownFor;
+                menu.style.cssText = '';
+            }
             input.setAttribute('aria-autocomplete', 'list');
             input.setAttribute('aria-controls', menu.id);
             input.setAttribute('aria-expanded', 'false');
@@ -11357,11 +11402,17 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
                 toggle.setAttribute('aria-expanded', String(open));
                 input.setAttribute('aria-expanded', String(open));
                 syncMobileDropdownNav();
-                if (open)
+                if (open) {
+                    // The list itself must sit above the coach dimmer and inside the
+                    // spotlight cut-out. Keep the same DOM node so selection stays real.
+                    portalCoachMenuIfNeeded();
                     render();
+                    if (menu.parentElement === document.getElementById('coachLayer')) positionCoachPortalMenu();
+                }
                 else {
                     activeIndex = -1;
                     input.removeAttribute('aria-activedescendant');
+                    restoreCoachPortalMenu();
                 }
             };
             function render() {
@@ -11410,6 +11461,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
                     foot.textContent = 'Tap a choice or keep typing';
                     menu.appendChild(foot);
                 }
+                if (menu.parentElement === document.getElementById('coachLayer')) positionCoachPortalMenu();
             }
             function choose(value, restoreFocus = false) {
                 input.value = value;
@@ -11497,16 +11549,23 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         });
         document.addEventListener('pointerdown', event => {
             document.querySelectorAll('#spotForm .autocomplete-wrap.is-open').forEach(w => {
-                if (!w.contains(event.target)) {
+                const field = w.querySelector('.searchable-control');
+                const portalMenu = field
+                    ? document.querySelector(`#coachLayer .autocomplete-menu[data-coach-dropdown-for="${field.id}"]`)
+                    : null;
+                if (!w.contains(event.target) && !portalMenu?.contains(event.target)) {
                     w.classList.remove('is-open');
-                    const field = w.querySelector('.searchable-control');
-                    const button = w.querySelector('.autocomplete-toggle');
+                    if (portalMenu) {
+                        w.appendChild(portalMenu);
+                        delete portalMenu.dataset.coachDropdownFor;
+                        portalMenu.style.cssText = '';
+                    }
                     if (field) {
                         field.setAttribute('aria-expanded', 'false');
                         field.removeAttribute('aria-activedescendant');
                     }
-                    if (button)
-                        button.setAttribute('aria-expanded', 'false');
+                    const button = w.querySelector('.autocomplete-toggle');
+                    if (button) button.setAttribute('aria-expanded', 'false');
                 }
             });
             syncMobileDropdownNav();
@@ -12959,6 +13018,24 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         activeCoachSelect = null;
     }
 
+    function restoreCoachPortaledDropdowns(closeMenus = false) {
+        document.querySelectorAll('#coachLayer .autocomplete-menu[data-coach-dropdown-for]').forEach(menu => {
+            const input = $(menu.dataset.coachDropdownFor);
+            const wrap = input?.closest('.autocomplete-wrap');
+            if (wrap) {
+                if (wrap.contains(menu) === false) wrap.appendChild(menu);
+                delete menu.dataset.coachDropdownFor;
+                menu.style.cssText = '';
+                if (closeMenus) {
+                    wrap.classList.remove('is-open');
+                    input.setAttribute('aria-expanded', 'false');
+                    input.removeAttribute('aria-activedescendant');
+                    wrap.querySelector('.autocomplete-toggle')?.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+    }
+
     function openCoachSelectMenu(select) {
         if (!activeCoachTour || !select || select.tagName !== 'SELECT') return;
         closeCoachSelectMenu();
@@ -13021,18 +13098,30 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         const suggestionWrap = target.closest('.autocomplete-wrap');
         let dropdownOpen = false;
 
-        // When a menu is open, spotlight the actual selectable list by itself.
-        // This makes every visible option part of the clear area in the click shield.
         if (guideSelectMenu && guideSelectMenu.getBoundingClientRect().height > 0) {
             dropdownElement = guideSelectMenu;
             r = guideSelectMenu.getBoundingClientRect();
             dropdownOpen = true;
         }
         if (suggestionWrap) {
-            const menu = suggestionWrap.querySelector('.autocomplete-menu');
+            // The live suggestion menu is portalled into coachLayer to escape the
+            // autocomplete wrapper's isolated stacking context. Find it there first.
+            const menu = document.querySelector(`#coachLayer .autocomplete-menu[data-coach-dropdown-for="${target.id}"]`)
+                || suggestionWrap.querySelector('.autocomplete-menu');
             if (suggestionWrap.classList.contains('is-open') && menu && menu.getBoundingClientRect().height > 0) {
                 dropdownElement = menu;
-                r = menu.getBoundingClientRect();
+                const menuRect = menu.getBoundingClientRect();
+                const wrapRect = suggestionWrap.getBoundingClientRect();
+                // Keep both the field and the actual option panel illuminated, so
+                // users can type into the field or tap a visible suggestion.
+                r = {
+                    left: Math.min(wrapRect.left, menuRect.left),
+                    top: Math.min(wrapRect.top, menuRect.top),
+                    right: Math.max(wrapRect.right, menuRect.right),
+                    bottom: Math.max(wrapRect.bottom, menuRect.bottom),
+                    width: Math.max(wrapRect.right, menuRect.right) - Math.min(wrapRect.left, menuRect.left),
+                    height: Math.max(wrapRect.bottom, menuRect.bottom) - Math.min(wrapRect.top, menuRect.top)
+                };
                 dropdownOpen = true;
             } else {
                 dropdownElement = null;
@@ -13106,6 +13195,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
 
         const pointer = $('coachPointer');
         const pointerRect = box.pointerRect || box.raw;
+        pointer.style.display = box.dropdownOpen ? 'none' : '';
         pointer.style.left = `${Math.max(5, Math.min(pointerRect.right - 8, window.innerWidth - 38))}px`;
         pointer.style.top = `${Math.max(5, Math.min(pointerRect.bottom - 12, window.innerHeight - 45))}px`;
 
@@ -13113,10 +13203,15 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         const cardWidth = Math.min(310, window.innerWidth - 24);
         const cardHeight = card.offsetHeight || 112;
         const bottomReserve = window.innerWidth <= 760 ? 88 : 16;
-        const maxTop = window.innerHeight - cardHeight - bottomReserve;
+        const maxTop = Math.max(12, window.innerHeight - cardHeight - bottomReserve);
         const gap = 15;
-        let top = box.raw.bottom + gap;
-        if (top + cardHeight > maxTop) top = box.raw.top - cardHeight - gap;
+        let top = box.dropdownOpen
+            ? box.raw.top - cardHeight - gap
+            : box.raw.bottom + gap;
+        if (top < 12 || top + cardHeight > maxTop) {
+            if (box.dropdownOpen) top = Math.min(maxTop, Math.max(12, box.raw.bottom + gap));
+            else top = box.raw.top - cardHeight - gap;
+        }
         top = Math.max(12, Math.min(top, maxTop));
         let left = box.raw.left + box.raw.width / 2 - cardWidth / 2;
         left = Math.max(12, Math.min(left, window.innerWidth - cardWidth - 12));
@@ -13133,6 +13228,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     }
 
     function clearCoachPresentation(closeOwnedModal = true, preserveModal = null) {
+        restoreCoachPortaledDropdowns(true);
         closeCoachSelectMenu();
         if (closeOwnedModal && coachOpenedModal && coachOpenedModal !== preserveModal && $(coachOpenedModal)?.classList.contains('show')) {
             hideModal(coachOpenedModal);
