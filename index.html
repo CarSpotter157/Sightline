@@ -13080,9 +13080,22 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     function finishGuide() {
         try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch { }
         hideModal('onboardingModal');
+        hideModal('firstSpotChoiceModal');
     }
     function openGuide() {
-        startFullCoachSequence();
+        // Replay the same first-run path shown to a brand-new user. Start with
+        // the four photo choices, then let the selected sample car drive the
+        // Make → Model → Date/Time → Photo → Location → Save walkthrough.
+        // Saving the sample continues into Garage, Trips, and Backup/Data.
+        if (coachSequenceTimer) clearTimeout(coachSequenceTimer);
+        coachSequenceTimer = 0;
+        activeCoachSequence = false;
+        coachSequenceIndex = -1;
+        clearCoachPresentation(true);
+        hideModal('onboardingModal');
+        hideModal('firstSpotChoiceModal');
+        guidedDemoCar = null;
+        showModal('firstSpotChoiceModal');
     }
     $('helpGuideButton').addEventListener('click', openGuide);
     $('guideCloseButton').addEventListener('click', finishGuide);
