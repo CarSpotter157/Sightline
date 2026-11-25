@@ -10356,6 +10356,46 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
   .guide-tile,.guide-tile-photo,.guide-rarity-chip,.guide-rarity-preview { transition:none!important; }
 }
 </style>
+<style>
+
+/* Hands-on visual coachmarks for the first-run guide. */
+.coach-layer{position:fixed;inset:0;z-index:16000;pointer-events:none;}
+.coach-spotlight{position:fixed;left:0;top:0;width:1px;height:1px;border:2px solid rgba(255,255,255,.98);border-radius:15px;background:transparent;box-shadow:0 0 0 9999px rgba(3,9,18,.76),0 0 0 5px rgba(105,169,255,.22),0 0 30px rgba(103,169,255,.72);pointer-events:none;transition:top .22s ease,left .22s ease,width .22s ease,height .22s ease;}
+.coach-spotlight:after{content:"";position:absolute;inset:-7px;border:1px solid rgba(126,185,255,.76);border-radius:inherit;animation:coach-ring 1.55s ease-out infinite;}
+@keyframes coach-ring{0%{transform:scale(.98);opacity:.8}100%{transform:scale(1.07);opacity:0}}
+.coach-pointer{position:fixed;z-index:2;font-size:30px;line-height:1;filter:drop-shadow(0 3px 7px rgba(0,0,0,.55));animation:coach-tap 1s ease-in-out infinite;pointer-events:none;}
+@keyframes coach-tap{0%,100%{transform:translateY(0) rotate(-13deg)}50%{transform:translateY(7px) rotate(-13deg)}}
+.coach-card{position:fixed;z-index:3;width:min(310px,calc(100vw - 24px));padding:12px 13px 10px;border:1px solid rgba(157,193,242,.26);border-radius:19px;background:linear-gradient(145deg,#14243a 0%,#0a1424 100%);color:#f7faff;box-shadow:0 18px 52px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.08);pointer-events:auto;overflow:hidden;}
+.coach-card:before{content:"";position:absolute;left:-35px;top:-62px;width:150px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(75,147,255,.24),transparent 70%);pointer-events:none;}
+.coach-card-head{position:relative;display:flex;align-items:center;gap:11px;min-height:58px;}
+.coach-visual{position:relative;flex:none;width:54px;height:54px;display:grid;place-items:center;border-radius:15px;border:1px solid rgba(140,188,255,.32);background:linear-gradient(145deg,rgba(91,157,245,.25),rgba(38,72,116,.15));color:#a9ceff;box-shadow:inset 0 1px rgba(255,255,255,.12);}
+.coach-visual svg{width:31px;height:31px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 3px 9px rgba(80,146,238,.25));}
+.coach-visual:after{content:"";position:absolute;right:5px;bottom:5px;width:7px;height:7px;border-radius:50%;background:#7ce6b0;box-shadow:0 0 10px #7ce6b0;}
+.coach-step-copy{min-width:0;flex:1;}
+.coach-step-count{display:block;color:#91b9f0;font-size:8px;font-weight:950;letter-spacing:1.8px;}
+.coach-step-title{display:block;margin-top:4px;color:#fff;font-size:17px;font-weight:1000;letter-spacing:1.15px;line-height:1.05;}
+.coach-close{flex:none;align-self:flex-start;width:27px;height:27px;border:1px solid rgba(255,255,255,.12);border-radius:9px;background:rgba(255,255,255,.07);color:#e9f2ff;font-size:17px;line-height:1;cursor:pointer;}
+.coach-progress{display:flex;gap:4px;margin:10px 0 9px;}
+.coach-progress i{display:block;flex:1;height:3px;border-radius:99px;background:rgba(255,255,255,.12);}
+.coach-progress i.active{background:linear-gradient(90deg,#4d9cff,#9bc9ff);box-shadow:0 0 9px rgba(83,158,255,.48);}
+.coach-card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.coach-skip{padding:7px 8px;border:0;background:transparent;color:rgba(221,234,252,.62);font-size:8px;font-weight:950;letter-spacing:1px;cursor:pointer;}
+.coach-nav{display:flex;align-items:center;gap:6px;}
+.coach-back,.coach-next{min-height:32px;padding:0 12px;border-radius:10px;font-size:8px;font-weight:1000;letter-spacing:1.15px;cursor:pointer;}
+.coach-back{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#e7f0ff;}
+.coach-back:disabled{opacity:.3;cursor:default;}
+.coach-next{border:1px solid rgba(139,190,255,.5);background:linear-gradient(135deg,#347bd1,#24569c);color:white;box-shadow:0 5px 13px rgba(25,82,155,.3);}
+.coach-card button:focus-visible{outline:2px solid #acd0ff;outline-offset:2px;}
+@media(max-width:520px){
+ .coach-card{width:min(300px,calc(100vw - 24px));padding:10px 11px 9px;border-radius:17px;}
+ .coach-visual{width:48px;height:48px;border-radius:13px;}
+ .coach-visual svg{width:28px;height:28px;}
+ .coach-step-title{font-size:16px;}
+ .coach-pointer{font-size:26px;}
+}
+@media(prefers-reduced-motion:reduce){.coach-spotlight,.coach-spotlight:after,.coach-pointer{transition:none!important;animation:none!important}}
+
+</style>
 </head>
 <body data-theme="light">
 <div class="app-shell">
@@ -10593,6 +10633,24 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     </section>
     <div class="guide-footer"><span>Tap any card to open that part of the app.</span><button class="text-button" id="guideSkipButton" type="button">GOT IT ✓</button></div>
   </div>
+</div>
+
+
+<div class="coach-layer" id="coachLayer" hidden aria-live="polite">
+  <div class="coach-spotlight" id="coachSpotlight" aria-hidden="true"></div>
+  <div class="coach-pointer" id="coachPointer" aria-hidden="true">👆</div>
+  <section class="coach-card" id="coachCard" role="dialog" aria-label="Visual app walkthrough">
+    <div class="coach-card-head">
+      <div class="coach-visual" id="coachVisual" aria-hidden="true"></div>
+      <div class="coach-step-copy"><span class="coach-step-count" id="coachStepCount">01 / 05</span><strong class="coach-step-title" id="coachStepTitle">MAKE</strong></div>
+      <button type="button" class="coach-close" id="coachClose" aria-label="Close walkthrough">×</button>
+    </div>
+    <div class="coach-progress" id="coachProgress" aria-hidden="true"></div>
+    <div class="coach-card-foot">
+      <button type="button" class="coach-skip" id="coachSkip">SKIP TOUR</button>
+      <div class="coach-nav"><button type="button" class="coach-back" id="coachBack">BACK</button><button type="button" class="coach-next" id="coachNext">NEXT ↗</button></div>
+    </div>
+  </section>
 </div>
 
 <div class="spot-reveal" id="spotReveal" hidden aria-hidden="true">
@@ -12824,10 +12882,205 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         card.addEventListener('click', () => {
             const target = card.dataset.guideTarget;
             finishGuide();
-            if (target === 'data') showModal('dataModal');
-            else if (target) navigate(target);
+            if (target === 'data') {
+                showModal('dataModal');
+                startCoachTour('data', 'dataModal');
+            } else if (target) {
+                navigate(target);
+                setTimeout(() => startCoachTour(target), 80);
+            }
         });
     });
+
+    // Visual, page-specific walkthroughs. Each step spotlights the real control;
+    // the app remains usable through the highlighted area while the coach is open.
+    const coachIcons = {
+        car: '<svg viewBox="0 0 32 32"><path d="m4 19 2.2-6.2A3 3 0 0 1 9 11h14a3 3 0 0 1 2.8 1.8L28 19v6h-3v-2H7v2H4z"/><path d="M5 19h22M9 11l2-4h10l2 4M9 20h.01M23 20h.01"/></svg>',
+        model: '<svg viewBox="0 0 32 32"><circle cx="14" cy="14" r="8"/><path d="m20 20 7 7M10 14h8M14 10v8"/></svg>',
+        clock: '<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><path d="M16 9v8l5 3"/></svg>',
+        camera: '<svg viewBox="0 0 32 32"><path d="M4 11h6l2-3h8l2 3h6v15H4z"/><circle cx="16" cy="18" r="5"/><path d="M8 14h.01"/></svg>',
+        pin: '<svg viewBox="0 0 32 32"><path d="M26 14c0 8-10 15-10 15S6 22 6 14a10 10 0 1 1 20 0Z"/><circle cx="16" cy="14" r="3.2"/></svg>',
+        save: '<svg viewBox="0 0 32 32"><path d="M6 5h17l4 4v18H6z"/><path d="M11 5v8h11V5M11 27v-9h11v9"/><path d="m13 22 2 2 5-5"/></svg>',
+        search: '<svg viewBox="0 0 32 32"><circle cx="13.5" cy="13.5" r="8.5"/><path d="m20 20 7 7"/></svg>',
+        sort: '<svg viewBox="0 0 32 32"><path d="M9 6v20m0 0-4-4m4 4 4-4M23 26V6m0 0-4 4m4-4 4 4"/></svg>',
+        filter: '<svg viewBox="0 0 32 32"><path d="M5 7h22l-8.5 10v8l-5 2V17z"/></svg>',
+        map: '<svg viewBox="0 0 32 32"><path d="m4 8 8-4 8 4 8-4v20l-8 4-8-4-8 4zM12 4v20m8-16v20"/><circle cx="20" cy="12" r="2.5"/></svg>',
+        grid: '<svg viewBox="0 0 32 32"><rect x="4" y="4" width="10" height="10" rx="2"/><rect x="18" y="4" width="10" height="10" rx="2"/><rect x="4" y="18" width="10" height="10" rx="2"/><rect x="18" y="18" width="10" height="10" rx="2"/></svg>',
+        route: '<svg viewBox="0 0 32 32"><circle cx="7" cy="25" r="3"/><circle cx="25" cy="7" r="3"/><path d="M10 25h5a4 4 0 0 0 4-4v-6a4 4 0 0 1 4-4h2"/></svg>',
+        edit: '<svg viewBox="0 0 32 32"><path d="m6 22-1 6 6-1L27 11l-5-5zM19 9l5 5"/></svg>',
+        play: '<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><path d="m13 10 9 6-9 6z"/></svg>',
+        download: '<svg viewBox="0 0 32 32"><path d="M16 4v17m0 0 7-7m-7 7-7-7M5 23v5h22v-5"/></svg>',
+        upload: '<svg viewBox="0 0 32 32"><path d="M16 24V7m0 0-7 7m7-7 7 7M5 24v4h22v-4"/></svg>',
+        flag: '<svg viewBox="0 0 32 32"><path d="M8 28V5m0 1c7-5 12 5 19 0v13c-7 5-12-5-19 0"/></svg>',
+        spark: '<svg viewBox="0 0 32 32"><path d="m16 3 3.3 9.7L29 16l-9.7 3.3L16 29l-3.3-9.7L3 16l9.7-3.3z"/><path d="m25 3 .9 2.1L28 6l-2.1.9L25 9l-.9-2.1L22 6l2.1-.9z"/></svg>'
+    };
+    const coachTours = {
+        spot: [
+            { selector: '#makeSelect', title: 'MAKE', icon: 'car' },
+            { selector: '#modelSelect', title: 'MODEL', icon: 'model' },
+            { selector: '#spottedAtInput', title: 'DATE & TIME', icon: 'clock' },
+            { selector: '#addPhotoButton', title: 'PHOTO', icon: 'camera' },
+            { selector: '#locateButton', title: 'PIN', icon: 'pin', closeModal: 'photoSourceModal' },
+            { selector: '#saveSpotButton', title: 'SAVE CAR', icon: 'save' }
+        ],
+        garage: [
+            { selector: '.rarity-overview', title: 'RARITY', icon: 'spark' },
+            { selector: '#garageSearch', title: 'SEARCH', icon: 'search' },
+            { selector: '#garageSort', title: 'SORT', icon: 'sort' },
+            { selector: '#garageFilter', title: 'FILTER', icon: 'filter' },
+            { selector: '#garageCollection', title: 'YOUR CARS', icon: 'grid' },
+            { selector: '[data-garage-mode="map"]', title: 'MAP VIEW', icon: 'map' }
+        ],
+        data: [
+            { selector: '#exportButton', title: 'EXPORT', icon: 'download' },
+            { selector: '#importButton', title: 'IMPORT', icon: 'upload' }
+        ]
+    };
+    let activeCoachTour = null;
+    let coachStepIndex = 0;
+    let coachOpenedModal = null;
+    let coachPositionFrame = 0;
+
+    function getTripCoachSteps() {
+        if (data.activeRunId) return [
+            { selector: '#runStatus', title: 'ACTIVE RUN', icon: 'route' },
+            { selector: '#runActionButton', title: 'FINISH DRIVE', icon: 'flag' },
+            { selector: '#runList', title: 'SAVED TRIPS', icon: 'grid' }
+        ];
+        return [
+            { selector: '#runActionButton', title: 'START A RUN', icon: 'flag', closeModal: 'startRunModal' },
+            { selector: '#runNameInput', title: 'NAME IT', icon: 'edit', openModal: 'startRunModal' },
+            { selector: '#runStartedAtInput', title: 'DATE & TIME', icon: 'clock', openModal: 'startRunModal' },
+            { selector: '#confirmStartRun', title: 'START', icon: 'play', openModal: 'startRunModal' },
+            { selector: '#runList', title: 'YOUR TRIPS', icon: 'grid', closeModal: 'startRunModal' }
+        ];
+    }
+
+    function coachTargetRect(target) {
+        const r = target.getBoundingClientRect();
+        let top = r.top, height = r.height;
+        if (height > 150) { height = Math.min(112, height); top = r.top + Math.max(0, (r.height - height) / 2); }
+        const width = Math.min(Math.max(r.width, 44), window.innerWidth - 24);
+        const left = Math.max(12, Math.min(r.left + (r.width - width) / 2, window.innerWidth - width - 12));
+        return { top: Math.max(8, top - 6), left: left - 6, width: width + 12, height: Math.max(42, height) + 12, raw: r };
+    }
+
+    function positionCoach() {
+        if (!activeCoachTour || $('coachLayer').hidden) return;
+        const step = activeCoachTour.steps[coachStepIndex];
+        const target = step && document.querySelector(step.selector);
+        if (!target || !target.getClientRects().length) return;
+        const box = coachTargetRect(target);
+        const spotlight = $('coachSpotlight');
+        spotlight.style.top = `${box.top}px`;
+        spotlight.style.left = `${box.left}px`;
+        spotlight.style.width = `${box.width}px`;
+        spotlight.style.height = `${box.height}px`;
+        spotlight.style.borderRadius = getComputedStyle(target).borderRadius || '14px';
+
+        const pointer = $('coachPointer');
+        pointer.style.left = `${Math.max(5, Math.min(box.raw.right - 8, window.innerWidth - 38))}px`;
+        pointer.style.top = `${Math.max(5, Math.min(box.raw.bottom - 12, window.innerHeight - 45))}px`;
+
+        const card = $('coachCard');
+        const cardWidth = Math.min(310, window.innerWidth - 24);
+        const cardHeight = card.offsetHeight || 112;
+        const bottomReserve = window.innerWidth <= 760 ? 88 : 16;
+        const maxTop = window.innerHeight - cardHeight - bottomReserve;
+        const gap = 15;
+        let top = box.raw.bottom + gap;
+        if (top + cardHeight > maxTop) top = box.raw.top - cardHeight - gap;
+        top = Math.max(12, Math.min(top, maxTop));
+        let left = box.raw.left + box.raw.width / 2 - cardWidth / 2;
+        left = Math.max(12, Math.min(left, window.innerWidth - cardWidth - 12));
+        card.style.top = `${top}px`;
+        card.style.left = `${left}px`;
+    }
+
+    function queueCoachPosition() {
+        if (coachPositionFrame) cancelAnimationFrame(coachPositionFrame);
+        coachPositionFrame = requestAnimationFrame(() => {
+            coachPositionFrame = 0;
+            positionCoach();
+        });
+    }
+
+    async function showCoachStep(index) {
+        if (!activeCoachTour) return;
+        if (index < 0) index = 0;
+        if (index >= activeCoachTour.steps.length) { finishCoachTour(); return; }
+        coachStepIndex = index;
+        const step = activeCoachTour.steps[index];
+        if (step.closeModal && $(step.closeModal)?.classList.contains('show')) {
+            hideModal(step.closeModal);
+            if (coachOpenedModal === step.closeModal) coachOpenedModal = null;
+        }
+        if (step.openModal && !$(step.openModal)?.classList.contains('show')) {
+            showModal(step.openModal);
+            coachOpenedModal = step.openModal;
+            await new Promise(resolve => setTimeout(resolve, 100));
+            if (!activeCoachTour || coachStepIndex !== index) return;
+        }
+        let target = document.querySelector(step.selector);
+        if (!target || !target.getClientRects().length) {
+            showCoachStep(index + 1);
+            return;
+        }
+        target.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'nearest' });
+        $('coachVisual').innerHTML = coachIcons[step.icon] || coachIcons.spark;
+        $('coachStepTitle').textContent = step.title;
+        $('coachStepCount').textContent = `${String(index + 1).padStart(2, '0')} / ${String(activeCoachTour.steps.length).padStart(2, '0')}`;
+        $('coachProgress').innerHTML = activeCoachTour.steps.map((_, i) => `<i class="${i <= index ? 'active' : ''}"></i>`).join('');
+        $('coachBack').disabled = index === 0;
+        $('coachNext').textContent = index === activeCoachTour.steps.length - 1 ? 'DONE ✓' : 'NEXT ↗';
+        $('coachLayer').hidden = false;
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        if (activeCoachTour && coachStepIndex === index) positionCoach();
+    }
+
+    function startCoachTour(name, alreadyOpenedModal = null) {
+        finishCoachTour(false);
+        const steps = name === 'trips' ? getTripCoachSteps() : coachTours[name];
+        if (!steps?.length) return;
+        activeCoachTour = { name, steps };
+        coachOpenedModal = alreadyOpenedModal;
+        $('coachLayer').hidden = false;
+        showCoachStep(0);
+    }
+
+    function finishCoachTour(closeOwnedModal = true) {
+        if (closeOwnedModal && coachOpenedModal && $(coachOpenedModal)?.classList.contains('show')) hideModal(coachOpenedModal);
+        coachOpenedModal = null;
+        activeCoachTour = null;
+        $('coachLayer').hidden = true;
+        $('coachSpotlight').style.cssText = '';
+        $('coachPointer').style.cssText = '';
+        $('coachCard').style.cssText = '';
+    }
+
+    $('coachNext').addEventListener('click', () => showCoachStep(coachStepIndex + 1));
+    $('coachBack').addEventListener('click', () => showCoachStep(coachStepIndex - 1));
+    $('coachSkip').addEventListener('click', () => finishCoachTour());
+    $('coachClose').addEventListener('click', () => finishCoachTour());
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && activeCoachTour) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            finishCoachTour();
+        }
+    }, true);
+    window.addEventListener('resize', queueCoachPosition, { passive: true });
+    window.addEventListener('scroll', queueCoachPosition, { passive: true, capture: true });
+    document.addEventListener('submit', () => {
+        if (activeCoachTour && activeCoachTour.name === 'spot') finishCoachTour();
+    }, true);
+    document.addEventListener('click', event => {
+        if (!activeCoachTour) return;
+        if (event.target.closest('[data-view]')) { finishCoachTour(); return; }
+        const closeButton = event.target.closest('[data-close-modal]');
+        if (closeButton && coachOpenedModal === closeButton.dataset.closeModal) finishCoachTour(false);
+    }, true);
+
     const guideRarityLabels = {
         Common: 'COMMON', Uncommon: 'UNCOMMON', Rare: 'RARE',
         Epic: 'EPIC', Legendary: 'LEGENDARY', Cosmic: 'COSMIC'
