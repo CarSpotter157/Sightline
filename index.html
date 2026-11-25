@@ -10388,6 +10388,7 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
 .coach-back:disabled{opacity:.3;cursor:default;}
 .coach-next{border:1px solid rgba(139,190,255,.5);background:linear-gradient(135deg,#347bd1,#24569c);color:white;box-shadow:0 5px 13px rgba(25,82,155,.3);}
 .coach-card button:focus-visible{outline:2px solid #acd0ff;outline-offset:2px;}
+.coach-next:disabled{opacity:.42;cursor:not-allowed;filter:grayscale(.35);box-shadow:none;}
 
 .coach-select-menu{position:fixed;z-index:4;max-height:min(280px,42vh);overflow:auto;padding:6px;border:1px solid rgba(143,190,255,.55);border-radius:14px;background:linear-gradient(145deg,#f8fbff,#e8f1ff);box-shadow:0 18px 48px rgba(0,0,0,.42),0 0 0 2px rgba(105,169,255,.24);pointer-events:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;}
 .coach-layer > .autocomplete-menu[data-coach-dropdown-for]{position:fixed!important;display:block!important;z-index:4!important;pointer-events:auto!important;overflow-y:auto!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important;}
@@ -12071,6 +12072,10 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
             return;
         }
         const spot = { id: id(), ...vehicle, year, color: $('colorInput').value.trim(), place: $('placeInput').value.trim(), notes: $('notesInput').value.trim(), favorite: false, photo: currentPhoto, location: currentLocation ? { ...currentLocation } : null, createdAt: spottedAt, runId: activeRun()?.id || null };
+        // Saving is an intentional action inside the Spot walkthrough. Pause the
+        // coach layer while the real save + rarity reveal run, then resume at Garage.
+        const continueSpotGuide = !!(activeCoachSequence && activeCoachTour?.name === 'spot' && coachSequenceIndex === 0 && coachStepIndex === activeCoachTour.steps.length - 1);
+        if (continueSpotGuide) $('coachLayer').hidden = true;
         const button = $('saveSpotButton'), form = $('spotForm');
         button.disabled = true;
         button.classList.add('is-saving');
@@ -12085,7 +12090,12 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
             renderAll();
             $('spotSuccessNote').hidden = true;
             const revealAction = await showSpotReveal(spot, total, progress);
-            if (revealAction === 'view') {
+            if (continueSpotGuide && activeCoachSequence) {
+                // The user completed the guided logging task. Continue straight
+                // into Garage after the rarity reveal, whichever reveal action they chose.
+                advanceCoachSequence();
+            }
+            else if (revealAction === 'view') {
                 navigate('garage');
                 setTimeout(() => openSpotDetail(spot.id), 80);
             }
@@ -12102,6 +12112,11 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         catch (err) {
             data.spots = data.spots.filter(s => s.id !== spot.id);
             showToast('Your spot could not be saved. Your form is still here — try again.');
+            // If storage fails, restore the final Save spotlight so the user can retry.
+            if (continueSpotGuide && activeCoachSequence) {
+                $('coachLayer').hidden = false;
+                queueCoachPosition();
+            }
         }
         finally {
             button.disabled = false;
@@ -13327,7 +13342,9 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
         $('coachStepCount').textContent = `${String(index + 1).padStart(2, '0')} / ${String(activeCoachTour.steps.length).padStart(2, '0')}`;
         $('coachProgress').innerHTML = activeCoachTour.steps.map((_, i) => `<i class="${i <= index ? 'active' : ''}"></i>`).join('');
         $('coachBack').disabled = index === 0;
-        $('coachNext').textContent = index === activeCoachTour.steps.length - 1
+        const saveRequired = activeCoachSequence && activeCoachTour.name === 'spot' && coachSequenceIndex === 0 && index === activeCoachTour.steps.length - 1;
+        $('coachNext').disabled = saveRequired;
+        $('coachNext').textContent = saveRequired ? 'SAVE TO CONTINUE' : index === activeCoachTour.steps.length - 1
             ? (activeCoachSequence && coachSequenceIndex < coachSequence.length - 1 ? 'NEXT GUIDE ↗' : 'FINISH ✓')
             : 'NEXT ↗';
         $('coachSkip').textContent = 'SKIP ALL';
@@ -13377,9 +13394,8 @@ body[data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
     document.querySelectorAll('[data-coach-blocker]').forEach(blocker => {
         blocker.addEventListener('wheel', event => event.preventDefault(), { passive: false });
     });
-    document.addEventListener('submit', () => {
-        if (activeCoachTour && activeCoachTour.name === 'spot') finishCoachTour();
-    }, true);
+    // Do not end the Spot walkthrough on form submit: the form's save handler
+    // decides whether to retry or advance to Garage after the rarity reveal.
     document.addEventListener('click', event => {
         if (!activeCoachTour) return;
         const step = activeCoachTour.steps[coachStepIndex];
