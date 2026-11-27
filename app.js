@@ -65,6 +65,87 @@
         'Volvo': ['S60', 'S90', 'V60 Polestar', 'XC60', 'XC90'],
         'Other': ['Other / custom…']
     };
+    // Additional models are merged into the main catalog so the make/model pickers
+    // cover more enthusiast, performance, classic and specialist vehicles.
+    const modelAdditions = {
+        'Acura': ['Legend', 'RLX', 'TL Type S', 'ZDX'],
+        'Alfa Romeo': ['33 Stradale', 'Giulia GTA', 'Giulia GTAm'],
+        'Alpine': ['A110', 'A110 S', 'A110 R', 'A290', 'A390'],
+        'Ariel': ['Atom', 'Nomad', 'Hipercar'],
+        'Aston Martin': ['DBR22', 'DBX707', 'Valhalla', 'Valour', 'V12 Speedster', 'Vulcan', 'Victor', 'One-77'],
+        'Audi': ['RS Q3', 'RS e-tron GT', 'SQ8', 'S8', 'TT RS', 'R8 GT', 'R8 LMS', 'RS3 LMS', 'R18'],
+        'Bentley': ['Arnage', 'Azure', 'Brooklands', 'Turbo R'],
+        'BMW': ['1M Coupe', 'M1', 'Z8', '850CSi', 'ALPINA B7', 'ALPINA XB7', 'ALPINA B8', 'M4 GT3', 'M Hybrid V8', 'M3 GTR'],
+        'Bugatti': ['Centodieci', 'Mistral', 'La Voiture Noire'],
+        'Cadillac': ['CTS-V Wagon', 'CT6-V', 'Escalade-V', 'XLR-V', 'V-Series.R'],
+        'Caterham': ['Seven', 'Seven 485', '620R', 'Project V'],
+        'Chevrolet': ['Cobalt SS', 'HHR SS', 'SSR', 'Trailblazer SS'],
+        'Chrysler': ['300C SRT8'],
+        'Czinger': ['21C', '21C V Max'],
+        'De Tomaso': ['Pantera', 'P72'],
+        'Dodge': ['Magnum SRT8', 'Charger Daytona', 'Challenger SRT Demon', 'Durango SRT Hellcat'],
+        'Donkervoort': ['D8 GTO', 'F22'],
+        'Ferrari': ['Purosangue', '550 Maranello', '575M Maranello', '599 GTB', '599 GTO', 'F12berlinetta', 'FF', 'GTC4Lusso', 'Monza SP1', 'Monza SP2', 'F80', '360 Challenge Stradale', '499P', '296 GT3', '488 GT3', '488 GTE'],
+        'Ford': ['Mustang GTD', 'RS200', 'Shelby GT350', 'Shelby GT500', 'F-150 Lightning', 'Mustang GT3', 'Ford GT Mk IV'],
+        'Gordon Murray Automotive': ['T.50', 'T.50s Niki Lauda', 'T.33'],
+        'GMC': ['Hummer H1', 'Hummer H2', 'Hummer H3'],
+        'Honda': ['CR-Z', 'Beat', 'CR-X'],
+        'Hummer': ['H1', 'H2', 'H3', 'EV'],
+        'Lamborghini': ['Huracán GT3', 'SC63'],
+        'Hyundai': ['i20 N', 'i30 N', 'i30 Fastback N'],
+        'Hennessey': ['Venom F5 Revolution', 'Mammoth', 'VelociRaptor'],
+        'Infiniti': ['FX50', 'M45', 'QX70'],
+        'Jaguar': ['XJ220', 'XJR-15', 'F-Type Project 7', 'F-Type SVR', 'XJR-9', 'XJR-12'],
+        'Jeep': ['Grand Cherokee SRT', 'Cherokee SRT'],
+        'Lancia': ['Delta Integrale', 'Stratos', '037', 'Fulvia', 'Ypsilon HF'],
+        'Land Rover': ['Defender OCTA'],
+        'Lotus': ['2-Eleven', '3-Eleven'],
+        'Lucid': ['Air', 'Gravity'],
+        'Maserati': ['MCXtrema', 'GranCabrio', 'Bora', 'Merak', 'Shamal'],
+        'Mazda': ['Mazdaspeed3', 'Mazdaspeed6', 'RX-3', 'RX-2', 'MX-6', '787B', '767B'],
+        'McLaren': ['540C', '570GT', '650S', '675LT', 'Elva', 'MP4-12C', '12C', '720S GT3', 'Senna GTR', 'P1 GTR'],
+        'Mercedes-Benz': ['190E', '190E Evolution II', '300 SL', 'CLK GTR', 'E 55 AMG', 'CLS 63 AMG', 'AMG GT 4-Door'],
+        'Mitsubishi': ['Starion', 'Pajero Evolution', 'Lancer Evolution VI', 'Lancer Evolution IX', 'Lancer Evolution X'],
+        'Nissan': ['Fairlady Z', 'Pulsar GTI-R', 'Stagea 260RS', 'Silvia S15', 'R390 GT1', 'R92CP'],
+        'Noble': ['M400', 'M600', 'M500'],
+        'Pininfarina': ['Battista', 'B95'],
+        'Porsche': ['959', '968', '356', '914', '718 Spyder', '911 Sport Classic', '911 S/T', '911 Dakar', '911 GT3 R', '911 GT3 Cup', '911 RSR', '919 Hybrid', '963', '962'],
+        'Renault': ['Clio RS', 'Megane RS', '5 Turbo', 'R5 Turbo 3E'],
+        'Spyker': ['C8', 'C12'],
+        'Subaru': ['SVX', 'Impreza WRX', 'Impreza WRX STI', 'Legacy Spec.B'],
+        'Toyota': ['GR Yaris', 'Century', 'Soarer', 'Altezza', 'Aristo', 'Celica GT-Four', 'GR010 Hybrid', 'TS050 Hybrid', 'GT-One'],
+        'TVR': ['Tuscan', 'Sagaris', 'Griffith', 'Cerbera'],
+        'Volkswagen': ['Polo GTI', 'Passat R36', 'Touareg R', 'ID.3 GTX'],
+        'Volvo': ['850 R', 'V70 R', 'S60 R', 'C30 T5'],
+        'Peugeot': ['9X8', '205 Turbo 16', '405 T16'],
+        'Zenvo': ['ST1', 'TSR-S', 'Aurora']
+    };
+    for (const [make, additions] of Object.entries(modelAdditions)) {
+        modelCatalog[make] = [...new Set([...(modelCatalog[make] || []), ...additions])];
+    }
+    const extendedModelAdditions = {
+        'Acura': ['Integra Type R'],
+        'Alfa Romeo': ['8C Competizione', 'Brera', 'Stelvio Quadrifoglio'],
+        'Aston Martin': ['DB5', 'DB6', 'DB9', 'Rapide', 'V12 Vantage', 'V8 Vantage'],
+        'Audi': ['S1', 'S2', 'SQ2', 'RS Q8 Performance'],
+        'BAC': ['Mono', 'Mono R'],
+        'BMW': ['3.0 CSL', 'M3 GTS', 'M3 CRT', 'M4 GTS', 'M5 CS', 'Z3 M', 'Z4 M', '2002 Turbo'],
+        'Ginetta': ['G56 GT4', 'G61-LT-P3', 'G60-LT-P1'],
+        'KTM': ['X-Bow', 'X-Bow GT-XR', 'X-Bow GTX'],
+        'Mercedes-Benz': ['A 35 AMG', 'A 45 S AMG', 'C 43 AMG', 'C 63 S AMG', 'E 53 AMG', 'E 63 S AMG', 'G 63 AMG', 'AMG GT R', 'AMG GT Black Series', 'SL 63 AMG'],
+        'Nissan': ['Z Nismo', 'Pulsar GTI-R', 'Skyline 400R'],
+        'Panoz': ['Esperante GTLM', 'LMP1 Roadster'],
+        'Praga': ['Bohema', 'R1'],
+        'Porsche': ['718 Spyder RS', 'Cayenne Turbo GT', 'Panamera Turbo S E-Hybrid', 'Taycan Turbo GT', '911 GT3 Touring'],
+        'Radical': ['SR3', 'SR10', 'RXC', 'RXC GT3'],
+        'Ruf': ['CTR Yellowbird', 'CTR Anniversary', 'SCR', 'RGT'],
+        'Saleen': ['S7 Twin Turbo', 'S7 LM', 'S1'],
+        'Toyota': ['GR Corolla Morizo Edition', 'GR Yaris GRMN'],
+        'W Motors': ['Lykan Hypersport', 'Fenyr Supersport']
+    };
+    for (const [make, additions] of Object.entries(extendedModelAdditions)) {
+        modelCatalog[make] = [...new Set([...(modelCatalog[make] || []), ...additions])];
+    }
     const makes = Object.keys(modelCatalog).filter(x => x !== 'Other').sort((a, b) => a.localeCompare(b));
     const submodelCatalog = {
         'Acura': { 'Integra': ['Base', 'A-Spec', 'Type S'], 'TLX': ['Base', 'Technology', 'A-Spec', 'Advance', 'Type S'], 'NSX': ['Base', 'Type S'], 'RSX': ['Base', 'Type-S'], 'MDX': ['Base', 'Technology', 'A-Spec', 'Advance', 'Type S'] },
@@ -195,6 +276,294 @@
         if (!submodelCatalog[make])
             submodelCatalog[make] = {};
         Object.assign(submodelCatalog[make], models);
+    }
+    const extraSubmodelAdditions = {
+        'Acura': {
+            'Legend': ['Base', 'GS', 'Type II'], 'RLX': ['Base', 'Technology', 'Advance', 'Sport Hybrid'],
+            'TL Type S': ['Base'], 'ZDX': ['A-Spec', 'Type S']
+        },
+        'Alfa Romeo': {
+            'Giulia': ['Quadrifoglio Verde', 'GTA', 'GTAm'], 'Stelvio': ['Quadrifoglio'],
+            '33 Stradale': ['V6', 'Electric']
+        },
+        'Alpine': {
+            'A110': ['Pure', 'Legende', 'GT', 'R'], 'A110 S': ['Base'], 'A110 R': ['Turini'],
+            'A290': ['GT', 'GTS', 'GTP'], 'A390': ['GT', 'GTS']
+        },
+        'Ariel': { 'Atom': ['3', '4', '4R'], 'Nomad': ['2', 'R'], 'Hipercar': ['Base'] },
+        'Aston Martin': {
+            'Vantage': ['F1 Edition', 'AMR', 'V12'], 'DBS': ['Superleggera', '770 Ultimate'],
+            'DBX': ['707', 'S'], 'Valhalla': ['Coupe'], 'Valour': ['Base'], 'Vulcan': ['Track Pack'],
+            'Valkyrie': ['Coupe', 'Spider', 'AMR Pro'], 'One-77': ['Base']
+        },
+        'Audi': {
+            'RS 3': ['Sportback', 'Sedan', 'Performance Edition'], 'RS 4': ['Avant', 'Competition'],
+            'RS 5': ['Coupe', 'Sportback', 'Competition'], 'RS 6': ['Avant', 'Performance', 'GT'],
+            'RS 7': ['Sportback', 'Performance'], 'RS Q3': ['SUV', 'Sportback'],
+            'RS Q8': ['Base', 'Performance'], 'RS e-tron GT': ['Base', 'Performance'],
+            'SQ8': ['TFSI', 'TDI'], 'S8': ['Base', 'Plus'], 'TT RS': ['Coupe', 'Roadster'],
+            'R8': ['V8', 'V10', 'V10 Plus', 'V10 Performance', 'GT', 'GT RWD']
+        },
+        'Bentley': {
+            'Continental GT': ['GT', 'GT S', 'GT Speed', 'GT Mulliner', 'Supersports'],
+            'Flying Spur': ['Azure', 'Speed', 'Mulliner'], 'Bentayga': ['S', 'Speed', 'Azure', 'EWB Mulliner'],
+            'Arnage': ['Red Label', 'T'], 'Azure': ['Base', 'Mulliner'], 'Brooklands': ['Coupe']
+        },
+        'BMW': {
+            'M2': ['Base', 'Competition', 'CS', 'CSL'], 'M3': ['Base', 'Competition', 'CS', 'CSL', 'Touring'],
+            'M4': ['Base', 'Competition', 'CS', 'CSL', 'GTS'], 'M5': ['Base', 'Competition', 'CS', 'CS Touring'],
+            'M8': ['Base', 'Competition', 'CS'], 'X3 M': ['Base', 'Competition'],
+            'X4 M': ['Base', 'Competition'], 'X5 M': ['Base', 'Competition'], 'X6 M': ['Base', 'Competition'],
+            'XM': ['Base', 'Label', 'Label Red'], '1M Coupe': ['Base'], 'M1': ['Base', 'Procar'],
+            'Z8': ['Roadster', 'Alpina Roadster V8'], '850CSi': ['Base'],
+            'ALPINA B7': ['Base', 'Long Wheelbase'], 'ALPINA XB7': ['Base'], 'ALPINA B8': ['Gran Coupe']
+        },
+        'Bugatti': {
+            'Chiron': ['Sport', 'Pur Sport', 'Super Sport', 'Super Sport 300+'], 'Veyron': ['16.4', 'Grand Sport', 'Super Sport', 'Vitesse'],
+            'Centodieci': ['Base'], 'Mistral': ['W16'], 'La Voiture Noire': ['One-off']
+        },
+        'Cadillac': {
+            'ATS-V': ['Coupe', 'Sedan'], 'CTS-V': ['Coupe', 'Sedan', 'Wagon', 'Gen II', 'Gen III'],
+            'CT4-V Blackwing': ['6-speed manual', '10-speed automatic'],
+            'CT5-V Blackwing': ['6-speed manual', '10-speed automatic'],
+            'CT6-V': ['Blackwing'], 'Escalade-V': ['Standard', 'ESV'], 'XLR-V': ['Base']
+        },
+        'Caterham': { 'Seven': ['170', '270', '310', '340', '360', '420', '480', '485', '620'], '620R': ['Base'], 'Project V': ['Prototype'] },
+        'Chevrolet': {
+            'Corvette': ['C5 Base', 'C5 Z06', 'C6 Grand Sport', 'C6 Z06', 'C6 ZR1', 'C7 Stingray', 'C7 Grand Sport', 'C7 Z06', 'C7 ZR1', 'C8 Stingray', 'C8 E-Ray', 'C8 Z06', 'C8 ZR1'],
+            'Camaro': ['LS', 'LT1', 'SS', 'SS 1LE', 'ZL1', 'ZL1 1LE', 'Z/28', 'COPO'],
+            'Cobalt SS': ['Supercharged', 'Turbocharged'], 'HHR SS': ['Base'], 'SSR': ['Base'], 'Trailblazer SS': ['Base']
+        },
+        'Czinger': { '21C': ['Standard', 'V Max', 'Blackbird'], '21C V Max': ['Base'] },
+        'De Tomaso': { 'Pantera': ['GTS', 'GT5', 'GT5-S'], 'P72': ['Launch Edition'] },
+        'Dodge': {
+            'Challenger': ['SXT', 'GT', 'R/T', 'Scat Pack', '392', 'Hellcat', 'Hellcat Redeye', 'Super Stock', 'Demon', 'Demon 170'],
+            'Charger': ['SXT', 'GT', 'R/T', 'Scat Pack', 'Hellcat', 'Hellcat Redeye', 'Daytona', 'SRT 392'],
+            'Durango': ['GT', 'R/T', 'Citadel', 'SRT 392', 'SRT Hellcat'],
+            'Viper': ['RT/10', 'GTS', 'SRT-10', 'ACR', 'TA', 'ACR Extreme Aero'],
+            'Magnum SRT8': ['Base'], 'Charger Daytona': ['Scat Pack', 'R/T']
+        },
+        'Donkervoort': { 'D8 GTO': ['RS', 'JD70', 'Bilster Berg Edition'], 'F22': ['Base', 'Bare Naked Carbon'] },
+        'Ferrari': {
+            '296 GTB': ['Assetto Fiorano'], '296 GTS': ['Assetto Fiorano'], 'SF90 Stradale': ['Assetto Fiorano', 'XX'],
+            'SF90 Spider': ['Assetto Fiorano'], '812 Competizione': ['Coupe', 'A'], '458 Italia': ['Speciale', 'Speciale A'],
+            '488 GTB': ['Pista', 'Pista Spider'], 'Purosangue': ['V12'], '599 GTB': ['Fiorano'],
+            '599 GTO': ['Base'], 'F12berlinetta': ['tdf'], 'Monza SP1': ['Icona'], 'Monza SP2': ['Icona'],
+            'F80': ['Base'], '360 Challenge Stradale': ['Base'], '550 Maranello': ['Barchetta'],
+            '575M Maranello': ['Superamerica']
+        },
+        'Ford': {
+            'Mustang': ['EcoBoost', 'EcoBoost Premium', 'GT', 'GT Premium', 'California Special', 'Mach 1', 'Dark Horse', 'Dark Horse Premium', 'Shelby GT350', 'Shelby GT350R', 'Shelby GT500', 'Mustang GTD'],
+            'F-150': ['XL', 'XLT', 'Lariat', 'King Ranch', 'Platinum', 'Limited', 'Tremor'],
+            'F-150 Raptor': ['Raptor', 'Raptor R'], 'Bronco': ['Base', 'Big Bend', 'Black Diamond', 'Outer Banks', 'Badlands', 'Wildtrak', 'Raptor'],
+            'RS200': ['Evolution'], 'Mustang GTD': ['Carbon Series']
+        },
+        'Gordon Murray Automotive': { 'T.50': ['Base'], 'T.50s Niki Lauda': ['Track-only'], 'T.33': ['Coupe', 'Spider'] },
+        'GMC': { 'Sierra': ['AT4X', 'Denali', 'Denali Ultimate'], 'Hummer H1': ['Wagon', 'Pickup', 'Alpha'], 'Hummer H2': ['SUV', 'SUT'], 'Hummer H3': ['Base', 'Alpha'] },
+        'Honda': {
+            'Civic': ['LX', 'Sport', 'Si', 'Type R', 'Type R Limited Edition'], 'Civic Type R': ['FK8', 'FL5', 'Limited Edition'],
+            'Integra': ['Base', 'A-Spec', 'A-Spec Tech', 'Type S'], 'S2000': ['AP1', 'AP2', 'CR'],
+            'NSX': ['NA1', 'NA2', 'Type S', 'Type R'], 'CR-Z': ['Base', 'EX', 'Sport'], 'Beat': ['Base']
+        },
+        'Hummer': { 'H1': ['Wagon', 'Pickup', 'Alpha'], 'H2': ['SUV', 'SUT'], 'H3': ['Base', 'Alpha'], 'EV': ['Pickup 2X', 'Pickup 3X', 'SUV 2X', 'SUV 3X'] },
+        'Hyundai': {
+            'Elantra N': ['Base', 'Performance Package'], 'Veloster N': ['Base', 'Performance Package'],
+            'Kona N': ['Base'], 'Ioniq 5 N': ['Base', 'N Track Package'], 'i20 N': ['Base'], 'i30 N': ['Base', 'Performance'],
+            'i30 Fastback N': ['Performance']
+        },
+        'Hennessey': { 'Venom F5': ['Coupe', 'Roadster', 'Revolution'], 'Venom F5 Revolution': ['Base'], 'Venom GT': ['Coupe', 'Spyder'], 'Mammoth': ['1000'], 'VelociRaptor': ['600', 'R'] },
+        'Infiniti': { 'Q50': ['Pure', 'Luxe', 'Sensory', 'Red Sport 400'], 'Q60': ['Pure', 'Luxe', 'Sport', 'Red Sport 400'], 'FX50': ['Base', 'S'], 'QX70': ['Base', 'S'], 'M45': ['Base', 'Sport'] },
+        'Jaguar': {
+            'F-Type': ['P300', 'P380', 'P400', 'P450', 'R-Dynamic', 'R', 'SVR', 'Project 7'],
+            'F-Pace': ['P250', 'P340', 'P400', 'SVR'], 'XE': ['S', 'SE', 'R-Dynamic', 'Project 8'],
+            'XJ220': ['Base'], 'XJR-15': ['Base'], 'XJ': ['XJ8', 'XJR', 'XJL', 'XJ Supersport']
+        },
+        'Jeep': { 'Wrangler': ['Sport', 'Willys', 'Sahara', 'Rubicon', '4xe', '392'], 'Grand Cherokee': ['Laredo', 'Limited', 'Overland', 'Summit', 'Trailhawk', 'SRT', 'Trackhawk'] },
+        'Lancia': { 'Delta Integrale': ['8V', '16V', 'Evo I', 'Evo II'], 'Stratos': ['HF Stradale', 'Group 4'], '037': ['Stradale', 'Rally'] },
+        'Land Rover': { 'Defender': ['90', '110', '130', 'S', 'SE', 'X-Dynamic', 'X', 'V8', 'OCTA'], 'Defender OCTA': ['Base', 'Black'] },
+        'Lotus': { 'Emira': ['First Edition', 'V6', 'Turbo'], 'Evora': ['400', 'GT', 'GT430'], 'Exige': ['Sport 350', 'Sport 380', 'Cup 430'], 'Elise': ['Sport', 'Cup'], '3-Eleven': ['Road', 'Race'] },
+        'Lucid': { 'Air': ['Pure', 'Touring', 'Grand Touring', 'Sapphire'], 'Gravity': ['Touring', 'Grand Touring'] },
+        'Maserati': { 'MC20': ['Coupe', 'Cielo', 'GT2 Stradale'], 'MCXtrema': ['Track-only'], 'Grecale': ['GT', 'Modena', 'Trofeo', 'Folgore'], 'GranTurismo': ['Modena', 'Trofeo', 'Folgore'], 'GranCabrio': ['Trofeo', 'Folgore'] },
+        'Mazda': { 'MX-5 Miata': ['Sport', 'Club', 'Grand Touring', 'RF'], 'RX-7': ['FC', 'FD', 'Turbo II', 'Spirit R', 'Type R'], 'RX-8': ['Base', 'Sport', 'Grand Touring', 'R3'], 'Mazdaspeed3': ['Sport', 'Grand Touring'], 'Mazdaspeed6': ['Sport'] },
+        'McLaren': {
+            '570S': ['Coupe', 'Spider'], '570GT': ['Base'], '600LT': ['Coupe', 'Spider'], '620R': ['Base'],
+            '650S': ['Coupe', 'Spider'], '675LT': ['Coupe', 'Spider'], '720S': ['Performance', 'Luxury', 'Spider'],
+            '750S': ['Coupe', 'Spider'], '765LT': ['Coupe', 'Spider'], 'P1': ['Base', 'GTR'], 'Senna': ['Base', 'GTR'],
+            'F1': ['Road Car', 'LM', 'GTR'], 'Elva': ['Windshield', 'Speedster'], 'MP4-12C': ['Coupe', 'Spider'], 'Solus GT': ['Track-only']
+        },
+        'Mercedes-Benz': {
+            'A-Class': ['A 220', 'AMG A 35', 'AMG A 45 S'], 'C-Class': ['C 300', 'AMG C 43', 'AMG C 63'],
+            'C 63 AMG': ['Sedan', 'Coupe', 'S'], 'E-Class': ['E 350', 'E 450', 'AMG E 53', 'AMG E 63 S'],
+            'E 63 AMG': ['S'], 'S-Class': ['S 500', 'S 580', 'AMG S 63', 'Maybach S 580', 'Maybach S 680'],
+            'AMG GT': ['GT', 'GT S', 'GT C', 'GT R', 'GT Black Series', '63', '63 S'],
+            'G-Class': ['G 550', 'AMG G 63'], 'GLC': ['GLC 300', 'AMG GLC 43', 'AMG GLC 63 S E Performance'],
+            'GLE': ['GLE 350', 'GLE 450', 'AMG GLE 53', 'AMG GLE 63 S'], '190E': ['2.3-16', '2.5-16', 'Evolution II'],
+            'CLK GTR': ['Roadster', 'Coupe'], '300 SL': ['Gullwing', 'Roadster'], 'SLS AMG': ['Coupe', 'Roadster', 'Black Series']
+        },
+        'Mitsubishi': { 'Lancer Evolution': ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'GSR', 'MR', 'Final Edition'], '3000GT': ['SL', 'VR-4'], 'Starion': ['ESI-R', 'Conquest TSi'], 'Pajero Evolution': ['Base'] },
+        'Nissan': {
+            'GT-R': ['Premium', 'Black Edition', 'Track Edition', 'Nismo', 'T-Spec', 'Nismo Special Edition'],
+            'Z': ['Sport', 'Performance', 'Nismo'], '370Z': ['Base', 'Sport', 'Sport Touring', 'Nismo'],
+            '350Z': ['Base', 'Enthusiast', 'Performance', 'Track', 'Touring', 'Grand Touring', 'Nismo'],
+            'Skyline': ['GT-R R32', 'GT-R R33', 'GT-R R34', 'GTS', 'GTS-t', 'GT-X'],
+            'Silvia': ['S13', 'S14', 'S15', 'Spec-R', 'Aero'], 'Pulsar GTI-R': ['Base'], 'Stagea 260RS': ['Autech']
+        },
+        'Noble': { 'M400': ['Base'], 'M600': ['Coupe', 'Speedster'], 'M500': ['Base'] },
+        'Pininfarina': { 'Battista': ['Base', 'Anniversario'], 'B95': ['Gotham', 'Dark Knight'] },
+        'Porsche': {
+            '911': ['Carrera', 'Carrera T', 'Carrera S', 'Carrera GTS', 'Turbo', 'Turbo S', 'GT3', 'GT3 Touring', 'GT3 RS', 'GT2 RS', 'Dakar', 'Sport Classic', 'S/T', 'R', 'Targa 4 GTS'],
+            '718 Cayman': ['Base', 'S', 'GTS 4.0', 'GT4', 'GT4 RS'], '718 Boxster': ['Base', 'S', 'GTS 4.0', 'Spyder', 'Spyder RS'],
+            'Cayenne': ['Base', 'E-Hybrid', 'S', 'S E-Hybrid', 'GTS', 'Turbo E-Hybrid', 'Turbo GT'],
+            'Macan': ['Base', 'T', 'S', 'GTS', 'Electric', 'Electric 4S', 'Electric Turbo'],
+            'Panamera': ['Base', '4', '4 E-Hybrid', '4S', 'GTS', 'Turbo S', 'Turbo E-Hybrid'],
+            'Taycan': ['Base', '4', '4S', 'GTS', 'Turbo', 'Turbo S', 'Turbo GT', 'Cross Turismo', 'Sport Turismo'],
+            '959': ['Komfort', 'Sport'], '968': ['Base', 'Club', 'Turbo S'], '356': ['Pre-A', 'A', 'B', 'C', 'Speedster'], '914': ['1.7', '1.8', '2.0']
+        },
+        'Renault': { 'Clio RS': ['200', '220 Trophy', 'Cup'], 'Megane RS': ['Sport', 'Cup', 'Trophy', 'Trophy-R'], '5 Turbo': ['Turbo 1', 'Turbo 2'], 'R5 Turbo 3E': ['Base'] },
+        'Spyker': { 'C8': ['Spyder', 'Laviolette', 'Aileron'], 'C12': ['Zagato'] },
+        'Subaru': {
+            'WRX': ['Base', 'Premium', 'Limited', 'TR', 'tS'], 'WRX STI': ['Base', 'Limited', 'Type RA', 'S209'],
+            'Impreza WRX': ['WRX', 'WRX Premium', 'WRX Limited'], 'Impreza WRX STI': ['Base', 'Spec C', 'Type RA'],
+            'BRZ': ['Premium', 'Limited', 'tS'], 'SVX': ['LS', 'L'], 'Legacy Spec.B': ['GT Spec.B']
+        },
+        'Toyota': {
+            'GR Supra': ['2.0', '3.0', '3.0 Premium', 'A91', 'A91-CF', 'Final Edition'],
+            'GR86': ['Base', 'Premium', 'Hakone Edition'], 'GR Corolla': ['Core', 'Premium', 'Circuit Edition', 'Morizo Edition'],
+            'GR Yaris': ['RZ', 'RC', 'Circuit Package', 'GRMN'], 'Celica GT-Four': ['ST165', 'ST185', 'ST205'],
+            'Tacoma': ['SR', 'SR5', 'TRD PreRunner', 'TRD Sport', 'TRD Off-Road', 'Limited', 'Trailhunter', 'TRD Pro'],
+            'Soarer': ['2.5 GT-T', '3.0 GT', '4.0 GT Limited'], 'Altezza': ['AS200', 'RS200'], 'Aristo': ['V300 VERTEX Edition'],
+            'Century': ['Base', 'GRMN'], 'Corolla': ['LE', 'SE', 'XLE', 'XSE', 'GR Sport', 'Apex Edition']
+        },
+        'TVR': { 'Tuscan': ['Speed Six', 'Sagaris'], 'Sagaris': ['Base'], 'Griffith': ['500'], 'Cerbera': ['4.2', '4.5'] },
+        'Volkswagen': {
+            'Golf GTI': ['S', 'SE', 'Autobahn', 'Clubsport', 'Edition 30', 'Edition 35', 'TCR'],
+            'Golf R': ['Base', '20th Anniversary', 'Black Edition', '32'], 'Jetta GLI': ['S', 'Autobahn'],
+            'Scirocco': ['GT', 'GT TDI', 'R-Line', 'R'], 'Polo GTI': ['Base'], 'Passat R36': ['Base'], 'Touareg R': ['Hybrid']
+        },
+        'Volvo': { 'S60': ['Core', 'Plus', 'Ultimate', 'Polestar Engineered', 'R'], 'V60 Polestar': ['Polestar Engineered'], '850 R': ['Sedan', 'Wagon'], 'V70 R': ['P2'], 'S60 R': ['P2'] },
+        'Zenvo': { 'ST1': ['Base'], 'TSR-S': ['Base', 'Carbon'], 'Aurora': ['Agil', 'Tur'] }
+    };
+    for (const [make, models] of Object.entries(extraSubmodelAdditions)) {
+        if (!submodelCatalog[make]) submodelCatalog[make] = {};
+        for (const [model, trims] of Object.entries(models)) {
+            submodelCatalog[make][model] = [...new Set([...(submodelCatalog[make][model] || []), ...trims])];
+        }
+    }
+    const raceSubmodelAdditions = {
+        'Audi': { 'R8 LMS': ['GT3', 'GT4', 'Ultra'], 'RS3 LMS': ['TCR'], 'R18': ['TDI', 'e-tron quattro'] },
+        'BMW': { 'M4 GT3': ['GT3', 'GT3 EVO'], 'M Hybrid V8': ['IMSA', 'WEC'], 'M3 GTR': ['Street', 'ALMS'] },
+        'Cadillac': { 'V-Series.R': ['IMSA', 'WEC'] },
+        'Ferrari': { '499P': ['Le Mans Hypercar'], '296 GT3': ['GT3'], '488 GT3': ['GT3 Evo'], '488 GTE': ['GTE'] },
+        'Ford': { 'Mustang GT3': ['GT3'], 'Ford GT Mk IV': ['Track-only'], 'RS200': ['Evolution', 'Group B'] },
+        'Jaguar': { 'XJR-9': ['Group C'], 'XJR-12': ['Group C'] },
+        'Lamborghini': { 'Huracán GT3': ['GT3', 'GT3 EVO', 'Super Trofeo'], 'SC63': ['LMDh'] },
+        'Mazda': { '787B': ['Le Mans winner', 'Group C'], '767B': ['Group C'] },
+        'McLaren': { '720S GT3': ['GT3', 'GT3 EVO'], 'Senna GTR': ['Track-only'], 'P1 GTR': ['Track-only'] },
+        'Nissan': { 'R390 GT1': ['GT1'], 'R92CP': ['Group C'], 'GT-R': ['Nismo GT3'] },
+        'Peugeot': { '9X8': ['Le Mans Hypercar'], '205 Turbo 16': ['Group B', 'Evolution 2'], '405 T16': ['Pikes Peak'] },
+        'Porsche': { '911 GT3 R': ['992 GT3 R', '991 GT3 R'], '911 GT3 Cup': ['Cup', 'Cup MR'], '911 RSR': ['991 RSR', '992 RSR'], '919 Hybrid': ['LMP1'], '963': ['LMDh', 'GTP'], '962': ['C', 'IMSA'] },
+        'Toyota': { 'GR010 Hybrid': ['Le Mans Hypercar'], 'TS050 Hybrid': ['LMP1'], 'GT-One': ['TS020', 'Road Version'] }
+    };
+    for (const [make, models] of Object.entries(raceSubmodelAdditions)) {
+        if (!submodelCatalog[make]) submodelCatalog[make] = {};
+        for (const [model, trims] of Object.entries(models)) {
+            submodelCatalog[make][model] = [...new Set([...(submodelCatalog[make][model] || []), ...trims])];
+        }
+    }
+    const finalSubmodelAdditions = {
+        'Acura': {
+            'Integra Type R': ['DC2', 'DC5']
+        },
+        'Alfa Romeo': {
+            'Giulia GTA': ['GTA', 'GTAm'], 'Giulia GTAm': ['2-seat'], '8C Competizione': ['Coupe', 'Spider'],
+            'Brera': ['2.2 JTS', '3.2 JTS Q4'], 'Stelvio Quadrifoglio': ['Base']
+        },
+        'Aston Martin': {
+            'DB5': ['Vantage', 'Convertible'], 'DB6': ['Vantage', 'Volante'], 'DB9': ['Coupe', 'Volante'],
+            'DBR22': ['Roadster'], 'DBX707': ['707'], 'V12 Speedster': ['Base'], 'Victor': ['One-off'],
+            'Rapide': ['S', 'AMR'], 'V12 Vantage': ['S', 'AMR'], 'V8 Vantage': ['N400', 'N420', 'GT8', 'GT12']
+        },
+        'Audi': {
+            'S1': ['Sportback', 'Competition'], 'S2': ['Coupe', 'Avant'], 'SQ2': ['Base'],
+            'RS Q8 Performance': ['Performance'], 'R8 GT': ['Coupe', 'Spyder']
+        },
+        'BAC': { 'Mono': ['Mono', 'Mono R'], 'Mono R': ['Limited Edition'] },
+        'Bentley': { 'Turbo R': ['Base', 'Mulliner'] },
+        'BMW': {
+            '3.0 CSL': ['Homage', 'Limited Edition'], 'M3 GTS': ['Base'], 'M3 CRT': ['Carbon Racing Technology'],
+            'M4 GTS': ['Base'], 'M5 CS': ['Base'], 'Z3 M': ['Coupe', 'Roadster'], 'Z4 M': ['Coupe', 'Roadster'],
+            '2002 Turbo': ['Base'], 'M235i': ['Coupe', 'Gran Coupe'], 'M240i': ['Coupe', 'Convertible'],
+            'M340i': ['Sedan', 'Touring'], 'M440i': ['Coupe', 'Convertible', 'Gran Coupe']
+        },
+        'Cadillac': { 'CTS-V Wagon': ['Base'], 'CT6-V': ['Blackwing'], 'Escalade-V': ['Standard', 'ESV'] },
+        'Caterham': { 'Seven 485': ['S', 'R'] },
+        'Chrysler': { '300C SRT8': ['Base', 'Core'] },
+        'Dodge': { 'Challenger SRT Demon': ['Demon', 'Demon 170'], 'Durango SRT Hellcat': ['Hellcat', 'Hellcat Jailbreak'] },
+        'Ferrari': {
+            'FF': ['V12'], 'GTC4Lusso': ['V12', 'T'], '550 Maranello': ['Base', 'Barchetta'],
+            '575M Maranello': ['Maranello', 'Superamerica'], '599 GTB': ['Fiorano', 'HGTE'],
+            '599 GTO': ['Base'], 'F12berlinetta': ['Base', 'tdf'], 'F80': ['Base'],
+            '360 Challenge Stradale': ['Base'], '499P': ['Le Mans Hypercar']
+        },
+        'Ford': { 'Shelby GT350': ['Base', 'Track Package'], 'Shelby GT500': ['Base', 'Carbon Fiber Track Pack'], 'F-150 Lightning': ['Pro', 'XLT', 'Lariat', 'Platinum'] },
+        'Honda': { 'CR-X': ['Si', 'VTEC', 'Mugen'] },
+        'Jaguar': { 'F-Type Project 7': ['Base'], 'F-Type SVR': ['Coupe', 'Convertible'] },
+        'Jeep': { 'Grand Cherokee SRT': ['SRT8'], 'Cherokee SRT': ['SRT'] },
+        'Lancia': { 'Fulvia': ['HF', 'Rallye 1.6 HF'], 'Ypsilon HF': ['Electric'] },
+        'Lotus': { '2-Eleven': ['Road', 'Race'], '3-Eleven': ['Road', 'Race'] },
+        'Maserati': { 'Bora': ['4.7', '4.9'], 'Merak': ['SS', '2000 GT'], 'Shamal': ['Base'] },
+        'Mazda': { 'RX-3': ['Coupe', 'SP'], 'RX-2': ['Coupe', 'Sedan'], 'MX-6': ['GT', 'GT Turbo'] },
+        'McLaren': { '540C': ['Coupe'], '12C': ['Coupe', 'Spider'] },
+        'Mercedes-Benz': {
+            '190E Evolution II': ['Evo II'], 'E 55 AMG': ['W210', 'W211'], 'CLS 63 AMG': ['AMG', 'AMG S'],
+            'AMG GT 4-Door': ['43', '53', '63', '63 S'], 'A 35 AMG': ['Base'], 'A 45 S AMG': ['Base'],
+            'C 43 AMG': ['Base'], 'C 63 S AMG': ['Base', 'S', 'Black Series'], 'E 53 AMG': ['Base'],
+            'E 63 S AMG': ['Base', 'S'], 'G 63 AMG': ['Base', '4x4 Squared'], 'AMG GT R': ['Coupe', 'Pro'],
+            'AMG GT Black Series': ['Track Series'], 'SL 63 AMG': ['Base', 'S E Performance']
+        },
+        'Mitsubishi': {
+            'Lancer Evolution VI': ['GSR', 'RS', 'Tommi Makinen Edition'], 'Lancer Evolution IX': ['GSR', 'MR', 'SE'],
+            'Lancer Evolution X': ['GSR', 'MR', 'Final Edition']
+        },
+        'Nissan': {
+            '350Z': ['Base', 'Enthusiast', 'Track', 'Nismo'], '370Z': ['Base', 'Sport', 'Sport Touring', 'Nismo'],
+            'Z': ['Sport', 'Performance', 'Nismo', 'Heritage Edition'],
+            'Fairlady Z': ['240Z', '280Z', 'Z432'], 'Silvia S15': ['Spec-S', 'Spec-R', 'Autech Version'],
+            'Skyline': ['GT-R R32', 'GT-R R33', 'GT-R R34', 'GT-T', 'GT-R V-Spec'],
+            'Silvia': ['S13', 'S14', 'S15'], 'Z Nismo': ['Nismo'], 'Skyline 400R': ['R33 400R', 'Limited Production']
+        },
+        'Subaru': {
+            'WRX': ['Base', 'Premium', 'Limited', 'TR', 'tS'], 'WRX STI': ['Base', 'Limited', 'Type RA', 'S209', 'Final Edition'],
+            'BRZ': ['Premium', 'Limited', 'tS', 'Series.Blue', 'Series.Gray'], 'Legacy GT': ['Spec.B'], 'Forester XT': ['Premium', 'Touring']
+        },
+        'Toyota': {
+            'MR2': ['AW11', 'SW20', 'W30'], 'GR Supra': ['2.0', '3.0', '3.0 Premium', 'A91-CF', 'Final Edition'],
+            'Celica': ['GT', 'GT-S', 'All-Trac Turbo', 'GT-Four'], 'GR86': ['Base', 'Premium', 'Hakone Edition', 'TRUENO Edition'],
+            'GR Corolla': ['Core', 'Premium', 'Circuit Edition', 'Morizo Edition']
+        },
+        'Porsche': {
+            '718 Spyder': ['Base', 'RS'], '718 Spyder RS': ['Weissach Package'], '911 Sport Classic': ['992'],
+            '911 S/T': ['Heritage Design Package'], '911 Dakar': ['Rallye Design Package'],
+            'Cayenne Turbo GT': ['Coupe'], 'Panamera Turbo S E-Hybrid': ['Sport Turismo'], 'Taycan Turbo GT': ['Weissach Package'],
+            '911 GT3 Touring': ['992 Touring'], '959': ['Sport', 'Komfort']
+        },
+        'Volkswagen': { 'ID.3 GTX': ['GTX', 'GTX Performance'] },
+        'Volvo': { 'C30 T5': ['R-Design', 'Polestar'] },
+        'Ginetta': { 'G56 GT4': ['GT4'], 'G61-LT-P3': ['LMP3'], 'G60-LT-P1': ['LMP1'] },
+        'KTM': { 'X-Bow': ['R', 'RR', 'GT', 'Clubsport'], 'X-Bow GT-XR': ['Base'], 'X-Bow GTX': ['GTX'] },
+        'Panoz': { 'Esperante GTLM': ['GTLM'], 'LMP1 Roadster': ['LMP1'] },
+        'Praga': { 'Bohema': ['Road'], 'R1': ['Racing', 'Road'] },
+        'Radical': { 'SR3': ['XXR', 'RSX'], 'SR10': ['XXR'], 'RXC': ['Coupe', 'Spyder', 'Turbo'], 'RXC GT3': ['GT3'] },
+        'Ruf': { 'CTR Yellowbird': ['CTR'], 'CTR Anniversary': ['Anniversary'], 'SCR': ['Coupe'], 'RGT': ['Coupe', '4.2'] },
+        'Saleen': { 'S7 Twin Turbo': ['Twin Turbo'], 'S7 LM': ['Le Mans'], 'S1': ['Coupe'] },
+        'Toyota': { 'GR Corolla Morizo Edition': ['Morizo Edition'], 'GR Yaris GRMN': ['GRMN'] },
+        'W Motors': { 'Lykan Hypersport': ['Base'], 'Fenyr Supersport': ['Base', 'Launch Edition'] }
+    };
+    for (const [make, models] of Object.entries(finalSubmodelAdditions)) {
+        if (!submodelCatalog[make]) submodelCatalog[make] = {};
+        for (const [model, trims] of Object.entries(models)) {
+            submodelCatalog[make][model] = [...new Set([...(submodelCatalog[make][model] || []), ...trims])];
+        }
     }
     let db = null;
     let dbMode = 'indexeddb';
@@ -1480,6 +1849,9 @@
             .toLowerCase()
             .replace(/&/g, ' and ')
             .replace(/[^a-z0-9]+/g, ' ')
+            .replace(/\b(rs|sq)(?=\d)/g, '$1 ')
+            .replace(/\b(rs)(?=q\d)/g, '$1 ')
+            .replace(/\b(cla|glc|gle|sl|g|a|c|e|s)(?=\d{2,3}\b)/g, '$1 ')
             .trim()
             .replace(/\s+/g, ' ');
         const make = normalize(spot.make);
@@ -1497,7 +1869,7 @@
             rare: { label: 'Rare', rank: 3, description: 'Usually around $100,000–$199,999: premium sports cars and high-end performance models.' },
             epic: { label: 'Epic', rank: 4, description: 'Usually around $200,000–$499,999: supercars and expensive specialist models.' },
             legendary: { label: 'Legendary', rank: 5, description: 'Usually $500,000 or more: flagship exotics, halo cars and major collector models.' },
-            cosmic: { label: 'Cosmic', rank: 6, description: 'Hypercars, dedicated race cars and track-only machines — a step beyond ordinary supercars.' }
+            cosmic: { label: 'Cosmic', rank: 6, description: 'Recognizable hypercars, purpose-built competition cars and track-only machines.' }
         };
 
         // This is a rarity guide, not a live valuation. Prices are broad representative
@@ -1516,14 +1888,14 @@
             'polestar': 55000, 'pontiac': 30000, 'porsche': 110000, 'ram': 45000,
             'rimac': 2200000, 'rivian': 80000, 'rolls royce': 400000, 'saleen': 100000,
             'ssc': 2500000, 'subaru': 35000, 'tesla': 45000, 'toyota': 35000,
-            'volkswagen': 35000, 'volvo': 55000
+            'volkswagen': 35000, 'volvo': 55000, 'alpine': 80000, 'ariel': 75000, 'caterham': 70000, 'czinger': 2200000, 'de tomaso': 250000, 'donkervoort': 160000, 'gordon murray automotive': 3000000, 'hummer': 65000, 'lancia': 55000, 'lucid': 95000, 'peugeot': 40000, 'noble': 250000, 'pininfarina': 2200000, 'renault': 30000, 'spyker': 250000, 'tvr': 100000, 'zenvo': 2500000, 'bac': 200000, 'ginetta': 120000, 'ktm': 150000, 'panoz': 150000, 'praga': 250000, 'radical': 120000, 'ruf': 400000, 'w motors': 3000000
         };
 
         // More specific estimates override the marque average. Longest exact-name
         // matches win, so e.g. a GT3 RS is not priced like a regular 911.
         const priceGuide = [
             ['ferrari', '812 competizione', 600000], ['ferrari', 'sf90', 520000],
-            ['ferrari', 'fxx k', 2000000], ['ferrari', '599xx', 2000000],
+            ['ferrari', 'f80', 3600000], ['ferrari', 'fxx k', 2000000], ['ferrari', '599xx', 2000000],
             ['ferrari', '12cilindri', 400000], ['ferrari', '812 superfast', 350000],
             ['ferrari', '296 gtb', 350000], ['ferrari', '296 gts', 370000],
             ['ferrari', 'f8 tributo', 300000], ['ferrari', '488', 270000],
@@ -1566,7 +1938,7 @@
             ['rimac', 'nevera', 2200000], ['ssc', 'tuatara', 2000000],
             ['hennessey', 'venom f5', 2500000], ['hennessey', 'venom gt', 1200000],
             ['maserati', 'mc12', 1200000], ['maserati', 'mc20', 250000],
-            ['maserati', 'gran turismo', 180000],
+            ['maserati', 'gran turismo', 180000], ['maserati', 'grecale', 80000], ['maserati', 'ghibli', 90000], ['maserati', 'quattroporte', 120000],
             ['porsche', '918 spyder', 1000000], ['porsche', 'carrera gt', 900000],
             ['porsche', 'gt2 rs', 350000], ['porsche', 'gt3 rs', 280000],
             ['porsche', 'gt4 rs', 190000], ['porsche', '911 turbo s', 250000],
@@ -1588,15 +1960,88 @@
             ['mazda', 'rx 7', 80000], ['subaru', 'impreza 22b', 300000],
             ['ford', 'gt mk iv', 1700000], ['ford', 'ford gt', 1000000],
             ['ford', 'mustang gtd', 300000], ['ford', 'gt500', 100000],
-            ['ford', 'gt350r', 100000], ['ford', 'mustang', 50000],
+            ['ford', 'gt350r', 100000], ['ford', 'shelby gt350r', 110000], ['ford', 'mustang', 50000],
+            ['buick', 'gnx', 100000], ['buick', 'grand national', 55000],
+            ['gmc', 'syclone', 65000], ['gmc', 'typhoon', 60000],
             ['chevrolet', 'corvette zr1', 220000], ['chevrolet', 'zr1', 200000],
             ['chevrolet', 'z06', 130000], ['chevrolet', 'corvette', 80000],
-            ['dodge', 'viper acr', 160000], ['dodge', 'viper', 110000],
+            ['dodge', 'demon 170', 150000], ['dodge', 'demon', 110000],
+            ['dodge', 'hellcat redeye', 100000], ['dodge', 'viper acr', 160000], ['dodge', 'viper', 110000],
             ['dodge', 'hellcat', 85000], ['cadillac', 'ct5 v blackwing', 115000],
             ['toyota', '2000gt', 1000000], ['toyota', 'gr supra', 65000],
             ['toyota', 'supra', 65000], ['lotus', 'evija', 2200000],
             ['lotus', 'emira', 110000], ['lotus', 'exige', 100000],
-            ['lotus', 'elise', 75000], ['lotus', 'evora', 110000]
+            ['lotus', 'elise', 75000], ['lotus', 'evora', 110000],
+            ['audi', 'rs 4', 90000], ['audi', 'rs 5', 95000], ['audi', 'rs 6 gt', 220000], ['audi', 'rs q8', 155000],
+            ['audi', 'rs e tron gt', 170000], ['audi', 'rs q3', 75000], ['audi', 'tt rs', 80000],
+            ['audi', 'sq8', 105000], ['audi', 'sq7', 100000], ['audi', 's8', 125000],
+            ['bmw', 'm240i', 65000], ['bmw', 'm340i', 65000], ['bmw', 'm440i', 70000],
+            ['bmw', 'm550i', 85000], ['bmw', 'm760i', 160000], ['bmw', 'x3 m', 85000],
+            ['bmw', 'x4 m', 90000], ['bmw', 'x5 m', 130000], ['bmw', 'x6 m', 135000],
+            ['bmw', 'xm', 160000], ['bmw', '1m coupe', 100000], ['bmw', 'm1', 600000], ['bmw', 'z8', 250000],
+            ['mercedes benz', 'c class', 48000], ['mercedes benz', 'a class', 42000],
+            ['mercedes benz', 'e class', 65000], ['mercedes benz', 's class', 125000], ['mercedes benz', 'g class', 150000],
+            ['mercedes benz', 'glc', 60000], ['mercedes benz', 'gle', 75000], ['mercedes benz', 'sl', 110000],
+            ['mercedes benz', 'amg gt', 160000], ['mercedes benz', 'cla 45', 65000],
+            ['mercedes benz', 'a 45', 65000], ['mercedes benz', 'glc 63', 100000],
+            ['mercedes benz', 'gle 63', 130000], ['mercedes benz', 'sl 63', 190000],
+            ['mercedes benz', 'clk gtr', 10000000], ['mercedes benz', '190e evolution', 250000],
+            ['mercedes benz', 'e 55 amg', 60000], ['mercedes benz', 'cls 63', 90000], ['mercedes benz', '300 sl', 1200000],
+            ['cadillac', 'ct4 v blackwing', 75000], ['cadillac', 'ct5 v blackwing', 120000],
+            ['cadillac', 'cts v', 85000], ['cadillac', 'ats v', 70000], ['cadillac', 'ct6 v', 100000],
+            ['ford', 'mustang ecoboost', 35000], ['ford', 'mustang gt', 55000],
+            ['ford', 'focus rs', 45000], ['ford', 'focus st', 35000], ['ford', 'fiesta st', 30000],
+            ['ford', 'shelby gt500', 130000], ['ford', 'shelby gt350', 90000], ['ford', 'mustang gtd', 300000],
+            ['ford', 'f 150 raptor', 85000], ['ford', 'bronco raptor', 90000], ['ford', 'rs200', 250000],
+            ['honda', 'civic type r', 50000], ['honda', 'integra type s', 55000], ['honda', 's2000', 45000],
+            ['acura', 'integra type s', 55000], ['acura', 'tlx type s', 60000], ['acura', 'nsx type r', 250000],
+            ['hyundai', 'elantra n', 35000], ['hyundai', 'veloster n', 30000], ['hyundai', 'ioniq 5 n', 70000],
+            ['kia', 'stinger', 50000], ['kia', 'ev6 gt', 65000], ['kia', 'k5 gt', 35000],
+            ['infiniti', 'q50 red sport', 60000], ['infiniti', 'q60 red sport', 65000],
+            ['jaguar', 'f type svr', 130000], ['jaguar', 'f type project 7', 180000], ['jaguar', 'f type', 95000], ['jaguar', 'xe project 8', 200000],
+            ['jaguar', 'xj220', 650000], ['jaguar', 'xjr 15', 1500000],
+            ['jeep', 'grand cherokee trackhawk', 95000], ['jeep', 'grand cherokee srt', 75000],
+            ['land rover', 'defender octa', 160000], ['land rover', 'range rover sv', 250000], ['land rover', 'range rover sport sv', 180000],
+            ['lexus', 'is 500', 65000], ['lexus', 'gs f', 85000], ['lexus', 'is f', 65000],
+            ['mini', 'john cooper works', 45000], ['mitsubishi', 'lancer evolution', 45000],
+            ['mitsubishi', '3000gt', 50000], ['mazda', 'mazdaspeed3', 30000], ['mazda', 'mazdaspeed6', 30000],
+            ['nissan', 'skyline gt r', 120000], ['nissan', 'sentra nismo', 30000], ['nissan', '370z nismo', 55000], ['nissan', '350z nismo', 45000], ['nissan', 'z nismo', 65000],
+            ['nissan', 'silvia s15', 50000], ['nissan', 'stagea 260rs', 70000],
+            ['porsche', 'macan', 75000], ['porsche', 'cayenne', 100000], ['porsche', 'panamera', 110000],
+            ['porsche', '944', 35000], ['porsche', '928', 50000], ['porsche', '968', 60000],
+            ['porsche', '356', 120000], ['porsche', '914', 40000], ['porsche', '959', 1200000],
+            ['ram', '1500 trx', 95000], ['ram', '1500 rho', 80000],
+            ['subaru', 'wrx sti', 45000], ['subaru', 'wrx', 38000], ['subaru', 'brz', 35000],
+            ['subaru', 'impreza 22b', 300000], ['toyota', 'gr yaris', 45000], ['toyota', 'gr corolla', 45000],
+            ['toyota', 'gr86', 35000], ['toyota', 'celica gt four', 60000], ['toyota', '2000gt', 1000000],
+            ['volkswagen', 'golf r', 50000], ['volkswagen', 'golf gti', 35000], ['volkswagen', 'jetta gli', 35000],
+            ['volkswagen', 'passat r36', 35000], ['volvo', '850 r', 30000], ['volvo', 'v70 r', 30000],
+            ['alpine', 'a110', 80000], ['alfa romeo', '33 stradale', 2000000], ['alfa romeo', '8c', 300000],
+            ['ariel', 'atom', 80000], ['ariel', 'nomad', 80000],
+            ['caterham', 'seven', 70000], ['czinger', '21c', 2200000], ['de tomaso', 'p72', 1000000],
+            ['donkervoort', 'd8 gto', 150000], ['donkervoort', 'f22', 250000],
+            ['gordon murray automotive', 't 50', 3000000], ['gordon murray automotive', 't 33', 1800000],
+            ['tesla', 'model s plaid', 95000], ['tesla', 'model 3 performance', 55000], ['tesla', 'cyberbeast', 100000],
+            ['hummer', 'h1', 90000], ['lancia', 'delta integrale', 90000],
+            ['lucid', 'air sapphire', 250000], ['lucid', 'air', 95000], ['noble', 'm600', 250000],
+            ['pininfarina', 'battista', 2200000], ['renault', 'megane rs', 45000], ['renault', 'clio rs', 35000],
+            ['spyker', 'c8', 250000], ['tvr', 'sagaris', 100000], ['zenvo', 'tsr s', 1500000], ['zenvo', 'aurora', 2500000],
+            ['alfa romeo', 'giulia gta', 200000], ['alfa romeo', 'giulia gtam', 250000], ['alfa romeo', '8c', 300000],
+            ['audi', 'r8 gt', 250000], ['audi', 's2', 45000], ['audi', 's1', 35000],
+            ['bmw', '3 0 csl', 800000], ['bmw', 'm3 gts', 150000], ['bmw', 'm3 crt', 150000], ['bmw', 'm4 gts', 150000],
+            ['bmw', 'm5 cs', 150000], ['bmw', 'z3 m', 60000], ['bmw', 'z4 m', 65000],
+            ['mercedes benz', 'amg gt black series', 350000], ['mercedes benz', 'clk gtr', 10000000],
+            ['mercedes benz', '190e evolution ii', 250000], ['mercedes benz', 'sl 63 amg', 190000],
+            ['nissan', 'z nismo', 65000], ['nissan', 'skyline 400r', 90000], ['nissan', '370z', 40000], ['nissan', '350z', 32000],
+            ['porsche', '718 spyder rs', 180000], ['porsche', 'cayenne turbo gt', 200000],
+            ['porsche', 'taycan turbo gt', 230000], ['porsche', 'panamera turbo s e hybrid', 250000], ['porsche', '911 sport classic', 300000], ['porsche', '911 s t', 300000],
+            ['porsche', '911 dakar', 250000], ['porsche', '911 gt3 touring', 210000],
+            ['toyota', 'gr corolla morizo', 65000], ['toyota', 'gr yaris grmn', 65000],
+            ['bac', 'mono r', 250000], ['ktm', 'x bow gtxr', 250000], ['ktm', 'x bow gtx', 220000],
+            ['radical', 'sr3', 100000], ['radical', 'sr10', 160000], ['radical', 'rxc gt3', 250000],
+            ['praga', 'bohema', 1300000], ['praga', 'r1', 200000], ['ruf', 'ctr yellowbird', 1000000],
+            ['ruf', 'ctr anniversary', 1500000], ['ruf', 'scr', 900000], ['w motors', 'lykan hypersport', 3400000],
+            ['w motors', 'fenyr supersport', 1800000], ['ginetta', 'g56 gt4', 150000], ['panoz', 'esperante gtlm', 250000]
         ];
         const applicablePrices = priceGuide
             .filter(([brand, phrase]) => make === brand && has(fullName, phrase))
@@ -1622,9 +2067,16 @@
             { terms: ['gt3 rs'], make: 'porsche', price: 280000 },
             { terms: ['gt2 rs'], make: 'porsche', price: 350000 },
             { terms: ['turbo s'], make: 'porsche', price: 250000 },
+            { terms: ['sport classic', 's t'], make: 'porsche', price: 300000 },
+            { terms: ['dakar'], make: 'porsche', price: 250000 },
+            { terms: ['spyder rs'], make: 'porsche', price: 160000 },
+            { terms: ['m3 cs', 'm4 cs', 'm5 cs', 'm4 csl'], make: 'bmw', price: 150000 },
             { terms: ['black series'], make: 'mercedes benz', price: 350000 },
             { terms: ['gtd'], make: 'ford', price: 300000 },
-            { terms: ['nismo'], make: 'nissan', price: 220000 },
+            { terms: ['gt r nismo', 'r35 nismo', 'nismo special edition'], make: 'nissan', price: 220000 },
+            { terms: ['z nismo', '370z nismo'], make: 'nissan', price: 65000 },
+            { terms: ['350z nismo'], make: 'nissan', price: 55000 },
+            { terms: ['sentra nismo'], make: 'nissan', price: 30000 },
             { terms: ['z06'], make: 'chevrolet', price: 130000 },
             { terms: ['zr1'], make: 'chevrolet', price: 220000 }
         ];
@@ -1632,6 +2084,66 @@
         if (trimPremium && trimPremium.price > estimatedPrice) {
             estimatedPrice = trimPremium.price;
             priceSource = 'limited/performance trim estimate';
+        }
+
+        // Performance models receive a sensible minimum tier even when an older,
+        // entry-level or enthusiast car has a low used-market estimate. This is
+        // intentionally brand-specific: an Audi RS is a real RS model, not an S-line
+        // appearance package; BMW M Sport and AMG Line cosmetics do not qualify.
+        const modelTrim = `${model} ${trim}`.trim();
+        const performanceRules = [
+            { make: 'audi', pattern: /\b(rs ?3|rs ?4|rs ?5|rs ?q3|rs ?q5|tt rs|s ?1|s ?2|s ?3|s ?4|s ?5|sq ?2|sq ?5)\b/, floor: 'uncommon', price: 55000, why: 'Audi S/RS performance model' },
+            { make: 'audi', pattern: /\b(rs ?6|rs ?7|rs ?q8|rs ?e tron gt|sq ?7|sq ?8|s ?6|s ?7|s ?8|r8)\b/, floor: 'rare', price: 110000, why: 'high-performance Audi RS/S model' },
+            { make: 'bmw', pattern: /\b(m5|m8|m6|x5 m|x6 m|xm)\b/, floor: 'rare', price: 120000, why: 'higher-tier BMW M model' },
+            { make: 'bmw', pattern: /\b(m2|m3|m4|x3 m|x4 m|1m coupe|m1)\b/, floor: 'uncommon', price: 70000, why: 'BMW M performance model' },
+            { make: 'bmw', pattern: /\b(m240i|m340i|m440i|m550i|m760i|m135i|m140i|m235i|m550i|m60i|m50i|alpina)\b/, floor: 'uncommon', price: 55000, why: 'BMW M Performance/ALPINA model' },
+            { make: 'mercedes benz', pattern: /\b(amg (?:a|cla|c|e|s|glc|gle|g|sl) ?\d{2,3}|(?:a|cla|c|e|s|glc|gle|g|sl) ?\d{2,3} amg|amg gt|sls amg|slr mclaren|clk gtr|clk ?63 amg|e ?55 amg|cls ?63 amg)\b/, floor: 'uncommon', price: 60000, why: 'Mercedes-AMG performance model' },
+            { make: 'cadillac', pattern: /\b(at[s]? v|ct4 v|ct5 v|ct6 v|cts v|blackwing|escalade v|xlr v)\b/, floor: 'uncommon', price: 65000, why: 'Cadillac V-Series performance model' },
+            { make: 'buick', pattern: /\b(gnx)\b/, floor: 'rare', price: 100000, why: 'Buick GNX collector model' },
+            { make: 'buick', pattern: /\b(grand national|regal gs)\b/, floor: 'uncommon', price: 50000, why: 'Buick performance/collector model' },
+            { make: 'gmc', pattern: /\b(syclone|typhoon)\b/, floor: 'rare', price: 60000, why: 'GMC Syclone/Typhoon limited-production model' },
+            { make: 'chevrolet', pattern: /\b(z06|zr1|zora|zl1|camaro ss|ss 1le|cobalt ss|trailblazer ss|corvette grand sport|corvette)\b/, floor: 'uncommon', price: 60000, why: 'Chevrolet high-performance model/trim' },
+            { make: 'dodge', pattern: /\b(srt|hellcat|demon|scat pack|viper|acr|srt 392|srt hellcat|rt)\b/, floor: 'uncommon', price: 55000, why: 'Dodge SRT/muscle performance model' },
+            { make: 'ford', pattern: /\b(mustang gt|mach 1|dark horse|shelby|gt350|gt350r|gt500|mustang gtd|focus rs|focus st|fiesta st|f 150 raptor|bronco raptor|rs200|taurus sho)\b/, floor: 'uncommon', price: 50000, why: 'Ford performance/Shelby model' },
+            { make: 'honda', pattern: /\b(type r|civic si|s2000|nsx|cr z)\b/, floor: 'uncommon', price: 45000, why: 'Honda enthusiast/performance model' },
+            { make: 'acura', pattern: /\b(type s|nsx|type r)\b/, floor: 'uncommon', price: 50000, why: 'Acura Type S/NSX performance model' },
+            { make: 'hyundai', pattern: /\b(elantra n|veloster n|kona n|ioniq 5 n|i20 n|i30 n|genesis coupe)\b/, floor: 'uncommon', price: 40000, why: 'Hyundai N/performance coupe model' },
+            { make: 'kia', pattern: /\b(stinger.*gt|ev6 gt|k5 gt|forte gt)\b/, floor: 'uncommon', price: 45000, why: 'Kia GT performance model' },
+            { make: 'infiniti', pattern: /\b(red sport 400|ipl|fx50 s)\b/, floor: 'uncommon', price: 50000, why: 'Infiniti performance trim' },
+            { make: 'jaguar', pattern: /\b(svr|project 7|project 8|xjr 15|xj220|xkr s|f type r)\b/, floor: 'uncommon', price: 70000, why: 'Jaguar R/SVR performance model' },
+            { make: 'jeep', pattern: /\b(trackhawk|srt|392)\b/, floor: 'uncommon', price: 65000, why: 'Jeep SRT/392 performance model' },
+            { make: 'lexus', pattern: /\b(rc f|is f|gs f|is 500|lc 500|f sport performance)\b/, floor: 'uncommon', price: 60000, why: 'Lexus F/500 performance model' },
+            { make: 'mini', pattern: /\b(john cooper works|jcw|gp)\b/, floor: 'uncommon', price: 40000, why: 'MINI John Cooper Works model' },
+            { make: 'mazda', pattern: /\b(rx 7|rx 8|mazdaspeed)\b/, floor: 'uncommon', price: 35000, why: 'Mazda rotary/Mazdaspeed enthusiast model' },
+            { make: 'mitsubishi', pattern: /\b(lancer evolution|evo [ivx]+|3000gt vr 4|vr 4|starion esi r)\b/, floor: 'uncommon', price: 45000, why: 'Mitsubishi performance model' },
+            { make: 'nissan', pattern: /\b(sentra nismo)\b/, floor: 'uncommon', price: 30000, why: 'Nissan Nismo performance trim' },
+            { make: 'nissan', pattern: /\b(gt r|skyline.*gt r|stagea 260rs)\b/, floor: 'rare', price: 100000, why: 'Nissan GT-R/collector performance model' },
+            { make: 'nissan', pattern: /\b(nismo|z|z nismo|370z nismo|350z nismo|350z|370z|400z|240sx|180sx|silvia|fairlady z|stagea 260rs)\b/, floor: 'uncommon', price: 35000, why: 'Nissan sports/Nismo enthusiast model' },
+            { make: 'pontiac', pattern: /\b(gto|trans am|firebird formula|ws6|firehawk|g8 gxp)\b/, floor: 'uncommon', price: 45000, why: 'Pontiac performance/collector model' },
+            { make: 'porsche', pattern: /\b(911|718|cayman|boxster|gt[234] rs|turbo s|carrera gt|918 spyder|taycan turbo gt|cayenne turbo gt)\b/, floor: 'uncommon', price: 70000, why: 'Porsche sports/performance model' },
+            { make: 'ram', pattern: /\b(trx|rho|power wagon)\b/, floor: 'uncommon', price: 65000, why: 'RAM performance/off-road model' },
+            { make: 'subaru', pattern: /\b(wrx|sti|brz|legacy gt|forester xt|impreza 22b)\b/, floor: 'uncommon', price: 35000, why: 'Subaru performance/enthusiast model' },
+            { make: 'toyota', pattern: /\b(gr supra|supra|gr86|gr corolla|gr yaris|mr2|celica gt four|altezza rs200|soarer 2 5 gt t|chaser tourer v)\b/, floor: 'uncommon', price: 45000, why: 'Toyota GR/sports performance model' },
+            { make: 'volkswagen', pattern: /\b(golf gti|golf r|jetta gli|scirocco r|polo gti|passat r36|touareg r)\b/, floor: 'uncommon', price: 35000, why: 'Volkswagen GT/R performance model' },
+            { make: 'volvo', pattern: /\b(polestar engineered|850 r|v70 r|s60 r)\b/, floor: 'uncommon', price: 35000, why: 'Volvo R/Polestar performance model' },
+            { make: 'alfa romeo', pattern: /\b(quadrifoglio|gta|gtam)\b/, floor: 'uncommon', price: 75000, why: 'Alfa Romeo Quadrifoglio/GTA model' },
+            { make: 'land rover', pattern: /\b(svr|octa|range rover sv|defender v8)\b/, floor: 'uncommon', price: 90000, why: 'Land Rover SV/high-performance model' },
+            { make: 'polestar', pattern: /\b(polestar 1|performance pack)\b/, floor: 'uncommon', price: 60000, why: 'Polestar performance model/package' },
+            { make: 'lucid', pattern: /\b(sapphire)\b/, floor: 'rare', price: 250000, why: 'Lucid Sapphire flagship performance model' },
+            { make: 'tesla', pattern: /\b(model s plaid|model 3 performance|model x plaid|cyberbeast)\b/, floor: 'uncommon', price: 55000, why: 'Tesla high-performance model' },
+            { make: 'renault', pattern: /\b(clio rs|megane rs|r5 turbo)\b/, floor: 'uncommon', price: 40000, why: 'Renault Sport performance model' },
+            { make: 'alfa romeo', pattern: /\b(quadrifoglio|giulia gta|gtam|stelvio quadrifoglio|4c)\b/, floor: 'uncommon', price: 75000, why: 'Alfa Romeo performance model' },
+            { make: 'bmw', pattern: /\b(3 0 csl|m3 gts|m3 crt|m4 gts|m5 cs|z3 m|z4 m)\b/, floor: 'rare', price: 120000, why: 'BMW limited-production M/collector model' },
+            { make: 'mercedes benz', pattern: /\b(amg a 35|a 35 amg|a 45 s|a 45 amg|c 43 amg|c 63|e 53 amg|e 63|g 63|amg gt r|sl 63 amg)\b/, floor: 'uncommon', price: 65000, why: 'Mercedes-AMG performance model' },
+            { make: 'nissan', pattern: /\b(z nismo|skyline 400r|pulsar gti r)\b/, floor: 'uncommon', price: 55000, why: 'Nissan Nismo/GT-R heritage performance model' },
+            { make: 'porsche', pattern: /\b(718 spyder rs|taycan turbo gt|cayenne turbo gt|911 sport classic|911 s t|911 dakar)\b/, floor: 'rare', price: 120000, why: 'Porsche high-performance or limited edition' },
+            { make: 'toyota', pattern: /\b(gr corolla morizo|gr yaris grmn)\b/, floor: 'rare', price: 65000, why: 'Toyota limited GR performance edition' },
+            { make: 'volvo', pattern: /\b(c30 t5|850 t 5r|polestar)\b/, floor: 'uncommon', price: 45000, why: 'Volvo performance/Polestar model' }
+        ];
+        const matchedPerformanceRule = performanceRules.find(rule => make === rule.make && rule.pattern.test(modelTrim));
+        if (matchedPerformanceRule && matchedPerformanceRule.price > estimatedPrice) {
+            estimatedPrice = matchedPerformanceRule.price;
+            priceSource = 'performance model/trim estimate';
         }
 
         const vehicleName = [spot.year, spot.make, spot.model, spot.trim].filter(Boolean).join(' ');
@@ -1648,12 +2160,16 @@
         // McLaren is already an exotic, not merely a Rare car. Hypercar-only makers
         // start at Legendary. Their exact model can still affect the explanation.
         const epicFloorBrands = new Set(['ferrari', 'lamborghini', 'mclaren', 'aston martin']);
-        const legendaryFloorBrands = new Set(['bugatti', 'koenigsegg', 'pagani', 'rimac', 'ssc']);
+        const legendaryFloorBrands = new Set(['bugatti', 'koenigsegg', 'pagani', 'rimac', 'ssc', 'w motors']);
         let key = estimatedPrice < 50000 ? 'common'
             : estimatedPrice < 100000 ? 'uncommon'
                 : estimatedPrice < 200000 ? 'rare'
                     : estimatedPrice < 500000 ? 'epic' : 'legendary';
         const reasons = [`Estimated price: ${priceText} (${priceBand}; ${priceSource})`];
+        if (matchedPerformanceRule && tiers[key].rank < tiers[matchedPerformanceRule.floor].rank) {
+            key = matchedPerformanceRule.floor;
+            reasons.push(`${matchedPerformanceRule.why} floor: ${tiers[key].label}`);
+        }
 
         // Cosmic is intentionally easy to understand: it is for recognizable
         // hypercars, purpose-built competition cars and track-only machines.
@@ -1668,9 +2184,10 @@
             'zonda', 'huayra', 'utopia', 'imola',
             'nevera', 'concept one', 'tuatara', 'venom f5', 'venom gt',
             'evija', 'sian', 'centenario', 'veneno', 'reventon',
-            'daytona sp3', 'mc12', 'apollo ie', 'czinger 21c',
+            'daytona sp3', 'mc12', 'apollo ie', 'czinger 21c', '21c v max', 'battista',
+            'valhalla', 'vulcan', 'mcxtrema', 'clk gtr', 't 50', 't 33', 'pininfarina battista', 'zenvo aurora', 'hennessey venom f5',
             'battista', 'lykan hypersport', 'fenyr supersport',
-            'gordon murray t 50', 't 50s niki lauda'
+            'gordon murray t 50', 't 50s niki lauda', 'lykan hypersport', 'fenyr supersport', 'praga bohema'
         ];
         const cosmicRaceCarModels = [
             '787b', 'r26b', '917k', '917 30', '911 gt1', '962c', '962',
@@ -1678,20 +2195,22 @@
             'gt4 clubsport', 'gt2 clubsport', 'clk gtr', 'c9', 'c11',
             'fxx k', '599xx', '296 gt3', '488 gt3', '488 gte', '499p',
             'essenza scv12', 'huracan gt3', 'huracan super trofeo', 'gallardo super trofeo',
-            'senna gtr', 'p1 gtr', '720s gt3', 'solus gt',
-            'm4 gt3', 'm4 gt4', 'm8 gte', 'm3 gtr', 'm hybrid v8',
+            'senna gtr', 'p1 gtr', '720s gt3', 'solus gt', 'mcxtrema',
+            'm4 gt3', 'm4 gt4', 'm8 gte', 'm3 gtr', 'm hybrid v8', 'r18', 'v series r',
             'r8 lms', 'rs3 lms', 'amg gt3', 'sls amg gt3',
-            'mustang gt3', 'ford gt mk iv', 'c8 r', 'c7 r', 'c6 r', 'c5 r', 'z06 gt3 r',
-            'r390 gt1', 'r92cp', 'gr010', 'ts050', 'gt one', 'supra gt500',
+            'mustang gt3', 'ford gt mk iv', 'saleen s7 lm', 'esperante gtlm', 'c8 r', 'c7 r', 'c6 r', 'c5 r', 'z06 gt3 r',
+            'r390 gt1', 'r92cp', 'gr010', 'ts050', 'gt one', 'supra gt500', '9x8', '405 t16', '787b', '767b',
             'nsx gt3', 'nsx gt500', 'arx 06', 'xjr 9', 'xjr 12', 'audi r18',
             'peugeot 9x8', 'cadillac v series r', 'lamborghini sc63',
-            'impreza wrc', 'quattro s1', '205 turbo 16', 'delta s4', '037 rally',
+            'impreza wrc', 'quattro s1', '205 turbo 16', 'delta s4', '037 rally', 'rs200',
+            'clio rally', 'megane rs trophy r', 'lancia 037', 'lancia delta integrale rally',
+            'caterham 620r race', 'atom cup', 'c8 gt3 r', '911 gt3 r',
             'lancer evo wrc', 'fabia rally2', 'yaris rally1', 'i20 n rally1',
-            'i20 wrc', 'fiesta wrc', 'focus wrc'
+            'i20 wrc', 'fiesta wrc', 'focus wrc', 'rxc gt3', 'g56 gt4', 'g61 lt p3', 'panoz lmp1', 'lmp1 roadster', 'radical sr3', 'radical sr10'
         ];
         const hypercarMatch = findMatch(cosmicHypercarModels);
         const raceCarMatch = findMatch(cosmicRaceCarModels);
-        const raceSeriesPattern = /\b(formula 1|formula one|formula e|f1 car|f1(?:\s?\d{2,4})?|rb\d{2}|indycar|nascar|lmp\s?[123]|lmh|lmdh|wrc|rally\s?[12]|group [abc]|imsa|wec|gt500|gt300|dtm|tcr|super trofeo|daytona prototype|stock car|dakar rally|rally raid|race car|racing car|track only|track car)\b/;
+        const raceSeriesPattern = /\b(formula 1|formula one|formula e|f1 car|f1(?:\s?\d{2,4})?|rb\d{2}|indycar|nascar|lmp\s?[123]|lmh|lmdh|wrc|rally\s?[12]|group [abc]|imsa|wec|gt300|dtm|tcr|super trofeo|daytona prototype|stock car|dakar rally|rally raid|race car|racing car|track only|track car)\b/;
         const gtRacePattern = /\b(gt3|gt4|gt2|gte|gt1|rsr)\b/;
         // Road-going Porsche GT3/GT2 RS and Cayman GT4 RS models are not race cars.
         // Explicit race derivatives such as the 911 GT3 R and GT3 Cup are listed above.
@@ -1731,7 +2250,7 @@
         // their original sticker price does not reflect today's collector market.
         const rareCollectorModels = [
             'r34', 'rx 7 spirit r', 'viper acr', 'gt350r', 'impreza 22b',
-            'sls amg', 'slr mclaren', 'lfa nurburgring', 'nsx type r', 'supra rz'
+            'sls amg', 'slr mclaren', 'lfa nurburgring', 'nsx type r', 'supra rz', 'm3 csl', 'm4 csl', '911 s t'
         ];
         const collectorMatch = findMatch(rareCollectorModels);
         if (collectorMatch && tiers[key].rank < tiers.rare.rank) {
