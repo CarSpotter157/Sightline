@@ -606,21 +606,26 @@
           </small>
          </div>
          <div class="field generation-year-field" id="spotGenerationYearField">
-          <label for="yearInput">
-           Model year / generation
+          <label for="yearGenerationDisplay">
+           Generation / body style
            <span class="optional">Optional</span>
           </label>
           <div class="generation-year-control">
-           <input autocomplete="off" class="control generation-year-input" id="yearInput" inputmode="numeric" placeholder="Enter a year or browse generations" type="text" aria-describedby="yearGenerationCaption"/>
+           <input autocomplete="off" class="control generation-display" id="yearGenerationDisplay" placeholder="Choose a generation" type="text" readonly aria-readonly="true" aria-describedby="yearGenerationCaption"/>
+           <input id="vehicleGenerationInput" type="hidden" value=""/>
            <button aria-controls="yearPickerPanel" aria-expanded="false" aria-label="Browse vehicle generations" class="generation-picker-toggle" id="yearPickerToggle" title="Browse generations" type="button">
-            <span>GENERATIONS</span><b aria-hidden="true">⌄</b>
+            <span>BROWSE GENERATIONS</span><b aria-hidden="true">⌄</b>
            </button>
           </div>
-          <small class="generation-year-caption" id="yearGenerationCaption">Choose a make and model to see their generations.</small>
-          <div class="generation-picker-panel" hidden="" id="yearPickerPanel" role="region" aria-label="Vehicle generations and model years">
-           <div class="generation-picker-heading"><div><strong>CHOOSE A GENERATION</strong><small>Pick the closest body shape, then choose its model year.</small></div><button aria-label="Close generation picker" class="generation-picker-close" type="button">&times;</button></div>
+          <div class="generation-exact-year">
+           <label for="yearInput">Exact model year <span class="optional">Optional · only add it if you know it</span></label>
+           <input autocomplete="off" class="control generation-year-input" id="yearInput" inputmode="numeric" placeholder="Enter exact year (optional)" type="text"/>
+          </div>
+          <small class="generation-year-caption" id="yearGenerationCaption">Choose a make and model, then select its generation. The exact year is optional.</small>
+          <div class="generation-picker-panel" hidden="" id="yearPickerPanel" role="region" aria-label="Vehicle generations and optional model years">
+           <div class="generation-picker-heading"><div><strong>CHOOSE A GENERATION</strong><small>Select the generation first. Add an exact year only when you know it.</small></div><button aria-label="Close generation picker" class="generation-picker-close" type="button">&times;</button></div>
            <div class="generation-list" id="yearGenerationList"></div>
-           <div class="generation-picker-footer">Vehicle reference photos and article links are provided by Wikipedia.</div>
+           <div class="generation-picker-footer">Photos are taken from the matching Wikipedia generation article. When a matching article photo cannot be verified, no photo is shown rather than using an unrelated car.</div>
           </div>
          </div>
          <div class="field">
@@ -1503,6 +1508,14 @@
      </article>
      <article class="detail-spec">
       <span>
+       Generation
+      </span>
+      <strong id="detailGeneration">
+       Not selected
+      </strong>
+     </article>
+     <article class="detail-spec">
+      <span>
        Color
       </span>
       <strong id="detailColor">
@@ -1616,18 +1629,23 @@
       </small>
      </div>
      <div class="field generation-year-field" id="editGenerationYearField">
-      <label for="editYearInput">Model year / generation</label>
+      <label for="editYearGenerationDisplay">Generation / body style <span class="optional">Optional</span></label>
       <div class="generation-year-control">
-       <input autocomplete="off" class="control generation-year-input" id="editYearInput" inputmode="numeric" placeholder="Enter a year or browse generations" type="text" aria-describedby="editYearGenerationCaption"/>
+       <input autocomplete="off" class="control generation-display" id="editYearGenerationDisplay" placeholder="Choose a generation" type="text" readonly aria-readonly="true" aria-describedby="editYearGenerationCaption"/>
+       <input id="editGenerationInput" type="hidden" value=""/>
        <button aria-controls="editYearPickerPanel" aria-expanded="false" aria-label="Browse vehicle generations" class="generation-picker-toggle" id="editYearPickerToggle" title="Browse generations" type="button">
-        <span>GENERATIONS</span><b aria-hidden="true">⌄</b>
+        <span>BROWSE GENERATIONS</span><b aria-hidden="true">⌄</b>
        </button>
       </div>
-      <small class="generation-year-caption" id="editYearGenerationCaption">Choose a make and model to see their generations.</small>
-      <div class="generation-picker-panel" hidden="" id="editYearPickerPanel" role="region" aria-label="Vehicle generations and model years">
-       <div class="generation-picker-heading"><div><strong>CHOOSE A GENERATION</strong><small>Pick the closest body shape, then choose its model year.</small></div><button aria-label="Close generation picker" class="generation-picker-close" type="button">&times;</button></div>
+      <div class="generation-exact-year">
+       <label for="editYearInput">Exact model year <span class="optional">Optional · only add it if you know it</span></label>
+       <input autocomplete="off" class="control generation-year-input" id="editYearInput" inputmode="numeric" placeholder="Enter exact year (optional)" type="text"/>
+      </div>
+      <small class="generation-year-caption" id="editYearGenerationCaption">Choose a make and model, then select its generation. The exact year is optional.</small>
+      <div class="generation-picker-panel" hidden="" id="editYearPickerPanel" role="region" aria-label="Vehicle generations and optional model years">
+       <div class="generation-picker-heading"><div><strong>CHOOSE A GENERATION</strong><small>Select the generation first. Add an exact year only when you know it.</small></div><button aria-label="Close generation picker" class="generation-picker-close" type="button">&times;</button></div>
        <div class="generation-list" id="editYearGenerationList"></div>
-       <div class="generation-picker-footer">Vehicle reference photos and article links are provided by Wikipedia.</div>
+       <div class="generation-picker-footer">Photos are taken from the matching Wikipedia generation article. When a matching article photo cannot be verified, no photo is shown rather than using an unrelated car.</div>
       </div>
      </div>
      <div class="field">
