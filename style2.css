@@ -183,6 +183,10 @@
 .generation-year-field{position:relative;z-index:1;min-width:0}
 .generation-year-field:has(.generation-picker-panel:not([hidden])){z-index:16055}
 .generation-year-control{display:flex;align-items:stretch;gap:7px;min-width:0}
+.generation-display{flex:1;min-width:0;cursor:default;background:var(--surface-2)}
+.generation-exact-year{display:grid;gap:6px;margin-top:10px;min-width:0}
+.generation-exact-year>label{display:block;margin:0;color:var(--muted);font-size:9px;font-weight:900;letter-spacing:1.1px;text-transform:uppercase}
+.generation-exact-year .optional{font-size:8px;font-weight:600;letter-spacing:0;text-transform:none}
 .generation-year-input{flex:1;min-width:0}
 .generation-picker-toggle{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:47px;padding:0 12px;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);color:var(--accent-strong);font-size:9px;font-weight:950;letter-spacing:.7px;white-space:nowrap;transition:background .16s,border-color .16s}
 .generation-picker-toggle:hover,.generation-picker-toggle[aria-expanded="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--surface));}
@@ -239,3 +243,19 @@
   line-height: 1;
 }
 
+
+/* Generation-first selection: exact years are secondary and collapsed by default. */
+.generation-option.is-selected{border-color:var(--accent-strong);background:color-mix(in srgb,var(--accent) 5%,var(--surface-2));box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 22%,transparent)}
+.generation-select-button{justify-self:start;min-height:32px;padding:6px 10px;border:1px solid color-mix(in srgb,var(--accent) 42%,var(--line));border-radius:8px;background:var(--surface);color:var(--accent-strong);font-size:8px;font-weight:950;letter-spacing:.65px;transition:background .15s,border-color .15s,color .15s}
+.generation-select-button:hover,.generation-select-button.is-selected{border-color:var(--accent-strong);background:var(--accent);color:var(--accent-ink)}
+.generation-year-details{min-width:0;border-top:1px solid var(--line);padding-top:7px}
+.generation-year-details summary{display:flex;align-items:center;gap:6px;width:fit-content;color:var(--muted);font-size:8px;font-weight:950;letter-spacing:.65px;cursor:pointer;list-style:none}
+.generation-year-details summary::-webkit-details-marker{display:none}
+.generation-year-details summary:after{content:'＋';font-size:11px;color:var(--accent-strong)}
+.generation-year-details[open] summary:after{content:'−'}
+.generation-year-details summary span{color:var(--soft);font-weight:700}
+.generation-year-details .generation-year-chips{padding-top:7px;max-height:115px;overflow-y:auto}
+.generation-image-placeholder{padding:8px;text-align:center;font:900 9px/1.25 var(--font-body);letter-spacing:.8px;opacity:.8}
+.generation-image-link.is-unverified{cursor:default}
+.generation-image-link.is-unverified .generation-image-credit{display:none}
+.generation-image-placeholder[hidden]{display:none}
