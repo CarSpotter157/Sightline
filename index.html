@@ -605,16 +605,23 @@
            Suggestions update for the selected make and model. You can also type any custom version.
           </small>
          </div>
-         <div class="field">
+         <div class="field generation-year-field" id="spotGenerationYearField">
           <label for="yearInput">
-           Model year
-           <span class="optional">
-            Optional
-           </span>
+           Model year / generation
+           <span class="optional">Optional</span>
           </label>
-          <input autocomplete="off" class="control searchable-control" id="yearInput" inputmode="numeric" list="yearOptions" placeholder="Type or choose a year" type="text"/>
-          <datalist id="yearOptions">
-          </datalist>
+          <div class="generation-year-control">
+           <input autocomplete="off" class="control generation-year-input" id="yearInput" inputmode="numeric" placeholder="Enter a year or browse generations" type="text" aria-describedby="yearGenerationCaption"/>
+           <button aria-controls="yearPickerPanel" aria-expanded="false" aria-label="Browse vehicle generations" class="generation-picker-toggle" id="yearPickerToggle" title="Browse generations" type="button">
+            <span>GENERATIONS</span><b aria-hidden="true">⌄</b>
+           </button>
+          </div>
+          <small class="generation-year-caption" id="yearGenerationCaption">Choose a make and model to see their generations.</small>
+          <div class="generation-picker-panel" hidden="" id="yearPickerPanel" role="region" aria-label="Vehicle generations and model years">
+           <div class="generation-picker-heading"><div><strong>CHOOSE A GENERATION</strong><small>Pick the closest body shape, then choose its model year.</small></div><button aria-label="Close generation picker" class="generation-picker-close" type="button">&times;</button></div>
+           <div class="generation-list" id="yearGenerationList"></div>
+           <div class="generation-picker-footer">Vehicle reference photos and article links are provided by Wikipedia.</div>
+          </div>
          </div>
          <div class="field">
           <label for="colorInput">
@@ -1608,13 +1615,20 @@
        Suggestions update for the selected make and model. Custom versions are accepted.
       </small>
      </div>
-     <div class="field">
-      <label for="editYearInput">
-       Model year
-      </label>
-      <input autocomplete="off" class="control searchable-control" id="editYearInput" inputmode="numeric" list="editYearOptions" placeholder="Type or choose a year" type="text"/>
-      <datalist id="editYearOptions">
-      </datalist>
+     <div class="field generation-year-field" id="editGenerationYearField">
+      <label for="editYearInput">Model year / generation</label>
+      <div class="generation-year-control">
+       <input autocomplete="off" class="control generation-year-input" id="editYearInput" inputmode="numeric" placeholder="Enter a year or browse generations" type="text" aria-describedby="editYearGenerationCaption"/>
+       <button aria-controls="editYearPickerPanel" aria-expanded="false" aria-label="Browse vehicle generations" class="generation-picker-toggle" id="editYearPickerToggle" title="Browse generations" type="button">
+        <span>GENERATIONS</span><b aria-hidden="true">⌄</b>
+       </button>
+      </div>
+      <small class="generation-year-caption" id="editYearGenerationCaption">Choose a make and model to see their generations.</small>
+      <div class="generation-picker-panel" hidden="" id="editYearPickerPanel" role="region" aria-label="Vehicle generations and model years">
+       <div class="generation-picker-heading"><div><strong>CHOOSE A GENERATION</strong><small>Pick the closest body shape, then choose its model year.</small></div><button aria-label="Close generation picker" class="generation-picker-close" type="button">&times;</button></div>
+       <div class="generation-list" id="editYearGenerationList"></div>
+       <div class="generation-picker-footer">Vehicle reference photos and article links are provided by Wikipedia.</div>
+      </div>
      </div>
      <div class="field">
       <label for="editColorInput">
