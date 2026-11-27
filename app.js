@@ -1177,6 +1177,42 @@
     ]
 };
     for (const [make, models] of Object.entries(specialistBrandCoverage)) { if (!modelCatalog[make]) modelCatalog[make] = []; const seen = new Set(modelCatalog[make].map(v => String(v).toLowerCase())); for (const model of models) if (!seen.has(model.toLowerCase())) { modelCatalog[make].push(model); seen.add(model.toLowerCase()); } }
+    // Second-pass model coverage: everyday nameplates and overlooked generations.
+    // Keep these as distinct catalog models; factory grades remain in submodelCatalog.
+    const modelCatalogAuditAdditions = {
+        'Acura': ['CL', 'RL', 'RLX', 'TL', 'TL Type S', 'ZDX', 'ADX'],
+        'Alfa Romeo': ['147', '147 GTA', '156', '159', '166', 'Brera', 'Spider', 'Giulietta', 'MiTo'],
+        'Audi': ['A1', 'A2', 'Q4 e-tron', 'Q6 e-tron', 'Q8 e-tron', 'e-tron GT', 'Allroad', 'RS Q3', 'RS e-tron GT', 'RS2 Avant', 'S2'],
+        'BMW': ['2 Series Gran Coupe', '4 Series', '6 Series', 'i3', 'iX', 'iX1', 'iX3', 'X2', 'Z8', 'M3 Touring', 'M5 Touring'],
+        'Buick': ['Encore', 'Encore GX', 'Envision', 'Envista', 'LaCrosse', 'LeSabre', 'Park Avenue', 'Riviera', 'Roadmaster', 'Skylark', 'Verano'],
+        'Cadillac': ['CT6', 'DeVille', 'DTS', 'Lyriq', 'Optiq', 'Vistiq', 'XT4', 'XT5', 'XT6', 'XLR', 'Escalade IQ'],
+        'Chevrolet': ['Bolt', 'Bolt EUV', 'Colorado', 'Cruze', 'Equinox', 'Equinox EV', 'Express', 'HHR', 'Malibu', 'Monte Carlo', 'Sonic', 'Spark', 'Suburban', 'Tahoe', 'Trailblazer', 'Traverse', 'Trax', 'Volt'],
+        'Chrysler': ['Pacifica', 'Voyager', 'PT Cruiser', 'Aspen', 'Concorde', 'New Yorker', 'Sebring', 'Town & Country'],
+        'Dodge': ['Avenger', 'Caliber', 'Dart', 'Hornet', 'Journey', 'Magnum', 'Nitro', 'Ramcharger', 'Stealth'],
+        'Ford': ['Escape', 'Edge', 'Explorer', 'Expedition', 'Fiesta', 'Focus', 'Fusion', 'Maverick', 'Flex', 'Thunderbird', 'Transit', 'E-Series', 'Taurus', 'Mustang Mach-E'],
+        'GMC': ['Acadia', 'Canyon', 'Envoy', 'Terrain', 'Savana'],
+        'Honda': ['CR-V', 'HR-V', 'Pilot', 'Passport', 'Odyssey', 'Ridgeline', 'Element', 'Crosstour', 'CR-Z', 'Jazz', 'City'],
+        'Hyundai': ['Accent', 'Azera', 'Elantra', 'Ioniq 6', 'Ioniq 9', 'Palisade', 'Santa Fe', 'Santa Cruz', 'Sonata', 'Tucson', 'Venue'],
+        'Kia': ['Carnival', 'K4', 'K5', 'Niro', 'Optima', 'Sorento', 'Sportage', 'Telluride', 'Soul', 'EV9'],
+        'Lexus': ['CT', 'ES', 'GS', 'LS', 'RX', 'TX', 'UX', 'RZ', 'SC'],
+        'Mazda': ['Mazda2', 'Mazda5', 'Mazda CX-3', 'Mazda CX-30', 'Mazda CX-5', 'Mazda CX-50', 'Mazda CX-90', 'Mazda CX-9'],
+        'Mercedes-Benz': ['B-Class', 'GLA', 'GLB', 'GLS', 'EQB', 'EQE', 'EQS', 'EQE SUV', 'EQS SUV', 'CLS', 'GLK', 'M-Class', 'R-Class'],
+        'Mitsubishi': ['Outlander', 'Pajero', 'Montero', 'ASX', 'Colt', 'Galant', 'Lancer', 'Mirage', 'Delica', 'Starion'],
+        'Nissan': ['Altima', 'Armada', 'Ariya', 'Cube', 'Juke', 'Kicks', 'Leaf', 'Murano', 'Pathfinder', 'Patrol', 'Rogue', 'Sentra', 'Versa', 'Xterra', 'Qashqai'],
+        'Porsche': ['Boxster', 'Cayman', '356', '912', '914', '924', '968', 'Macan Electric', 'Taycan Cross Turismo'],
+        'Subaru': ['Ascent', 'Crosstrek', 'Forester', 'Impreza', 'Legacy', 'Outback', 'Tribeca', 'Baja', 'SVX', 'BRAT'],
+        'Toyota': ['Avalon', 'C-HR', 'Corolla Cross', 'Crown', 'FJ Cruiser', 'Highlander', 'Prius', 'RAV4', 'Sequoia', 'Sienna', 'Tundra', 'Yaris', 'bZ4X', 'Hilux', 'HiAce'],
+        'Volkswagen': ['Golf', 'Jetta', 'Passat', 'Tiguan', 'Atlas', 'Touareg', 'ID. Buzz', 'ID.3', 'ID.4', 'ID.5', 'ID.7', 'Polo', 'Up!', 'Phaeton', 'Karmann Ghia'],
+        'Volvo': ['C30', 'C40', 'EX30', 'EX90', 'S40', 'S70', 'S80', 'V40', 'V50', 'V60', 'V70', 'V90', 'XC40', 'XC60', 'XC90']
+    };
+    for (const [make, additions] of Object.entries(modelCatalogAuditAdditions)) {
+        if (!modelCatalog[make]) modelCatalog[make] = [];
+        const existing = new Set(modelCatalog[make].map(model => String(model).trim().toLocaleLowerCase()));
+        for (const model of additions) {
+            const key = String(model).trim().toLocaleLowerCase();
+            if (!existing.has(key)) { modelCatalog[make].push(model); existing.add(key); }
+        }
+    }
     const makes = Object.keys(modelCatalog).filter(x => x !== 'Other').sort((a, b) => a.localeCompare(b));
     const submodelCatalog = {
         'Acura': { 'Integra': ['Base', 'A-Spec', 'Type S'], 'TLX': ['Base', 'Technology', 'A-Spec', 'Advance', 'Type S'], 'NSX': ['Base', 'Type S'], 'RSX': ['Base', 'Type-S'], 'MDX': ['Base', 'Technology', 'A-Spec', 'Advance', 'Type S'] },
@@ -3732,6 +3768,265 @@
     }
 };
     for (const [make, models] of Object.entries(specialistSubmodelCoverage)) { if (!submodelCatalog[make]) submodelCatalog[make] = {}; for (const [model, trims] of Object.entries(models)) { const seen = new Set((submodelCatalog[make][model] || []).map(v => String(v).toLowerCase())); submodelCatalog[make][model] = [...(submodelCatalog[make][model] || [])]; for (const trim of trims) if (!seen.has(trim.toLowerCase())) { submodelCatalog[make][model].push(trim); seen.add(trim.toLowerCase()); } } }
+    // Second-pass factory submodel coverage. This deliberately emphasizes
+    // normal production grades as well as enthusiast and limited-edition trims.
+    const deepSubmodelAuditCoverage = {
+        'Acura': {
+            'Integra': ['LS', 'GS', 'GS-R', 'Type R', 'A-Spec', 'A-Spec Technology', 'Type S'],
+            'TL': ['2.5', '3.2', '3.5', 'SH-AWD', 'Type S'], 'TL Type S': ['6-speed manual', 'Automatic'],
+            'MDX': ['Base', 'Technology', 'A-Spec', 'Advance', 'Type S'], 'RDX': ['Base', 'Technology', 'A-Spec', 'Advance'],
+            'RL': ['3.5', 'Elite'], 'RLX': ['Base', 'Technology', 'Advance', 'Sport Hybrid'], 'ZDX': ['Base', 'Advance']
+        },
+        'Alfa Romeo': {
+            'Giulia': ['Sprint', 'Ti', 'Veloce', 'Estrema', 'Quadrifoglio', 'GTA', 'GTAm'],
+            'Stelvio': ['Sprint', 'Ti', 'Veloce', 'Estrema', 'Quadrifoglio'], '4C': ['Coupe', 'Spider', 'Competizione', 'Italia'],
+            'Tonale': ['Sprint', 'Ti', 'Veloce'], 'Brera': ['2.2 JTS', '3.2 JTS V6', 'S'], 'Spider': ['2.2 JTS', '3.2 JTS V6']
+        },
+        'Audi': {
+            'A3': ['Premium', 'Premium Plus', 'Prestige', 'S line'], 'A4': ['Premium', 'Premium Plus', 'Prestige', 'Allroad'],
+            'A5': ['Premium', 'Premium Plus', 'Prestige', 'S line'], 'A6': ['Premium', 'Premium Plus', 'Prestige', 'Allroad'],
+            'A7': ['Premium Plus', 'Prestige'], 'A8': ['L 55', 'L 60', 'L W12'],
+            'Q3': ['Premium', 'Premium Plus', 'Prestige'], 'Q5': ['Premium', 'Premium Plus', 'Prestige', 'Sportback'],
+            'Q7': ['Premium', 'Premium Plus', 'Prestige'], 'Q8': ['Premium', 'Premium Plus', 'Prestige'],
+            'Q4 e-tron': ['Premium', 'Premium Plus', 'Prestige'], 'Q6 e-tron': ['Premium', 'Premium Plus', 'Prestige'],
+            'e-tron GT': ['Premium Plus', 'Prestige', 'RS'], 'R8': ['V8', 'V10', 'V10 Plus', 'V10 Performance', 'GT'],
+            'TT': ['Coupe', 'Roadster', 'TTS', 'TT RS'], 'RS 3': ['Sedan', 'Carbon Package'], 'RS 5': ['Coupe', 'Sportback'],
+            'RS 6': ['Avant', 'Performance', 'GT'], 'RS 7': ['Performance'], 'RS Q8': ['Base', 'Performance']
+        },
+        'BMW': {
+            '1 Series': ['128ti', 'M135i', 'M140i'], '2 Series': ['218i', '220i', '230i', 'M240i'],
+            '2 Series Gran Coupe': ['228i', 'M235i'], '3 Series': ['318i', '320i', '330i', '330e', '340i', 'M340i', 'Competition'],
+            '4 Series': ['420i', '430i', 'M440i'], '5 Series': ['520i', '530i', '540i', '550e', 'M550i'],
+            '6 Series': ['640i', '650i', 'M6'], '7 Series': ['740i', '760i', '750e'], '8 Series': ['840i', 'M850i'],
+            'M2': ['Base', 'Competition', 'CS'], 'M3': ['Base', 'Competition', 'CS', 'CSL'],
+            'M4': ['Base', 'Competition', 'CS', 'CSL'], 'M5': ['Base', 'Competition', 'CS'],
+            'M8': ['Coupe', 'Convertible', 'Gran Coupe', 'Competition'], 'X1': ['sDrive18i', 'sDrive20i', 'xDrive28i', 'M35i'],
+            'X2': ['sDrive28i', 'xDrive28i', 'M35i'], 'X3': ['sDrive30i', 'xDrive30i', 'M40i'], 'X3 M': ['Base', 'Competition'],
+            'X4': ['xDrive30i', 'M40i'], 'X4 M': ['Base', 'Competition'], 'X5': ['sDrive40i', 'xDrive40i', 'xDrive50e', 'M60i'],
+            'X5 M': ['Base', 'Competition'], 'X6': ['xDrive40i', 'M60i'], 'X6 M': ['Base', 'Competition'],
+            'X7': ['xDrive40i', 'M60i', 'ALPINA XB7'], 'Z4': ['sDrive20i', 'sDrive30i', 'M40i'],
+            'i4': ['eDrive35', 'eDrive40', 'xDrive40', 'M50', 'M60'], 'i5': ['eDrive40', 'M60'],
+            'i7': ['eDrive50', 'xDrive60', 'M70'], 'XM': ['Base', 'Label', 'Label Red']
+        },
+        'Buick': {
+            'Encore': ['Preferred', 'Sport Touring', 'Essence'], 'Encore GX': ['Preferred', 'Select', 'Essence'],
+            'Envision': ['Preferred', 'Essence', 'Avenir'], 'Envista': ['Preferred', 'Sport Touring', 'Avenir'],
+            'Regal': ['Sportback', 'GS', 'TourX'], 'Grand National': ['Turbo', 'GNX']
+        },
+        'Cadillac': {
+            'CT4': ['Luxury', 'Premium Luxury', 'Sport', 'V'], 'CT4-V Blackwing': ['6-speed manual', '10-speed automatic'],
+            'CT5': ['Luxury', 'Premium Luxury', 'Sport', 'V'], 'CT5-V Blackwing': ['6-speed manual', '10-speed automatic'],
+            'Escalade': ['Luxury', 'Premium Luxury', 'Sport', 'Platinum', 'V-Series'], 'XT4': ['Luxury', 'Premium Luxury', 'Sport'],
+            'XT5': ['Luxury', 'Premium Luxury', 'Sport'], 'XT6': ['Luxury', 'Premium Luxury', 'Sport'],
+            'Lyriq': ['Tech', 'Luxury', 'Sport'], 'XLR': ['Base', 'Platinum', 'V'], 'CTS-V': ['Base', 'Coupe', 'Wagon']
+        },
+        'Chevrolet': {
+            'Corvette': ['Stingray', 'Grand Sport', 'Z06', 'ZR1', 'ZR1X', 'E-Ray', 'Z51', '1LT', '2LT', '3LT'],
+            'Camaro': ['LS', 'LT', 'LT1', 'SS', 'SS 1LE', 'ZL1', 'ZL1 1LE', 'Z/28'],
+            'Silverado': ['WT', 'Custom', 'LT', 'RST', 'LTZ', 'High Country', 'Trail Boss', 'ZR2'],
+            'Colorado': ['WT', 'LT', 'Trail Boss', 'Z71', 'ZR2'], 'Tahoe': ['LS', 'LT', 'RST', 'Z71', 'Premier', 'High Country'],
+            'Suburban': ['LS', 'LT', 'RST', 'Z71', 'Premier', 'High Country'], 'Equinox': ['LT', 'RS', 'Premier', 'Activ'],
+            'Trax': ['LS', '1RS', 'LT', '2RS', 'Activ'], 'Traverse': ['LT', 'Z71', 'RS', 'High Country'],
+            'Trailblazer': ['LS', 'LT', 'Activ', 'RS'], 'Malibu': ['LS', 'RS', 'LT', 'Premier'], 'Bolt': ['LT', 'Premier'],
+            'Blazer': ['2LT', '3LT', 'RS', 'Premier', 'EV LT', 'EV RS']
+        },
+        'Chrysler': {
+            '300': ['Touring', 'Touring L', 'S', 'C', '300C'], 'Pacifica': ['Touring', 'Touring L', 'Limited', 'Pinnacle', 'Hybrid'],
+            'Voyager': ['LX', 'LXi'], 'PT Cruiser': ['Base', 'Limited', 'GT']
+        },
+        'Dodge': {
+            'Challenger': ['SXT', 'GT', 'R/T', 'R/T Scat Pack', '392', 'Hellcat', 'Hellcat Redeye', 'Super Stock', 'Demon', 'Demon 170'],
+            'Charger': ['SXT', 'GT', 'R/T', 'Scat Pack', 'Hellcat', 'Hellcat Redeye', 'Daytona', 'SRT 392'],
+            'Durango': ['SXT', 'GT', 'Citadel', 'R/T', 'SRT 392', 'SRT Hellcat'], 'Hornet': ['GT', 'GT Plus', 'R/T', 'R/T Plus'],
+            'Journey': ['SE', 'SXT', 'Crossroad', 'R/T'], 'Viper': ['RT/10', 'GTS', 'SRT-10', 'ACR', 'TA']
+        },
+        'Ford': {
+            'Mustang': ['EcoBoost', 'EcoBoost Premium', 'GT', 'GT Premium', 'California Special', 'Bullitt', 'Mach 1', 'Dark Horse', 'Dark Horse Premium', 'Shelby GT350', 'Shelby GT350R', 'Shelby GT500', 'Boss 302', 'Boss 429', 'Cobra R'],
+            'Mustang Mach-E': ['Select', 'Premium', 'California Route 1', 'GT', 'Rally'],
+            'F-150': ['XL', 'STX', 'XLT', 'Lariat', 'King Ranch', 'Platinum', 'Limited', 'Tremor'],
+            'F-150 Raptor': ['Raptor', 'Raptor R'], 'Ranger': ['XL', 'XLT', 'Lariat', 'Tremor', 'Raptor'],
+            'Bronco': ['Base', 'Big Bend', 'Black Diamond', 'Outer Banks', 'Badlands', 'Wildtrak', 'Heritage', 'Stroppe', 'Raptor'],
+            'Escape': ['Active', 'ST-Line', 'ST-Line Select', 'Platinum', 'Plug-in Hybrid'],
+            'Explorer': ['Base', 'XLT', 'Limited', 'ST-Line', 'ST', 'King Ranch', 'Platinum', 'Timberline'],
+            'Expedition': ['XL STX', 'XLT', 'Limited', 'King Ranch', 'Platinum'], 'Edge': ['SE', 'SEL', 'ST-Line', 'Titanium', 'ST'],
+            'Focus': ['S', 'SE', 'SEL', 'Titanium', 'ST', 'RS'], 'Fiesta': ['S', 'SE', 'ST-Line', 'ST'],
+            'Fusion': ['S', 'SE', 'SEL', 'Titanium', 'Sport', 'Energi'], 'Maverick': ['XL', 'XLT', 'Lariat', 'Tremor', 'Lobo']
+        },
+        'GMC': {
+            'Sierra': ['Pro', 'SLE', 'Elevation', 'SLT', 'AT4', 'Denali', 'AT4X', 'Denali Ultimate'],
+            'Canyon': ['Elevation', 'AT4', 'Denali', 'AT4X'], 'Terrain': ['Elevation', 'AT4', 'Denali'],
+            'Acadia': ['Elevation', 'AT4', 'Denali'], 'Yukon': ['SLE', 'SLT', 'AT4', 'Denali', 'Denali Ultimate']
+        },
+        'Honda': {
+            'Civic': ['DX', 'LX', 'EX', 'Sport', 'Touring', 'Si', 'Type R'], 'Accord': ['LX', 'EX', 'Sport', 'Sport-L', 'EX-L', 'Touring', 'Hybrid'],
+            'CR-V': ['LX', 'EX', 'EX-L', 'Sport', 'Sport-L', 'Sport Touring', 'Hybrid'], 'HR-V': ['LX', 'Sport', 'EX-L'],
+            'Pilot': ['Sport', 'EX-L', 'TrailSport', 'Touring', 'Elite', 'Black Edition'], 'Passport': ['EX-L', 'TrailSport', 'Black Edition'],
+            'Odyssey': ['EX', 'EX-L', 'Touring', 'Elite'], 'Ridgeline': ['Sport', 'RTL', 'TrailSport', 'Black Edition'],
+            'Integra': ['Base', 'A-Spec', 'A-Spec Technology', 'Type S'], 'S2000': ['AP1', 'AP2', 'CR'],
+            'NSX': ['Base', 'Type S', 'Type R'], 'Prelude': ['Base', 'Si', 'SH', 'Type S']
+        },
+        'Hyundai': {
+            'Elantra': ['SE', 'SEL', 'Limited', 'N Line', 'N'], 'Sonata': ['SE', 'SEL', 'SEL Plus', 'N Line', 'Limited', 'Hybrid'],
+            'Tucson': ['SE', 'SEL', 'XRT', 'N Line', 'Limited', 'Hybrid', 'Plug-in Hybrid'],
+            'Santa Fe': ['SE', 'SEL', 'XRT', 'Limited', 'Calligraphy', 'Hybrid'], 'Palisade': ['SE', 'SEL', 'XRT', 'Limited', 'Calligraphy'],
+            'Kona': ['SE', 'SEL', 'N Line', 'Limited', 'Electric'], 'Ioniq 6': ['SE', 'SEL', 'Limited'],
+            'Ioniq 5 N': ['N'], 'Santa Cruz': ['SE', 'SEL', 'Night', 'XRT', 'Limited'], 'Venue': ['SE', 'SEL', 'Limited']
+        },
+        'Kia': {
+            'Sportage': ['LX', 'EX', 'X-Line', 'SX', 'SX Prestige', 'Hybrid', 'Plug-in Hybrid'],
+            'Sorento': ['LX', 'S', 'EX', 'SX', 'SX Prestige', 'X-Line', 'Hybrid', 'Plug-in Hybrid'],
+            'Telluride': ['LX', 'S', 'EX', 'SX', 'SX Prestige', 'X-Line', 'X-Pro'], 'Carnival': ['LX', 'LXS', 'EX', 'SX', 'SX Prestige'],
+            'Soul': ['LX', 'S', 'GT-Line', 'EX'], 'Niro': ['LX', 'EX', 'SX', 'Hybrid', 'Plug-in Hybrid', 'EV'],
+            'EV9': ['Light', 'Wind', 'Land', 'GT-Line'], 'Stinger': ['GT-Line', 'GT1', 'GT2']
+        },
+        'Lexus': {
+            'IS 500': ['Premium', 'F Sport Performance', 'Ultimate Edition'], 'RC F': ['Base', 'Track Edition', 'Fuji Speedway Edition'],
+            'LC 500': ['Coupe', 'Convertible', 'Inspiration Series'], 'ES': ['ES 250', 'ES 300h', 'ES 350', 'F Sport'],
+            'RX': ['350', '350h', '450h+', '500h F Sport Performance'], 'GX': ['GX 550 Premium', 'Luxury', 'Overtrail', 'Overtrail+'],
+            'LX': ['600', '600 F Sport', '600 Luxury', '600 Overtrail'], 'NX': ['250', '350', '350h', '450h+'],
+            'GS F': ['Base'], 'IS F': ['Base'], 'LFA': ['Base', 'Nürburgring Package']
+        },
+        'Mazda': {
+            'MX-5 Miata': ['Sport', 'Club', 'Grand Touring', 'RF Club', 'RF Grand Touring', '30th Anniversary'],
+            'Mazda3': ['2.0', '2.5 S', 'Select', 'Preferred', 'Premium', 'Carbon Edition', 'Turbo', 'Turbo Premium Plus'],
+            'Mazda6': ['Sport', 'Touring', 'Grand Touring', 'Grand Touring Reserve', 'Signature'],
+            'CX-5': ['S', 'Select', 'Preferred', 'Carbon Edition', 'Premium', 'Turbo', 'Turbo Signature'],
+            'CX-30': ['2.5 S', 'Select', 'Preferred', 'Carbon Edition', 'Premium', 'Turbo'],
+            'CX-50': ['Select', 'Preferred', 'Premium', 'Meridian', 'Turbo', 'Hybrid'],
+            'CX-90': ['Select', 'Preferred', 'Premium', 'Premium Plus', 'Turbo S', 'PHEV'],
+            'RX-7': ['Base', 'Turbo II', 'GT-X', 'Type R', 'Spirit R'], 'RX-8': ['Sport', 'Grand Touring', 'R3']
+        },
+        'Mercedes-Benz': {
+            'A-Class': ['A 180', 'A 200', 'A 220', 'A 250'], 'C-Class': ['C 180', 'C 200', 'C 300', 'AMG C 43', 'AMG C 63'],
+            'E-Class': ['E 200', 'E 300', 'E 350', 'E 450', 'AMG E 53', 'AMG E 63 S'],
+            'S-Class': ['S 450', 'S 500', 'S 580', 'Maybach S 580', 'Maybach S 680', 'AMG S 63'],
+            'GLA': ['GLA 250', 'AMG GLA 35', 'AMG GLA 45'], 'GLB': ['GLB 250', 'AMG GLB 35'],
+            'GLC': ['GLC 300', 'AMG GLC 43', 'AMG GLC 63'], 'GLE': ['GLE 350', 'GLE 450', 'AMG GLE 53', 'AMG GLE 63'],
+            'GLS': ['GLS 450', 'GLS 580', 'AMG GLS 63', 'Maybach GLS 600'], 'G-Class': ['G 550', 'AMG G 63', 'Professional'],
+            'AMG GT': ['GT', 'GT S', 'GT C', 'GT R', 'GT R Pro', 'GT Black Series'], 'SL': ['SL 43', 'SL 55', 'SL 63']
+        },
+        'Mitsubishi': {
+            'Lancer Evolution': ['I', 'II', 'III', 'IV', 'V', 'VI', 'VI TME', 'VII', 'VIII', 'IX', 'X', 'MR', 'Final Edition'],
+            'Outlander': ['ES', 'SE', 'SEL', 'GT', 'PHEV'], 'Pajero': ['GLS', 'Exceed', 'Evolution'],
+            'Eclipse': ['RS', 'GS', 'GS-T', 'GSX', 'Spyder'], 'FTO': ['GR', 'GPX', 'GP Version R']
+        },
+        'Nissan': {
+            'Altima': ['S', 'SV', 'SR', 'SL', 'Platinum'], 'Sentra': ['S', 'SV', 'SR', 'Nismo'],
+            'Rogue': ['S', 'SV', 'SL', 'Platinum'], 'Pathfinder': ['S', 'SV', 'SL', 'Platinum', 'Rock Creek'],
+            'Armada': ['SV', 'SL', 'Platinum', 'PRO-4X'], 'Z': ['Sport', 'Performance', 'Heritage Edition', 'Nismo'],
+            'GT-R': ['Pure', 'Premium', 'Black Edition', 'Track Edition', 'T-Spec', 'Nismo'],
+            'Skyline': ['GTS', 'GTS-t', 'GT-R R32', 'GT-R R33', 'GT-R R34', 'V35', 'V36'],
+            'Silvia': ['Q\'s', 'K\'s', 'Spec R', 'Spec S', 'Aero'], 'Leaf': ['S', 'SV', 'SL', 'Plus'],
+            'Ariya': ['Engage', 'Evolve+', 'Empower+', 'Platinum+']
+        },
+        'Porsche': {
+            'Boxster': ['Base', 'S', 'GTS', 'Spyder', '25 Years'],
+            '718 Boxster': ['Base', 'S', 'T', 'GTS 4.0', 'Style Edition', '25 Years', 'Spyder', 'Spyder RS'],
+            'Cayman': ['Base', 'S', 'R', 'GTS', 'GT4', 'GT4 RS'],
+            '718 Cayman': ['Base', 'S', 'T', 'GTS 4.0', 'GT4', 'GT4 RS'],
+            '911': ['Carrera', 'Carrera T', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Targa 4', 'Targa 4S', 'Turbo', 'Turbo S', 'GT3', 'GT3 Touring', 'GT3 RS', 'GT2 RS', 'Dakar', 'Sport Classic', 'S/T'],
+            'Cayenne': ['Base', 'E-Hybrid', 'S', 'GTS', 'Turbo', 'Turbo E-Hybrid', 'Turbo GT'],
+            'Macan': ['Base', 'T', 'S', 'GTS', 'Electric', '4 Electric', '4S Electric', 'Turbo Electric'],
+            'Panamera': ['Base', '4', '4 E-Hybrid', '4S', 'GTS', 'Turbo S', 'Turbo E-Hybrid'],
+            'Taycan': ['Base', '4', '4S', 'GTS', 'Turbo', 'Turbo S', 'Turbo GT'],
+            '944': ['Base', 'S', 'S2', 'Turbo', 'Turbo S'], '928': ['Base', 'S', 'S4', 'GT', 'GTS'],
+            '356': ['Pre-A', 'A', 'B', 'C', 'Speedster', 'Carrera'], '718 Cayman': ['Base', 'S', 'T', 'GTS 4.0', 'GT4', 'GT4 RS', 'Weissach Package']
+        },
+        'Subaru': {
+            'WRX': ['Base', 'Premium', 'Limited', 'TR', 'tS'], 'WRX STI': ['Base', 'Limited', 'Type RA', 'S209'],
+            'BRZ': ['Premium', 'Limited', 'tS'], 'Outback': ['Base', 'Premium', 'Limited', 'Touring', 'Wilderness', 'Onyx Edition'],
+            'Forester': ['Base', 'Premium', 'Sport', 'Limited', 'Touring', 'Wilderness'], 'Crosstrek': ['Base', 'Premium', 'Sport', 'Limited', 'Wilderness'],
+            'Impreza': ['Base', 'Premium', 'Sport', 'RS'], 'Legacy': ['Base', 'Premium', 'Sport', 'Limited', 'Touring XT']
+        },
+        'Toyota': {
+            'Corolla': ['L', 'LE', 'SE', 'XLE', 'XSE', 'Apex Edition', 'GR Sport'], 'Camry': ['LE', 'SE', 'Nightshade', 'XLE', 'XSE', 'TRD', 'Hybrid'],
+            'RAV4': ['LE', 'XLE', 'XLE Premium', 'Adventure', 'TRD Off-Road', 'Limited', 'Hybrid', 'Prime'],
+            'Prius': ['LE', 'XLE', 'Limited', 'Prime SE', 'Prime XSE'], 'Highlander': ['L', 'LE', 'XLE', 'Limited', 'Platinum', 'Hybrid'],
+            'Tacoma': ['SR', 'SR5', 'TRD PreRunner', 'TRD Sport', 'TRD Off-Road', 'Limited', 'Trailhunter', 'TRD Pro'],
+            'Tundra': ['SR', 'SR5', 'Limited', 'Platinum', '1794 Edition', 'TRD Pro', 'Capstone'],
+            '4Runner': ['SR5', 'TRD Sport', 'TRD Off-Road', 'Limited', 'TRD Pro', 'Trailhunter'],
+            'Land Cruiser': ['Base', 'First Edition', '1958'], 'GR Supra': ['2.0', '3.0', '3.0 Premium', 'A91', 'A91-CF'],
+            'GR Corolla': ['Core', 'Premium', 'Circuit Edition', 'Morizo Edition'], 'Sienna': ['LE', 'XLE', 'Limited', 'Platinum'],
+            'Sequoia': ['SR5', 'Limited', 'Platinum', 'Capstone', 'TRD Pro']
+        },
+        'Volkswagen': {
+            'Golf': ['S', 'SE', 'SEL', 'GTI', 'R', 'R32', 'GTI Clubsport', 'GTI Clubsport S', 'GTI TCR'],
+            'Golf GTI': ['S', 'SE', 'Autobahn', '40th Anniversary', 'Clubsport', 'Clubsport S', 'TCR'],
+            'Golf R': ['Base', '20th Anniversary', 'Black Edition', 'Wolfsburg Edition'],
+            'Jetta': ['S', 'Sport', 'SE', 'SEL', 'GLI'], 'Jetta GLI': ['S', 'Autobahn', '35th Anniversary'],
+            'Tiguan': ['S', 'SE', 'SE R-Line Black', 'SEL R-Line'], 'Atlas': ['SE', 'SEL', 'SEL Premium R-Line'],
+            'Beetle': ['S', 'SE', 'SEL', 'Turbo', 'Turbo S', 'GSR'], 'New Beetle': ['GL', 'GLS', 'Turbo S', 'RSi'],
+            'Passat': ['S', 'SE', 'SEL', 'W8', 'R36'], 'Polo': ['Life', 'Style', 'GTI'], 'Touareg': ['V6', 'V8', 'TDI', 'R']
+        },
+        'Volvo': {
+            'S60': ['Core', 'Plus', 'Ultimate', 'Polestar Engineered'], 'V60': ['Cross Country', 'Polestar Engineered'],
+            'XC40': ['Core', 'Plus', 'Ultimate', 'Recharge'], 'XC60': ['Core', 'Plus', 'Ultimate', 'Polestar Engineered'],
+            'XC90': ['Core', 'Plus', 'Ultimate', 'Recharge'], '850': ['GLT', 'T-5', 'T-5R', 'R'],
+            '240': ['DL', 'GL', 'GLT', 'Turbo'], 'V70': ['Base', 'R', 'Cross Country']
+        },
+        'Jeep': {
+            'Wrangler': ['Sport', 'Sport S', 'Willys', 'Sahara', 'Rubicon', 'Rubicon X', '4xe', '392'],
+            'Grand Cherokee': ['Laredo', 'Limited', 'Overland', 'Summit', 'Trailhawk', '4xe'],
+            'Gladiator': ['Sport', 'Sport S', 'Willys', 'Overland', 'Rubicon', 'Mojave'],
+            'Grand Cherokee Trackhawk': ['Base'], 'Compass': ['Sport', 'Latitude', 'Limited', 'Trailhawk']
+        },
+        'Land Rover': {
+            'Defender': ['90', '110', '130', 'S', 'SE', 'X-Dynamic', 'X', 'OCTA'],
+            'Range Rover Sport': ['SE', 'Dynamic SE', 'Autobiography', 'SV'], 'Range Rover': ['SE', 'HSE', 'Autobiography', 'SV'],
+            'Discovery': ['S', 'SE', 'Dynamic SE', 'Metropolitan Edition']
+        },
+        'Mini': {
+            'Cooper': ['Classic', 'Signature', 'Iconic', 'Hardtop 2 Door', 'Hardtop 4 Door', 'Convertible'],
+            'Cooper S': ['Classic', 'Signature', 'Iconic', 'Hardtop', 'Convertible'],
+            'John Cooper Works': ['Hardtop', 'Convertible', 'GP'], 'Countryman': ['C', 'S', 'SE ALL4', 'JCW'], 'Clubman': ['Cooper S', 'JCW', 'ALL4']
+        },
+        'Ferrari': {
+            '296 GTB': ['Base', 'Assetto Fiorano'], '296 GTS': ['Base', 'Assetto Fiorano'],
+            'F8 Tributo': ['Coupe', 'Spider'], 'SF90 Stradale': ['Base', 'Assetto Fiorano'], 'SF90 Spider': ['Base', 'Assetto Fiorano'],
+            '812 Superfast': ['Base', 'GTS'], '812 Competizione': ['Coupe', 'A'], '12Cilindri': ['Coupe', 'Spider'],
+            'Roma': ['Coupe', 'Spider'], 'Portofino': ['Base', 'M'], '488 GTB': ['GTB', 'Spider', 'Pista', 'Pista Spider'],
+            '458 Italia': ['Coupe', 'Spider', 'Speciale', 'Speciale A'], 'F40': ['Base'], 'F50': ['Base'], 'Daytona SP3': ['Icona']
+        },
+        'Lamborghini': {
+            'Huracán': ['LP 610-4', 'LP 580-2', 'EVO', 'EVO RWD', 'Performante', 'Tecnica', 'STO', 'Sterrato', 'STJ'],
+            'Aventador': ['LP 700-4', 'S', 'SV', 'SVJ', 'Ultimae'], 'Revuelto': ['Base', 'Ad Personam'],
+            'Urus': ['S', 'Performante', 'SE'], 'Gallardo': ['LP 550-2', 'LP 560-4', 'Superleggera', 'Performante'],
+            'Essenza SCV12': ['Track-only'], 'Countach': ['LP400', 'LP5000 QV', '25th Anniversary', 'LPI 800-4']
+        },
+        'McLaren': {
+            '570S': ['Coupe', 'Spider'], '600LT': ['Coupe', 'Spider'], '720S': ['Coupe', 'Performance', 'Luxury', 'Spider'],
+            '750S': ['Coupe', 'Spider'], '765LT': ['Coupe', 'Spider'], 'Artura': ['Coupe', 'Spider'],
+            'P1': ['Road car', 'GTR'], 'Senna': ['Road car', 'GTR'], 'Speedtail': ['Base'], 'F1': ['Road car', 'LM', 'GTR'],
+            'Solus GT': ['Track-only']
+        },
+        'Shelby': {
+            'Cobra 289': ['Street', 'Competition'], 'Cobra 427': ['Street', 'Competition', 'S/C'],
+            'GT350': ['Base', 'Hertz', 'Track Package'], 'GT350R': ['Base', 'Heritage Edition'],
+            'GT500': ['Base', 'Carbon Fiber Track Pack', 'Heritage Edition', 'KR', 'Super Snake'],
+            'Super Snake': ['Mustang GT', 'Mustang GT500']
+        },
+        'Aston Martin': {
+            'Vantage': ['V8', 'V12', 'F1 Edition', 'AMR'], 'DB11': ['V8', 'V12', 'Volante'],
+            'DB12': ['Coupe', 'Volante', 'Goldfinger Edition'], 'DBS': ['Superleggera', '770 Ultimate'],
+            'Valkyrie': ['Coupe', 'Spider', 'AMR Pro', 'LM'], 'DBX': ['Base', '707', 'S']
+        },
+        'Maserati': {
+            'MC20': ['Coupe', 'Cielo', 'GT2 Stradale'], 'GranTurismo': ['Modena', 'Trofeo', 'Folgore'],
+            'Ghibli': ['GT', 'Modena', 'Trofeo'], 'Quattroporte': ['Modena', 'Trofeo'], 'MC12': ['Stradale', 'Versione Corse']
+        }
+    };
+    for (const [make, models] of Object.entries(deepSubmodelAuditCoverage)) {
+        if (!submodelCatalog[make]) submodelCatalog[make] = {};
+        for (const [model, trims] of Object.entries(models)) {
+            const existing = new Set((submodelCatalog[make][model] || []).map(v => String(v).trim().toLocaleLowerCase()));
+            submodelCatalog[make][model] = [...(submodelCatalog[make][model] || [])];
+            for (const trim of trims) {
+                const key = String(trim).trim().toLocaleLowerCase();
+                if (!existing.has(key)) { submodelCatalog[make][model].push(trim); existing.add(key); }
+            }
+        }
+    }
+
     let db = null;
     let dbMode = 'indexeddb';
     let data = { spots: [], runs: [], activeRunId: null, homeHeroPhoto: '' };
@@ -5029,12 +5324,12 @@
         };
         const findMatch = (items, text = fullName) => items.find(item => has(text, item));
         const tiers = {
-            common: { label: 'Common', rank: 1, description: 'Usually under $50,000: mainstream, higher-volume vehicles.' },
-            uncommon: { label: 'Uncommon', rank: 2, description: 'Usually around $50,000–$99,999: pricier trims and enthusiast cars.' },
-            rare: { label: 'Rare', rank: 3, description: 'Usually around $100,000–$199,999: premium sports cars and high-end performance models.' },
-            epic: { label: 'Epic', rank: 4, description: 'Usually around $200,000–$499,999: supercars and expensive specialist models.' },
-            legendary: { label: 'Legendary', rank: 5, description: 'Usually $500,000 or more: flagship exotics, halo cars and major collector models.' },
-            cosmic: { label: 'Cosmic', rank: 6, description: 'Purpose-built race cars, one-offs and exceptionally limited track specials.' }
+            common: { label: 'Common', rank: 1, description: 'Widely produced everyday vehicles and ordinary trims.' },
+            uncommon: { label: 'Uncommon', rank: 2, description: 'Enthusiast models, desirable trims and less-common premium vehicles.' },
+            rare: { label: 'Rare', rank: 3, description: 'Limited editions, high-performance derivatives and uncommon specialist cars.' },
+            epic: { label: 'Epic', rank: 4, description: 'Supercars, top-tier exotics and exceptional production performance cars.' },
+            legendary: { label: 'Legendary', rank: 5, description: 'Hypercars, major halo cars and exceptionally valuable collector models.' },
+            cosmic: { label: 'Cosmic', rank: 6, description: 'Purpose-built race cars, prototypes, one-offs and track-only specials.' }
         };
 
         // This is a rarity guide, not a live valuation. Prices are broad representative
@@ -5154,8 +5449,8 @@
             ['honda', 'nsx type r', 250000], ['honda', 'nsx', 150000],
             ['mazda', 'rx 7', 80000], ['subaru', 'impreza 22b', 300000],
             ['ford', 'gt mk iv', 1700000], ['ford', 'ford gt', 1000000],
-            ['ford', 'mustang gtd', 300000], ['ford', 'gt500', 100000],
-            ['ford', 'gt350r', 100000], ['ford', 'mustang', 50000],
+            ['ford', 'mustang gtd', 300000], ['ford', 'gt500', 115000],
+            ['ford', 'gt350r', 105000], ['ford', 'mustang', 40000],
             ['chevrolet', 'corvette zr1', 220000], ['chevrolet', 'zr1', 200000],
             ['chevrolet', 'z06', 130000], ['chevrolet', 'corvette', 80000],
             ['dodge', 'viper acr', 160000], ['dodge', 'viper', 110000],
@@ -5195,15 +5490,50 @@
             ['scuderia cameron glickenhaus', '007s', 2000000], ['karma', 'kaveya', 300000], ['ineos', 'grenadier', 85000],
             ['scout motors', 'traveler', 65000], ['scout motors', 'terra', 70000], ['roush', 'mustang', 95000],
             ['volkswagen', 'golf r32', 65000], ['volkswagen', 'beetle rsi', 90000], ['volkswagen', 'passat w8', 35000],
-            ['porsche', 't 50s', 3000000], ['toyota', 'gr gt', 250000], ['toyota', 'gr gt3', 1000000], ['mcmurtry', 'speirling', 3000000], ['maserati corse', 'mcxtrema', 1100000], ['porsche motorsport', '963', 3000000]
+            ['porsche', 't 50s', 3000000], ['toyota', 'gr gt', 250000], ['toyota', 'gr gt3', 1000000], ['mcmurtry', 'speirling', 3000000], ['maserati corse', 'mcxtrema', 1100000], ['porsche motorsport', '963', 3000000],
+            ['porsche', '718 boxster', 75000], ['porsche', '718 cayman gt4 rs', 190000], ['porsche', '718 cayman', 80000], ['porsche', 'boxster spyder rs', 180000], ['porsche', 'spyder rs', 180000], ['porsche', 'boxster', 55000], ['porsche', 'cayman', 65000],
+            ['porsche', '911 carrera gts', 175000], ['porsche', '911 carrera s', 145000], ['porsche', '911 carrera', 125000], ['porsche', '911 targa', 155000],
+            ['ford', 'mustang shelby gt500', 120000], ['ford', 'shelby gt500', 120000], ['ford', 'gt500', 115000], ['ford', 'mustang shelby gt350r', 110000], ['ford', 'shelby gt350r', 110000], ['ford', 'gt350r', 105000], ['ford', 'mustang shelby gt350', 95000], ['ford', 'shelby gt350', 95000], ['ford', 'gt350', 90000],
+            ['shelby', 'gt500 super snake', 180000], ['shelby', 'gt500', 140000], ['shelby', 'gt350r', 125000], ['shelby', 'gt350', 105000],
+            ['ford', 'mustang dark horse', 65000], ['ford', 'mustang mach 1', 60000], ['ford', 'mustang boss 302', 70000], ['ford', 'mustang cobra r', 120000],
+            ['dodge', 'demon 170', 110000], ['dodge', 'hellcat redeye', 95000], ['dodge', 'viper acr', 160000],
+            ['chevrolet', 'corvette zr1x', 220000], ['chevrolet', 'corvette zr1', 200000], ['chevrolet', 'corvette z06', 130000]
         ];
+        // Model-level defaults prevent an expensive marque average from misclassifying
+        // ordinary nameplates (e.g. Boxster, Macan or Cayenne) when no exact trim rule exists.
+        const modelTypicalPrices = {
+            'porsche': { 'boxster': 45000, '718 boxster': 75000, 'cayman': 65000, '718 cayman': 80000, 'cayenne': 95000, 'macan': 65000, 'macan electric': 85000, 'panamera': 115000, 'taycan': 105000, '944': 30000, '928': 40000, '924': 18000, '968': 45000, '356': 250000, '914': 30000, 'boxster spyder': 100000 },
+            'ford': { 'mustang': 48000, 'mustang mach e': 45000, 'bronco': 50000, 'bronco raptor': 95000, 'escape': 32000, 'edge': 38000, 'explorer': 45000, 'expedition': 65000, 'maverick': 33000, 'ranger': 42000, 'f 150': 50000, 'f 150 raptor': 85000, 'focus': 25000, 'fiesta': 18000, 'fusion': 28000, 'taurus': 30000 },
+            'shelby': { 'gt350': 100000, 'gt350r': 125000, 'gt500': 140000, 'cobra 427': 160000, 'cobra 289': 120000, 'series 1': 90000 },
+            'bmw': { '1 series': 35000, '2 series': 45000, '2 series gran coupe': 40000, '3 series': 45000, '4 series': 55000, '5 series': 65000, '6 series': 70000, '7 series': 100000, '8 series': 100000, 'x1': 40000, 'x2': 45000, 'x3': 50000, 'x4': 55000, 'x5': 70000, 'x6': 80000, 'x7': 90000, 'z4': 60000, 'i3': 30000, 'i4': 60000, 'i5': 75000, 'i7': 110000, 'ix': 90000 },
+            'audi': { 'a3': 40000, 'a4': 45000, 'a5': 50000, 'a6': 60000, 'a7': 75000, 'a8': 95000, 'q3': 40000, 'q4 e tron': 55000, 'q5': 55000, 'q6 e tron': 70000, 'q7': 65000, 'q8': 80000, 'e tron gt': 110000, 'tt': 55000 },
+            'mercedes benz': { 'a class': 40000, 'c class': 55000, 'e class': 70000, 's class': 120000, 'cla': 45000, 'gla': 45000, 'glb': 50000, 'glc': 60000, 'gle': 75000, 'gls': 100000, 'g class': 160000, 'sl': 120000, 'amg gt': 180000 },
+            'chevrolet': { 'corvette': 90000, 'camaro': 42000, 'silverado': 50000, 'colorado': 35000, 'tahoe': 60000, 'suburban': 65000, 'equinox': 32000, 'trax': 25000, 'traverse': 42000, 'trailblazer': 28000, 'malibu': 27000, 'bolt': 30000, 'blazer': 40000 },
+            'dodge': { 'challenger': 50000, 'charger': 50000, 'durango': 50000, 'hornet': 35000, 'journey': 25000, 'viper': 110000 },
+            'toyota': { 'corolla': 27000, 'camry': 33000, 'rav4': 35000, 'prius': 32000, 'highlander': 45000, 'tacoma': 45000, 'tundra': 55000, '4runner': 45000, 'land cruiser': 65000, 'gr supra': 60000, 'supra': 60000, 'gr86': 32000, '86': 28000, 'sienna': 42000, 'sequoia': 65000, 'avalon': 40000, 'yaris': 20000 },
+            'honda': { 'civic': 28000, 'accord': 33000, 'cr v': 35000, 'hr v': 28000, 'pilot': 42000, 'passport': 42000, 'odyssey': 40000, 'ridgeline': 42000, 'integra': 35000, 's2000': 35000, 'nsx': 160000, 'prelude': 28000 },
+            'nissan': { 'altima': 30000, 'sentra': 24000, 'rogue': 33000, 'pathfinder': 43000, 'armada': 65000, 'z': 45000, '370z': 30000, '350z': 25000, 'gt r': 130000, 'leaf': 30000, 'ariya': 45000, 'silvia': 35000, 'skyline': 70000 },
+            'subaru': { 'wrx': 35000, 'wrx sti': 45000, 'brz': 32000, 'outback': 35000, 'forester': 33000, 'crosstrek': 30000, 'impreza': 26000, 'legacy': 30000, 'ascent': 40000 },
+            'volkswagen': { 'beetle': 25000, 'new beetle': 18000, 'golf': 30000, 'golf gti': 37000, 'golf r': 48000, 'jetta': 27000, 'jetta gli': 33000, 'tiguan': 35000, 'atlas': 45000, 'touareg': 65000, 'passat': 30000, 'polo': 22000, 'phaeton': 50000 },
+            'mazda': { 'mx 5 miata': 33000, 'mazda3': 28000, 'mazda6': 30000, 'cx 5': 33000, 'cx 30': 29000, 'cx 50': 35000, 'cx 90': 45000, 'rx 7': 50000, 'rx 8': 20000 },
+            'hyundai': { 'elantra': 25000, 'sonata': 30000, 'tucson': 32000, 'santa fe': 38000, 'palisade': 45000, 'kona': 28000, 'ioniq 5': 45000, 'ioniq 6': 45000, 'santa cruz': 35000 },
+            'kia': { 'sportage': 32000, 'sorento': 38000, 'telluride': 45000, 'carnival': 40000, 'soul': 24000, 'niro': 30000, 'ev9': 65000, 'stinger': 40000 },
+            'jeep': { 'wrangler': 45000, 'grand cherokee': 50000, 'gladiator': 45000, 'compass': 30000, 'cherokee': 30000, 'wagoneer': 70000 },
+            'lexus': { 'is': 45000, 'is 500': 65000, 'rc f': 85000, 'lc 500': 105000, 'es': 45000, 'gs': 55000, 'ls': 90000, 'rx': 55000, 'gx': 65000, 'lx': 95000, 'nx': 45000, 'ux': 38000, 'lfa': 550000 }
+        };
         const applicablePrices = priceGuide
             .filter(([brand, phrase]) => make === brand && has(fullName, phrase))
-            .sort((a, b) => b[1].length - a[1].length);
+            .sort((a, b) => {
+                const aIsTrim = has(trim, a[1]) ? 1 : 0;
+                const bIsTrim = has(trim, b[1]) ? 1 : 0;
+                return bIsTrim - aIsTrim || b[1].length - a[1].length;
+            });
+        const modelFallbackPrice = modelTypicalPrices[make] && modelTypicalPrices[make][model];
         let estimatedPrice = applicablePrices.length
             ? applicablePrices[0][2]
-            : (brandTypicalPrices[make] || 35000);
-        let priceSource = applicablePrices.length ? 'model/trim estimate' : 'marque-level estimate';
+            : (modelFallbackPrice || brandTypicalPrices[make] || 35000);
+        let priceSource = applicablePrices.length ? 'model/trim estimate'
+            : modelFallbackPrice ? 'model-level estimate' : 'marque-level fallback';
 
         // Limited/high-performance variants carry their own value premium where it
         // is meaningful, but ordinary appearance packages do not change rarity.
@@ -5246,9 +5576,9 @@
         // Deliberately explicit marque floors: a normal Ferrari, Lamborghini or
         // McLaren is already an exotic, not merely a Rare car. Hypercar-only makers
         // start at Legendary. Their exact model can still affect the explanation.
-        const epicFloorBrands = new Set(['ferrari', 'lamborghini', 'mclaren', 'aston martin']);
+        const epicFloorBrands = new Set(['ferrari', 'lamborghini', 'mclaren']);
+        const rareFloorBrands = new Set(['aston martin']);
         const legendaryFloorBrands = new Set(['bugatti', 'koenigsegg', 'pagani', 'rimac', 'ssc', 'apollo', 'aspark', 'gordon murray automotive', 'pininfarina', 'scuderia cameron glickenhaus']);
-        const legendaryCapBrands = new Set(['ferrari', 'lamborghini', 'mclaren', 'aston martin']);
         let key = estimatedPrice < 50000 ? 'common'
             : estimatedPrice < 100000 ? 'uncommon'
                 : estimatedPrice < 200000 ? 'rare'
@@ -5260,12 +5590,12 @@
         const cosmicModels = [
             '787b', '917k', '917 30', '911 gt1', 'clk gtr', 'gt1', 'r26b',
             'valkyrie amr pro', 'valkyrie lm', 'rb17', 'senna gtr lm', 'senna gtr', 'p1 gtr',
-            'fxx k evo', 'fxx k', '599xx evo', 'mc12 corsa', 'zonda hp barchetta',
+            'fxx k evo', 'fxx k', '599xx evo', 'mc12 corsa', 'essenza scv12', 'zonda hp barchetta',
             'zonda cinque', 'zonda revolucion', 'huayra r evo', 't 50s niki lauda',
             'bolide', 'solus gt', 'evija x', 'mcmurtry speirling', 'speirling pure',
             'maserati mc12 corsa', 'mcxtrema', 'porsche motorsport 963', 'porsche 963',
             '911 rsr', '911 gt3 r', '499p', 'gr010 hybrid', 'cadillac v series r',
-            'bmw m hybrid v8', 'peugeot 9x8', '007c', '004c', 'temerario gt3',
+            'bmw m hybrid v8', 'peugeot 9x8', '007c', '004c', 'temerario gt3', 'gr gt3',
             'mclaren f1 gtr', 'gt mk iv'
         ];
         const legendaryModels = [
@@ -5273,7 +5603,7 @@
             'p1 gtr', 'mclaren f1', 't 50', 't 33', 'jesko', 'agera', 'regera',
             'cc850', 'gemera', 'nevera', 'chiron', 'veyron', 'tourbillon',
             'apollo ie', 'apollo evo', 'zenvo', 'tuatara', 'venom f5', 'evija',
-            'lfa', 'carrera gt', '918 spyder', '959', 'f40', 'f50', 'f80', 'enzo',
+            'lfa', 'carrera gt', '918 spyder', '959', '550 spyder', 'f40', 'f50', 'f80', 'enzo',
             'la ferrari', 'laferrari', 'daytona sp3', 'fxx k', '599xx', '2000gt', 'impreza 22b',
             'sian', 'reventon', 'countach lpi', 'centenario', 'miura', 'amg one',
             'batur', 'bacalar', 'mc12', 'ford gt', 'gt mk iv', 'clk gtr',
@@ -5281,7 +5611,7 @@
         ];
         const cosmicMatch = findMatch(cosmicModels);
         const legendaryMatch = findMatch(legendaryModels);
-        if (cosmicMatch && !legendaryCapBrands.has(make)) {
+        if (cosmicMatch) {
             key = 'cosmic';
             priceText = 'not meaningfully comparable';
             priceBand = 'Special-production vehicle';
@@ -5301,17 +5631,17 @@
             key = 'legendary';
             reasons.push('Hypercar marque floor: Legendary');
         }
-        if (legendaryCapBrands.has(make) && tiers[key].rank > tiers.legendary.rank) {
-            key = 'legendary';
-            reasons.push('Production-exotic ceiling: Legendary');
+        if (rareFloorBrands.has(make) && tiers[key].rank < tiers.rare.rank) {
+            key = 'rare';
+            reasons.push('Specialist luxury/performance marque floor: Rare');
         }
 
         // A handful of iconic, genuinely scarce trims deserve a bump even where
         // their original sticker price does not reflect today's collector market.
         const rareCollectorModels = [
-            'r34', 'rx 7 spirit r', 'viper acr', 'gt350r', 'impreza 22b',
+            'r34', 'rx 7 spirit r', 'viper acr', 'gt350', 'gt350r', 'gt500', 'impreza 22b',
             'sls amg', 'slr mclaren', 'lfa nurburgring', 'nsx type r', 'supra rz',
-            'golf r32', 'beetle rsi', 'delta integrale', 'stratos', 'ctr yellowbird'
+            'golf r32', 'beetle rsi', 'delta integrale', 'stratos', 'ctr yellowbird', 'mustang boss 302', 'mustang cobra r'
         ];
         const collectorMatch = findMatch(rareCollectorModels);
         if (collectorMatch && tiers[key].rank < tiers.rare.rank) {
@@ -5330,7 +5660,7 @@
             'amg cla 35', 'amg cla 45', 'amg gla 35', 'amg gla 45', 'amg glb 35',
             'amg glc 43', 'amg glc 63', 'amg gle 53', 'amg gle 63', 'amg s 63',
             'amg gt', 'g 63 amg', 'black series',
-            'mustang gt', 'dark horse', 'mach 1', 'shelby gt350', 'shelby gt500',
+            'mustang gt', 'dark horse', 'mach 1', 'gt350', 'gt350r', 'gt500', 'shelby gt350', 'shelby gt500',
             'focus st', 'focus rs', 'fiesta st', 'bronco raptor', 'f 150 raptor',
             'civic si', 'civic type r', 'integra type s', 'tlx type s', 'nsx type r',
             'elantra n', 'veloster n', 'kona n', 'ioniq 5 n', 'i30 n', 'i20 n',
@@ -5351,7 +5681,7 @@
             'genesis coupe 3 8', 'g70 3 3t', 'v60 polestar', 'polestar engineered',
             'rapide amg', 'caterham seven', 'ariel atom', 'ktm x bow', 'cappuccino',
             'auto zam az 1', 'honda beat', 'honda s660', 'daihatsu copen',
-            'polaris slingshot', 'maverick x3', 'maverick r', 'can am spyder', 'can am ryker', 'ioniq 6 n', 'ev9 gt', 'q50 red sport', 'wrx t s', 'mustang mach e rally', 'civic hybrid', 'mg4 xpower', 'mg cyberster', 'zeekr 001 fr', 'xpeng p7 performance', 'brabus', 'roush mustang', 'rtr mustang'
+            'polaris slingshot', 'maverick x3', 'maverick r', 'can am spyder', 'can am ryker', 'ioniq 6 n', 'ev9 gt', 'q50 red sport', 'wrx t s', 'mustang mach e rally', 'mg4 xpower', 'mg cyberster', 'zeekr 001 fr', 'xpeng p7 performance', 'brabus', 'roush mustang', 'rtr mustang'
         ];
         const performanceMatch = findMatch(performanceModels);
         if (performanceMatch && tiers[key].rank < tiers.uncommon.rank) {
