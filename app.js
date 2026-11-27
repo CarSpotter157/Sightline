@@ -4177,7 +4177,7 @@
     function dbRead() { return new Promise((resolve, reject) => { const tx = db.transaction(STORE_NAME, 'readonly'); const req = tx.objectStore(STORE_NAME).get('root'); req.onsuccess = () => resolve(req.result || null); req.onerror = () => reject(req.error); }); }
     function dbWrite(value) { return new Promise((resolve, reject) => { const tx = db.transaction(STORE_NAME, 'readwrite'); tx.objectStore(STORE_NAME).put(value, 'root'); tx.oncomplete = () => resolve(true); tx.onerror = () => reject(tx.error || new Error('Save failed')); tx.onabort = () => reject(tx.error || new Error('Save was interrupted')); }); }
     function normalizeData(saved) {
-        const spots = Array.isArray(saved?.spots) ? saved.spots.filter(s => s && typeof s === 'object').map(s => ({ id: String(s.id || id()), make: String(s.make || 'Unknown'), model: String(s.model || 'Unknown'), trim: String(s.trim || ''), year: Number.isFinite(Number(s.year)) && Number(s.year) >= 1886 && Number(s.year) <= 2099 ? Number(s.year) : null, color: String(s.color || ''), place: String(s.place || ''), notes: String(s.notes || ''), favorite: !!s.favorite, photo: typeof s.photo === 'string' && /^data:image\/(?:jpeg|png|webp);base64,/i.test(s.photo) ? s.photo : '', location: s.location && Number.isFinite(Number(s.location.lat)) && Number.isFinite(Number(s.location.lng)) ? { lat: Number(s.location.lat), lng: Number(s.location.lng), accuracy: Number.isFinite(Number(s.location.accuracy)) && Number(s.location.accuracy) > 0 ? Number(s.location.accuracy) : null } : null, createdAt: s.createdAt && Number.isFinite(new Date(s.createdAt).getTime()) ? new Date(s.createdAt).toISOString() : new Date().toISOString(), runId: s.runId || null })) : [];
+        const spots = Array.isArray(saved?.spots) ? saved.spots.filter(s => s && typeof s === 'object').map(s => ({ id: String(s.id || id()), make: String(s.make || 'Unknown'), model: String(s.model || 'Unknown'), trim: String(s.trim || ''), generation: String(s.generation || ''), year: Number.isFinite(Number(s.year)) && Number(s.year) >= 1886 && Number(s.year) <= 2099 ? Number(s.year) : null, color: String(s.color || ''), place: String(s.place || ''), notes: String(s.notes || ''), favorite: !!s.favorite, photo: typeof s.photo === 'string' && /^data:image\/(?:jpeg|png|webp);base64,/i.test(s.photo) ? s.photo : '', location: s.location && Number.isFinite(Number(s.location.lat)) && Number.isFinite(Number(s.location.lng)) ? { lat: Number(s.location.lat), lng: Number(s.location.lng), accuracy: Number.isFinite(Number(s.location.accuracy)) && Number(s.location.accuracy) > 0 ? Number(s.location.accuracy) : null } : null, createdAt: s.createdAt && Number.isFinite(new Date(s.createdAt).getTime()) ? new Date(s.createdAt).toISOString() : new Date().toISOString(), runId: s.runId || null })) : [];
         const runs = Array.isArray(saved?.runs) ? saved.runs.filter(r => r && typeof r === 'object').map(r => ({ id: String(r.id || id()), name: String(r.name || 'Untitled run'), startedAt: r.startedAt || new Date().toISOString(), endedAt: r.endedAt || null })) : [];
         const runIds = new Set(runs.map(r => r.id));
         spots.forEach(s => {
@@ -4299,7 +4299,7 @@
     }
     const generationSets = [
         { make: 'Porsche', models: ['911'], generations: [
-            { label: 'Classic 911 · F-series / G-series', start: 1964, end: 1989, wiki: 'Porsche 911 classic generation' },
+            { label: 'Classic 911 · F-series / G-series', start: 1964, end: 1989, wiki: '' },
             { label: '964 generation', start: 1989, end: 1994, wiki: 'Porsche 911 (964)' },
             { label: '993 generation', start: 1994, end: 1998, wiki: 'Porsche 911 (993)' },
             { label: '996 generation', start: 1998, end: 2004, wiki: 'Porsche 911 (996)' },
@@ -4335,28 +4335,28 @@
             { label: '972 generation', start: 2023, end: null, wiki: 'Porsche Panamera (972)' }
         ]},
         { make: 'Ford', models: ['Mustang'], generations: [
-            { label: 'First generation', start: 1964, end: 1973, wiki: 'Ford Mustang first generation' },
-            { label: 'Mustang II', start: 1974, end: 1978, wiki: 'Ford Mustang second generation' },
-            { label: 'Fox Body', start: 1979, end: 1993, wiki: 'Ford Mustang third generation Fox platform' },
-            { label: 'SN95 / New Edge', start: 1994, end: 2004, wiki: 'Ford Mustang fourth generation' },
-            { label: 'S197', start: 2005, end: 2014, wiki: 'Ford Mustang fifth generation' },
-            { label: 'S550', start: 2015, end: 2023, wiki: 'Ford Mustang sixth generation' },
-            { label: 'S650', start: 2024, end: null, wiki: 'Ford Mustang seventh generation' }
+            { label: 'First generation', start: 1964, end: 1973, wiki: 'Ford Mustang (first generation)' },
+            { label: 'Mustang II', start: 1974, end: 1978, wiki: 'Ford Mustang (second generation)' },
+            { label: 'Fox Body', start: 1979, end: 1993, wiki: 'Ford Mustang (third generation)' },
+            { label: 'SN95 / New Edge', start: 1994, end: 2004, wiki: 'Ford Mustang (fourth generation)' },
+            { label: 'S197', start: 2005, end: 2014, wiki: 'Ford Mustang (fifth generation)' },
+            { label: 'S550', start: 2015, end: 2023, wiki: 'Ford Mustang (sixth generation)' },
+            { label: 'S650', start: 2024, end: null, wiki: 'Ford Mustang (seventh generation)' }
         ]},
         { make: 'Ford', models: ['GT'], generations: [
             { label: 'First generation', start: 2004, end: 2006, wiki: 'Ford GT first generation' },
             { label: 'Second generation', start: 2017, end: 2022, wiki: 'Ford GT second generation' }
         ]},
         { make: 'Ford', models: ['F-150'], generations: [
-            { label: '6th generation', start: 1975, end: 1979, wiki: 'Ford F-Series sixth generation' },
-            { label: '7th generation', start: 1980, end: 1986, wiki: 'Ford F-Series seventh generation' },
-            { label: '8th generation', start: 1987, end: 1991, wiki: 'Ford F-Series eighth generation' },
-            { label: '9th generation', start: 1992, end: 1996, wiki: 'Ford F-Series ninth generation' },
-            { label: '10th generation', start: 1997, end: 2003, wiki: 'Ford F-Series tenth generation' },
-            { label: '11th generation', start: 2004, end: 2008, wiki: 'Ford F-Series eleventh generation' },
-            { label: '12th generation', start: 2009, end: 2014, wiki: 'Ford F-Series twelfth generation' },
-            { label: '13th generation', start: 2015, end: 2020, wiki: 'Ford F-Series thirteenth generation' },
-            { label: '14th generation', start: 2021, end: null, wiki: 'Ford F-Series fourteenth generation' }
+            { label: '6th generation', start: 1975, end: 1979, wiki: 'Ford F-Series (sixth generation)' },
+            { label: '7th generation', start: 1980, end: 1986, wiki: 'Ford F-Series (seventh generation)' },
+            { label: '8th generation', start: 1987, end: 1991, wiki: 'Ford F-Series (eighth generation)' },
+            { label: '9th generation', start: 1992, end: 1996, wiki: 'Ford F-Series (ninth generation)' },
+            { label: '10th generation', start: 1997, end: 2003, wiki: 'Ford F-Series (tenth generation)' },
+            { label: '11th generation', start: 2004, end: 2008, wiki: 'Ford F-Series (eleventh generation)' },
+            { label: '12th generation', start: 2009, end: 2014, wiki: 'Ford F-Series (twelfth generation)' },
+            { label: '13th generation', start: 2015, end: 2020, wiki: 'Ford F-Series (thirteenth generation)' },
+            { label: '14th generation', start: 2021, end: null, wiki: 'Ford F-Series (fourteenth generation)' }
         ]},
         { make: 'BMW', models: ['3 Series'], generations: [
             { label: 'E21', start: 1975, end: 1983, wiki: 'BMW 3 Series (E21)' },
@@ -4376,7 +4376,8 @@
             { label: 'G80 / G81', start: 2021, end: null, wiki: 'BMW M3 (G80)' }
         ]},
         { make: 'BMW', models: ['5 Series'], generations: [
-            { label: 'E12 / E28', start: 1972, end: 1988, wiki: 'BMW 5 Series' },
+            { label: 'E12 · first generation', start: 1972, end: 1981, wiki: 'BMW 5 Series (E12)' },
+            { label: 'E28 · second generation', start: 1981, end: 1988, wiki: 'BMW 5 Series (E28)' },
             { label: 'E34', start: 1988, end: 1996, wiki: 'BMW 5 Series (E34)' },
             { label: 'E39', start: 1995, end: 2003, wiki: 'BMW 5 Series (E39)' },
             { label: 'E60 / E61', start: 2003, end: 2010, wiki: 'BMW 5 Series (E60)' },
@@ -4411,7 +4412,7 @@
             { label: 'G29', start: 2018, end: null, wiki: 'BMW Z4 (G29)' }
         ]},
         { make: 'Toyota', models: ['Supra'], generations: [
-            { label: 'A40 / A50', start: 1978, end: 1981, wiki: 'Toyota Celica XX' },
+            { label: 'A40 / A50', start: 1978, end: 1981, wiki: '' },
             { label: 'A60', start: 1981, end: 1986, wiki: 'Toyota Supra (A60)' },
             { label: 'A70', start: 1986, end: 1992, wiki: 'Toyota Supra (A70)' },
             { label: 'A80', start: 1993, end: 2002, wiki: 'Toyota Supra (A80)' },
@@ -4441,17 +4442,17 @@
             { label: 'J300', start: 2021, end: null, wiki: 'Toyota Land Cruiser (J300)' }
         ]},
         { make: 'Honda', models: ['Civic'], generations: [
-            { label: '1st generation', start: 1972, end: 1979, wiki: 'Honda Civic first generation' },
-            { label: '2nd generation', start: 1979, end: 1983, wiki: 'Honda Civic second generation' },
-            { label: '3rd generation', start: 1983, end: 1987, wiki: 'Honda Civic third generation' },
-            { label: '4th generation', start: 1987, end: 1991, wiki: 'Honda Civic fourth generation' },
-            { label: '5th generation', start: 1991, end: 1995, wiki: 'Honda Civic fifth generation' },
-            { label: '6th generation', start: 1995, end: 2000, wiki: 'Honda Civic sixth generation' },
-            { label: '7th generation', start: 2000, end: 2005, wiki: 'Honda Civic seventh generation' },
-            { label: '8th generation', start: 2005, end: 2011, wiki: 'Honda Civic eighth generation' },
-            { label: '9th generation', start: 2011, end: 2015, wiki: 'Honda Civic ninth generation' },
-            { label: '10th generation', start: 2015, end: 2021, wiki: 'Honda Civic tenth generation' },
-            { label: '11th generation', start: 2021, end: null, wiki: 'Honda Civic eleventh generation' }
+            { label: '1st generation', start: 1972, end: 1979, wiki: 'Honda Civic (first generation)' },
+            { label: '2nd generation', start: 1979, end: 1983, wiki: 'Honda Civic (second generation)' },
+            { label: '3rd generation', start: 1983, end: 1987, wiki: 'Honda Civic (third generation)' },
+            { label: '4th generation', start: 1987, end: 1991, wiki: 'Honda Civic (fourth generation)' },
+            { label: '5th generation', start: 1991, end: 1995, wiki: 'Honda Civic (fifth generation)' },
+            { label: '6th generation', start: 1995, end: 2000, wiki: 'Honda Civic (sixth generation)' },
+            { label: '7th generation', start: 2000, end: 2005, wiki: 'Honda Civic (seventh generation)' },
+            { label: '8th generation', start: 2005, end: 2011, wiki: 'Honda Civic (eighth generation)' },
+            { label: '9th generation', start: 2011, end: 2015, wiki: 'Honda Civic (ninth generation)' },
+            { label: '10th generation', start: 2015, end: 2021, wiki: 'Honda Civic (tenth generation)' },
+            { label: '11th generation', start: 2021, end: null, wiki: 'Honda Civic (eleventh generation)' }
         ]},
         { make: 'Honda', models: ['Civic Type R'], generations: [
             { label: 'EK9 · Type R', start: 1997, end: 2000, wiki: 'Honda Civic Type R EK9' },
@@ -4462,17 +4463,17 @@
             { label: 'FL5 · Type R', start: 2022, end: null, wiki: 'Honda Civic Type R FL5' }
         ]},
         { make: 'Honda', models: ['Accord'], generations: [
-            { label: '1st generation', start: 1976, end: 1981, wiki: 'Honda Accord first generation' },
-            { label: '2nd generation', start: 1981, end: 1985, wiki: 'Honda Accord second generation' },
-            { label: '3rd generation', start: 1985, end: 1989, wiki: 'Honda Accord third generation' },
-            { label: '4th generation', start: 1989, end: 1993, wiki: 'Honda Accord fourth generation' },
-            { label: '5th generation', start: 1993, end: 1997, wiki: 'Honda Accord fifth generation' },
-            { label: '6th generation', start: 1997, end: 2002, wiki: 'Honda Accord sixth generation' },
-            { label: '7th generation', start: 2002, end: 2008, wiki: 'Honda Accord seventh generation' },
-            { label: '8th generation', start: 2008, end: 2012, wiki: 'Honda Accord eighth generation' },
-            { label: '9th generation', start: 2012, end: 2017, wiki: 'Honda Accord ninth generation' },
-            { label: '10th generation', start: 2017, end: 2022, wiki: 'Honda Accord tenth generation' },
-            { label: '11th generation', start: 2022, end: null, wiki: 'Honda Accord eleventh generation' }
+            { label: '1st generation', start: 1976, end: 1981, wiki: '' },
+            { label: '2nd generation', start: 1981, end: 1985, wiki: '' },
+            { label: '3rd generation', start: 1985, end: 1989, wiki: '' },
+            { label: '4th generation', start: 1989, end: 1993, wiki: '' },
+            { label: '5th generation', start: 1993, end: 1997, wiki: '' },
+            { label: '6th generation', start: 1997, end: 2002, wiki: '' },
+            { label: '7th generation', start: 2002, end: 2008, wiki: '' },
+            { label: '8th generation', start: 2008, end: 2012, wiki: '' },
+            { label: '9th generation', start: 2012, end: 2017, wiki: '' },
+            { label: '10th generation', start: 2017, end: 2022, wiki: '' },
+            { label: '11th generation', start: 2022, end: null, wiki: '' }
         ]},
         { make: 'Honda', models: ['NSX'], generations: [
             { label: 'NA1 / NA2 · first generation', start: 1990, end: 2005, wiki: 'Honda NSX first generation' },
@@ -4487,14 +4488,14 @@
             { label: 'AP2', start: 2004, end: 2009, wiki: 'Honda S2000 AP2' }
         ]},
         { make: 'Chevrolet', models: ['Corvette'], generations: [
-            { label: 'C1', start: 1953, end: 1962, wiki: 'Chevrolet Corvette C1' },
-            { label: 'C2', start: 1963, end: 1967, wiki: 'Chevrolet Corvette C2' },
-            { label: 'C3', start: 1968, end: 1982, wiki: 'Chevrolet Corvette C3' },
-            { label: 'C4', start: 1984, end: 1996, wiki: 'Chevrolet Corvette C4' },
-            { label: 'C5', start: 1997, end: 2004, wiki: 'Chevrolet Corvette C5' },
-            { label: 'C6', start: 2005, end: 2013, wiki: 'Chevrolet Corvette C6' },
-            { label: 'C7', start: 2014, end: 2019, wiki: 'Chevrolet Corvette C7' },
-            { label: 'C8', start: 2020, end: null, wiki: 'Chevrolet Corvette C8' }
+            { label: 'C1', start: 1953, end: 1962, wiki: '' },
+            { label: 'C2', start: 1963, end: 1967, wiki: '' },
+            { label: 'C3', start: 1968, end: 1982, wiki: '' },
+            { label: 'C4', start: 1984, end: 1996, wiki: '' },
+            { label: 'C5', start: 1997, end: 2004, wiki: '' },
+            { label: 'C6', start: 2005, end: 2013, wiki: '' },
+            { label: 'C7', start: 2014, end: 2019, wiki: '' },
+            { label: 'C8', start: 2020, end: null, wiki: '' }
         ]},
         { make: 'Chevrolet', models: ['Silverado'], generations: [
             { label: 'GMT800', start: 1999, end: 2007, wiki: 'Chevrolet Silverado GMT800' },
@@ -4532,7 +4533,7 @@
             { label: 'R34', start: 1999, end: 2002, wiki: 'Nissan Skyline GT-R R34' },
             { label: 'R35', start: 2007, end: 2025, wiki: 'Nissan GT-R R35' }
         ]},
-        { make: 'Nissan', models: ['Z', '350Z', '370Z'], generations: [
+        { make: 'Nissan', models: ['Z'], generations: [
             { label: 'S30 / 240Z', start: 1969, end: 1978, wiki: 'Nissan S30' },
             { label: 'S130 / 280ZX', start: 1978, end: 1983, wiki: 'Nissan S130' },
             { label: 'Z31', start: 1983, end: 1989, wiki: 'Nissan 300ZX Z31' },
@@ -4541,6 +4542,8 @@
             { label: 'Z34 / 370Z', start: 2009, end: 2020, wiki: 'Nissan 370Z' },
             { label: 'RZ34 / new Z', start: 2022, end: null, wiki: 'Nissan Z (RZ34)' }
         ]},
+        { make: 'Nissan', models: ['350Z'], generations: [{ label: 'Z33 / 350Z', start: 2002, end: 2009, wiki: 'Nissan 350Z' }]},
+        { make: 'Nissan', models: ['370Z'], generations: [{ label: 'Z34 / 370Z', start: 2009, end: 2020, wiki: 'Nissan 370Z' }]},
         { make: 'Nissan', models: ['Skyline'], generations: [
             { label: 'C10 / Hakosuka', start: 1968, end: 1972, wiki: 'Nissan Skyline C10' },
             { label: 'C110 / Kenmeri', start: 1972, end: 1977, wiki: 'Nissan Skyline C110' },
@@ -4644,7 +4647,8 @@
         { make: 'Ferrari', models: ['458 Italia'], generations: [{ label: '458 generation', start: 2009, end: 2015, wiki: 'Ferrari 458' }]},
         { make: 'Ferrari', models: ['488 GTB'], generations: [{ label: '488 generation', start: 2015, end: 2019, wiki: 'Ferrari 488' }]},
         { make: 'Ferrari', models: ['F8 Tributo'], generations: [{ label: 'F8 generation', start: 2019, end: 2023, wiki: 'Ferrari F8' }]},
-        { make: 'Ferrari', models: ['296 GTB', '296 GTS'], generations: [{ label: '296 generation', start: 2021, end: null, wiki: 'Ferrari 296' }]},
+        { make: 'Ferrari', models: ['296 GTB'], generations: [{ label: '296 generation · GTB', start: 2021, end: null, wiki: 'Ferrari 296' }]},
+        { make: 'Ferrari', models: ['296 GTS'], generations: [{ label: '296 generation · GTS', start: 2022, end: null, wiki: '' }]},
         { make: 'Lamborghini', models: ['Huracán'], generations: [{ label: 'Huracán generation', start: 2014, end: 2024, wiki: 'Lamborghini Huracan' }]},
         { make: 'Lamborghini', models: ['Gallardo'], generations: [{ label: 'Gallardo generation', start: 2003, end: 2013, wiki: 'Lamborghini Gallardo' }]},
         { make: 'Lamborghini', models: ['Aventador'], generations: [{ label: 'Aventador generation', start: 2011, end: 2022, wiki: 'Lamborghini Aventador' }]},
@@ -4657,9 +4661,9 @@
             { label: 'XE30', start: 2013, end: null, wiki: 'Lexus IS third generation' }
         ]},
         { make: 'Lexus', models: ['IS 500'], generations: [{ label: 'XE30 · IS 500', start: 2022, end: null, wiki: 'Lexus IS 500' }]},
-        { make: 'Lexus', models: ['RC F'], generations: [{ label: 'RC generation', start: 2014, end: null, wiki: 'Lexus RC' }]},
+        { make: 'Lexus', models: ['RC F'], generations: [{ label: 'RC generation', start: 2014, end: null, wiki: '' }]},
         { make: 'Lexus', models: ['LC 500'], generations: [{ label: 'LC generation', start: 2017, end: null, wiki: 'Lexus LC' }]},
-        { make: 'Hyundai', models: ['Elantra N'], generations: [{ label: 'CN7 / seventh generation', start: 2021, end: null, wiki: 'Hyundai Elantra seventh generation' }]},
+        { make: 'Hyundai', models: ['Elantra N'], generations: [{ label: 'CN7 / seventh generation', start: 2021, end: null, wiki: '' }]},
         { make: 'Hyundai', models: ['Genesis Coupe'], generations: [{ label: 'BK generation', start: 2008, end: 2016, wiki: 'Hyundai Genesis Coupe' }]},
         { make: 'Ford', models: ['Bronco'], generations: [
             { label: '1st generation · Early Bronco', start: 1966, end: 1977, wiki: 'Ford Bronco first generation' },
@@ -4676,11 +4680,11 @@
             { label: 'JL', start: 2018, end: null, wiki: 'Jeep Wrangler (JL)' }
         ]},
         { make: 'Tesla', models: ['Model S'], generations: [
-            { label: 'Original / first generation', start: 2012, end: 2021, wiki: 'Tesla Model S' },
+            { label: 'Original / first generation', start: 2012, end: 2021, wiki: '' },
             { label: 'Refresh / updated generation', start: 2021, end: null, wiki: 'Tesla Model S (2021)' }
         ]},
         { make: 'Tesla', models: ['Model 3'], generations: [
-            { label: 'Pre-refresh', start: 2017, end: 2023, wiki: 'Tesla Model 3' },
+            { label: 'Pre-refresh', start: 2017, end: 2023, wiki: '' },
             { label: 'Highland refresh', start: 2024, end: null, wiki: 'Tesla Model 3 Highland' }
         ]},
         { make: 'Toyota', models: ['Camry'], generations: [
@@ -4701,8 +4705,8 @@
             { label: 'Fourth generation', start: 2024, end: null, wiki: 'Mini Hatch (fourth generation)' }
         ]},
         { make: 'Polaris', models: ['Slingshot'], generations: [
-            { label: 'First generation', start: 2015, end: 2019, wiki: 'Polaris Slingshot' },
-            { label: 'Updated generation', start: 2020, end: null, wiki: 'Polaris Slingshot 2020' }
+            { label: 'First generation', start: 2015, end: 2019, wiki: '' },
+            { label: 'Updated generation', start: 2020, end: null, wiki: '' }
         ]}
     ];
     generationSets.forEach(set => addGenerationSet(set.make, set.models, set.generations));
@@ -4713,6 +4717,7 @@
         make: prefix ? 'editMakeSelect' : 'makeSelect',
         model: prefix ? 'editModelSelect' : 'modelSelect',
         input: prefix ? 'editYearInput' : 'yearInput',
+        display: prefix ? 'editYearGenerationDisplay' : 'yearGenerationDisplay',
         toggle: prefix ? 'editYearPickerToggle' : 'yearPickerToggle',
         panel: prefix ? 'editYearPickerPanel' : 'yearPickerPanel',
         list: prefix ? 'editYearGenerationList' : 'yearGenerationList',
@@ -4727,7 +4732,7 @@
         const groups = [];
         for (let decade = Math.floor(latest / 10) * 10; decade >= 1880; decade -= 10) {
             const start = Math.max(1886, decade), end = Math.min(latest, decade + 9);
-            groups.push({ label: `${decade}s · year group`, start, end, wiki: `${make} ${model} car` });
+            groups.push({ label: `${decade}s · year group`, start, end, wiki: '', fallback: true });
         }
         return groups;
     }
@@ -4739,45 +4744,66 @@
         const make = getElement(ids.make)?.value.trim() || '';
         const model = getElement(ids.model)?.value.trim() || '';
         const input = getElement(ids.input);
+        const display = getElement(ids.display);
         const caption = getElement(ids.caption);
-        if (!input || !caption) return;
+        const generationInput = getElement(generationInputId(prefix));
+        if (!input || !display || !caption || !generationInput) return;
         const yearText = input.value.trim();
         const year = /^\d{4}$/.test(yearText) ? Number(yearText) : null;
-        const generations = make && model ? resolveVehicleGenerations(make, model) : null;
         if (!make || !model) {
-            caption.textContent = yearText ? 'Choose a make and model to match this year to a generation.' : 'Choose a make and model to see their generations.';
+            generationInput.value = '';
+            display.value = '';
+            caption.textContent = yearText ? 'Choose a make and model to match this year to a generation.' : 'Choose a make and model, then select its generation. The exact year is optional.';
             return;
         }
-        if (!year) {
-            caption.textContent = generations ? `${generations.length} generation groups available · choose one to see its year range and reference photo.` : 'No verified generation guide for this model yet · choose a year by decade or type it directly.';
+        const groups = generationGroupsForVehicle(make, model);
+        if (year) {
+            const matched = findGenerationForYear(make, model, year);
+            generationInput.value = matched?.label || '';
+            display.value = generationInput.value;
+            caption.textContent = matched
+                ? `${matched.label} · ${getGenerationRangeLabel(matched)} · exact year ${year}`
+                : `Year ${year} entered · no generation match in the current guide.`;
             return;
         }
-        const found = generations?.find(generation => year >= generation.start && year <= (generation.end == null ? currentYearOptionsMax() : generation.end));
-        caption.textContent = found ? `${found.label} · ${getGenerationRangeLabel(found)}` : `Year ${year} entered · no exact generation match in the guide.`;
+        const selected = groups.find(generation => generation.label === generationInput.value);
+        if (selected) {
+            display.value = selected.label;
+            caption.textContent = selected.fallback
+                ? `${selected.label} · decade group saved; exact year optional.`
+                : `${selected.label} · ${getGenerationRangeLabel(selected)} · generation saved; exact year optional.`;
+            return;
+        }
+        display.value = '';
+        const isCurated = !!resolveVehicleGenerations(make, model);
+        caption.textContent = isCurated
+            ? `${groups.length} generations available · choose one. You do not need to select an exact year.`
+            : 'No verified generation guide for this model yet · choose a decade group, or leave generation blank.';
     }
-    async function fetchWikipediaVehicleImage(searchText) {
-        const cacheKey = String(searchText || '').trim().toLowerCase();
-        if (!cacheKey) return null;
+    async function fetchWikipediaVehicleImage(wikipediaPageTitle) {
+        const exactTitle = String(wikipediaPageTitle || '').trim();
+        if (!exactTitle) return null;
+        const cacheKey = exactTitle.toLowerCase();
         if (wikipediaVehicleImageCache.has(cacheKey)) return wikipediaVehicleImageCache.get(cacheKey);
         const task = (async () => {
             try {
+                // Fetch the page named by this generation entry directly. Do not use
+                // Wikipedia's broad search results: those can return another model.
                 const params = new URLSearchParams({
-                    action: 'query', generator: 'search', gsrsearch: searchText,
-                    gsrnamespace: '0', gsrwhat: 'text', gsrlimit: '5',
+                    action: 'query', titles: exactTitle, redirects: '1',
                     prop: 'pageimages|info', piprop: 'thumbnail', pithumbsize: '420',
                     inprop: 'url', format: 'json', formatversion: '2', origin: '*'
                 });
                 const response = await fetch(`https://en.wikipedia.org/w/api.php?${params.toString()}`, { headers: { Accept: 'application/json' } });
                 if (!response.ok) return null;
                 const payload = await response.json();
-                const pages = payload?.query?.pages || [];
-                const page = pages.find(item => item.thumbnail?.source) || pages[0];
-                if (!page) return null;
-                return {
-                    image: page.thumbnail?.source || '',
-                    page: page.fullurl || `https://en.wikipedia.org/wiki/${encodeURIComponent(String(page.title || '').replace(/ /g, '_'))}`,
-                    title: page.title || searchText
-                };
+                const page = (payload?.query?.pages || []).find(item => !item.missing);
+                if (!page?.thumbnail?.source || !page?.fullurl) return null;
+                const normalizeTitle = value => String(value || '').replace(/_/g, ' ').trim().replace(/\s+/g, ' ').toLowerCase();
+                // Wikipedia may redirect a generation title to a broader model page.
+                // Reject that result rather than showing a photo of the wrong generation.
+                if (normalizeTitle(page.title) !== normalizeTitle(exactTitle)) return null;
+                return { image: page.thumbnail.source, page: page.fullurl, title: page.title || exactTitle };
             }
             catch {
                 return null;
@@ -4785,6 +4811,26 @@
         })();
         wikipediaVehicleImageCache.set(cacheKey, task);
         return task;
+    }
+    function generationInputId(prefix) { return prefix ? 'editGenerationInput' : 'vehicleGenerationInput'; }
+    function getSelectedGeneration(prefix) { return getElement(generationInputId(prefix))?.value.trim() || ''; }
+    function generationGroupsForVehicle(make, model) {
+        return resolveVehicleGenerations(make, model) || (make && model ? buildDecadeFallback(make, model) : []);
+    }
+    function findGenerationForYear(make, model, year) {
+        if (!make || !model || !Number.isInteger(Number(year))) return null;
+        const numericYear = Number(year);
+        return generationGroupsForVehicle(make, model).find(generation =>
+            numericYear >= generation.start && numericYear <= (generation.end == null ? currentYearOptionsMax() : generation.end)
+        ) || null;
+    }
+    function inferGenerationForSpot(spot) {
+        return String(spot?.generation || '') || (spot?.year ? (findGenerationForYear(spot.make, spot.model, spot.year)?.label || '') : '');
+    }
+    function spotYearGenerationPrefix(spot) {
+        if (spot?.year) return `${spot.year} `;
+        const generation = inferGenerationForSpot(spot);
+        return generation ? `${generation} ` : '';
     }
     function renderGenerationGroups(prefix) {
         const ids = generationPickerIds(prefix);
@@ -4795,10 +4841,11 @@
         const mapped = make && model ? resolveVehicleGenerations(make, model) : null;
         const groups = mapped || (make && model ? buildDecadeFallback(make, model) : []);
         const inputYear = Number(getElement(ids.input)?.value || 0);
+        const selectedGeneration = getSelectedGeneration(prefix);
         const fallbackNote = !mapped && make && model
-            ? `<div class="generation-fallback-note"><strong>Generation guide not available yet.</strong><span>These are decade groups, not official generations. Enter the exact year if you already know it.</span></div>` : '';
+            ? `<div class="generation-fallback-note"><strong>Official generation guide unavailable.</strong><span>These are decade groups, not confirmed factory generations. Pick a decade if it helps; exact year is optional.</span></div>` : '';
         if (!make || !model) {
-            list.innerHTML = '<div class="generation-empty"><strong>Select a make and model first.</strong><span>The generation picker will show the model-year ranges and Wikipedia reference photos here.</span></div>';
+            list.innerHTML = '<div class="generation-empty"><strong>Select a make and model first.</strong><span>Then choose the closest generation. You can leave the exact year blank.</span></div>';
             updateGenerationCaption(prefix);
             return;
         }
@@ -4807,46 +4854,52 @@
             const years = [];
             for (let year = generation.start; year <= maxYear; year++) years.push(year);
             if (!years.length) return '';
-            const selected = years.includes(inputYear);
+            const isSelected = generation.label === selectedGeneration;
             const imageAlt = `${make} ${model} ${generation.label}`;
-            const wikiSearch = generation.wiki || `${make} ${model} ${generation.label}`;
-            const yearsMarkup = years.map(year => `<button aria-label="Select ${year}, ${escapeHTML(make)} ${escapeHTML(model)} ${escapeHTML(generation.label)}" class="generation-year-chip${year === inputYear ? ' is-selected' : ''}" data-generation-year="${year}" data-generation-label="${escapeHTML(generation.label)}" data-generation-range="${escapeHTML(getGenerationRangeLabel(generation))}" type="button">${year}</button>`).join('');
-            return `<article class="generation-option" data-generation-option="${index}"><a aria-label="Open ${escapeHTML(imageAlt)} on Wikipedia" class="generation-image-link" data-generation-wiki-link="${index}" href="https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(wikiSearch)}" rel="noopener noreferrer" target="_blank"><span class="generation-image-placeholder">${escapeHTML(make.slice(0, 1).toUpperCase())}${escapeHTML(model.slice(0, 1).toUpperCase())}</span><img alt="${escapeHTML(imageAlt)} reference photo" class="generation-image" data-generation-image="${index}" hidden="" loading="lazy"/><span class="generation-image-credit">WIKIPEDIA</span></a><div class="generation-option-copy"><div class="generation-option-heading"><strong>${escapeHTML(generation.label)}</strong><span>${escapeHTML(getGenerationRangeLabel(generation))}</span></div><div class="generation-year-chips">${yearsMarkup}</div></div></article>`;
+            const exactPageTitle = generation.wiki || '';
+            const yearsMarkup = years.map(year => `<button aria-label="Select ${year}, ${escapeHTML(make)} ${escapeHTML(model)} ${escapeHTML(generation.label)}" class="generation-year-chip${year === inputYear ? ' is-selected' : ''}" data-generation-year="${year}" data-generation-label="${escapeHTML(generation.label)}" type="button">${year}</button>`).join('');
+            const imageMarkup = exactPageTitle
+                ? `<a aria-label="Open the exact Wikipedia article for ${escapeHTML(imageAlt)}" aria-disabled="true" class="generation-image-link is-unverified" data-generation-wiki-link="${index}" href="#" rel="noopener noreferrer" target="_blank" title="No verified Wikipedia image loaded yet"><span class="generation-image-placeholder">NO VERIFIED IMAGE</span><img alt="${escapeHTML(imageAlt)} reference photo" class="generation-image" data-generation-image="${index}" hidden="" loading="lazy"/><span class="generation-image-credit">WIKIPEDIA</span></a>`
+                : `<div aria-label="No verified image available for ${escapeHTML(imageAlt)}" class="generation-image-link is-unverified"><span class="generation-image-placeholder">NO VERIFIED IMAGE</span></div>`;
+            const selectText = generation.fallback ? 'SELECT DECADE GROUP' : 'SELECT GENERATION';
+            const optionalYear = `<details class="generation-year-details"${years.includes(inputYear) ? ' open' : ''}><summary>ADD EXACT YEAR <span>OPTIONAL</span></summary><div class="generation-year-chips">${yearsMarkup}</div></details>`;
+            return `<article class="generation-option${isSelected ? ' is-selected' : ''}" data-generation-option="${index}">${imageMarkup}<div class="generation-option-copy"><div class="generation-option-heading"><strong>${escapeHTML(generation.label)}</strong><span>${escapeHTML(getGenerationRangeLabel(generation))}</span></div><button class="generation-select-button${isSelected ? ' is-selected' : ''}" data-select-generation="${escapeHTML(generation.label)}" data-generation-range="${escapeHTML(getGenerationRangeLabel(generation))}" type="button">${isSelected ? '✓ SELECTED' : selectText}</button>${optionalYear}</div></article>`;
         }).join('')}`;
         updateGenerationCaption(prefix);
-        // Only request Wikipedia thumbnails while the picker is visible. This avoids
-        // firing searches as someone is still typing a make or model.
-        const pickerPanel = getElement(generationPickerIds(prefix).panel);
-        if (!pickerPanel || pickerPanel.hidden) return;
+        const pickerPanel = getElement(ids.panel);
+        if (!pickerPanel || pickerPanel.hidden || !mapped) return;
         const token = ++generationPickerSequence[prefix];
         const loadImages = async () => {
-            if (!mapped) {
-                const info = await fetchWikipediaVehicleImage(`${make} ${model} automobile`);
-                if (token !== generationPickerSequence[prefix] || !info) return;
-                list.querySelectorAll('[data-generation-image]').forEach(image => {
-                    image.src = info.image;
-                    image.hidden = !info.image;
-                });
-                list.querySelectorAll('[data-generation-wiki-link]').forEach(link => { link.href = info.page; link.title = `Open ${info.title} on Wikipedia`; });
-                return;
-            }
             await Promise.all(groups.map(async (generation, index) => {
+                // Fallback decade buckets do not have generation-specific images.
+                if (generation.fallback || !generation.wiki) return;
                 const image = list.querySelector(`[data-generation-image="${index}"]`);
                 const link = list.querySelector(`[data-generation-wiki-link="${index}"]`);
                 if (!image || !link) return;
-                const info = await fetchWikipediaVehicleImage(generation.wiki || `${make} ${model} ${generation.label} car`);
+                const info = await fetchWikipediaVehicleImage(generation.wiki);
                 if (token !== generationPickerSequence[prefix] || !info) return;
+                const placeholder = link.querySelector('.generation-image-placeholder');
+                image.onerror = () => {
+                    image.hidden = true;
+                    if (placeholder) placeholder.hidden = false;
+                    link.href = '#';
+                    link.setAttribute('aria-disabled', 'true');
+                    link.classList.add('is-unverified');
+                };
                 image.src = info.image;
-                image.hidden = !info.image;
+                image.hidden = false;
                 link.href = info.page;
                 link.title = `Open ${info.title} on Wikipedia`;
+                link.setAttribute('aria-disabled', 'false');
+                link.classList.remove('is-unverified');
+                if (placeholder) placeholder.hidden = true;
             }));
         };
         loadImages();
     }
     function positionGenerationPicker(prefix) {
         const ids = generationPickerIds(prefix);
-        const input = getElement(ids.input), panel = getElement(ids.panel);
+        const input = getElement(ids.display), panel = getElement(ids.panel);
         if (!input || !panel || panel.hidden) return;
         if (window.matchMedia && window.matchMedia('(max-width: 600px)').matches) {
             ['left', 'right', 'top', 'bottom', 'width', 'maxHeight'].forEach(property => { panel.style[property] = ''; });
@@ -4893,12 +4946,27 @@
         panel.querySelector('.generation-picker-close')?.addEventListener('click', () => closeGenerationPicker(prefix));
         list.addEventListener('click', event => {
             const yearButton = event.target.closest('[data-generation-year]');
-            if (!yearButton) return;
-            input.value = yearButton.dataset.generationYear || '';
-            updateGenerationCaption(prefix);
-            closeGenerationPicker(prefix);
-            input.dispatchEvent(new Event('change', { bubbles: true }));
-            if (!prefix) updateSpotProgress();
+            const generationButton = event.target.closest('[data-select-generation]');
+            if (yearButton) {
+                getElement(generationInputId(prefix)).value = yearButton.dataset.generationLabel || '';
+                input.value = yearButton.dataset.generationYear || '';
+                updateGenerationCaption(prefix);
+                closeGenerationPicker(prefix);
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+                if (!prefix) updateSpotProgress();
+                return;
+            }
+            if (generationButton) {
+                getElement(generationInputId(prefix)).value = generationButton.dataset.selectGeneration || '';
+                input.value = '';
+                updateGenerationCaption(prefix);
+                closeGenerationPicker(prefix);
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+                if (!prefix) updateSpotProgress();
+                return;
+            }
+            const disabledWikiLink = event.target.closest('.generation-image-link[aria-disabled="true"]');
+            if (disabledWikiLink) event.preventDefault();
         });
         document.addEventListener('pointerdown', event => {
             if (!panel.hidden && !panel.contains(event.target) && !toggle.contains(event.target) && !input.contains(event.target)) closeGenerationPicker(prefix);
@@ -4943,6 +5011,7 @@
                 model.value = '';
                 trim.value = '';
                 getElement(prefix ? 'editYearInput' : 'yearInput').value = '';
+                getElement(generationInputId(prefix)).value = '';
                 model.dataset.lastValue = '';
                 make.dataset.lastValue = value;
             }
@@ -4959,6 +5028,7 @@
             if (value !== model.dataset.lastValue) {
                 trim.value = '';
                 getElement(prefix ? 'editYearInput' : 'yearInput').value = '';
+                getElement(generationInputId(prefix)).value = '';
                 model.dataset.lastValue = value;
             }
             updateTrimOptions(prefix);
@@ -5470,7 +5540,7 @@
             const raritySteps = ['common', 'uncommon', 'rare', 'epic', 'legendary', 'cosmic'].slice(0, rarity.rank);
             let finished = false, skipped = false;
             getElement('spotRevealMake').textContent = (spot.make || '').toUpperCase();
-            getElement('spotRevealModel').textContent = `${spot.year ? spot.year + ' ' : ''}${spot.model || ''}`;
+            getElement('spotRevealModel').textContent = `${spotYearGenerationPrefix(spot)}${spot.model || ''}`;
             getElement('spotRevealTrim').textContent = spot.trim || spot.color || 'A new addition to your sightings';
             getElement('spotRevealRarity').textContent = rarity.label.toUpperCase();
             getElement('spotRevealRarity').title = rarity.reason;
@@ -5877,6 +5947,7 @@
         getElement('photoDrop').classList.remove('has-photo', 'no-photo');
         getElement('photoStatus').textContent = 'No photo selected';
         getElement('yearInput').value = '';
+        getElement('vehicleGenerationInput').value = '';
         renderGenerationGroups('');
         updateGenerationCaption('');
         closeGenerationPicker('');
@@ -5913,7 +5984,7 @@
             showToast('Choose a valid date and time for this sighting.');
             return;
         }
-        const spot = { id: id(), ...vehicle, year, color: getElement('colorInput').value.trim(), place: getElement('placeInput').value.trim(), notes: getElement('notesInput').value.trim(), favorite: false, photo: currentPhoto, location: currentLocation ? { ...currentLocation } : null, createdAt: spottedAt, runId: activeRun()?.id || null };
+        const spot = { id: id(), ...vehicle, generation: getSelectedGeneration(''), year, color: getElement('colorInput').value.trim(), place: getElement('placeInput').value.trim(), notes: getElement('notesInput').value.trim(), favorite: false, photo: currentPhoto, location: currentLocation ? { ...currentLocation } : null, createdAt: spottedAt, runId: activeRun()?.id || null };
         const continueSpotGuide = !!(activeCoachSequence && activeCoachTour?.name === 'spot' && coachSequenceIndex === 0 && coachStepIndex === activeCoachTour.steps.length - 1);
         if (continueSpotGuide)
             getElement('coachLayer').hidden = true;
@@ -6278,7 +6349,7 @@
             priceSource = 'limited/performance trim estimate';
         }
 
-        const vehicleName = [spot.year, spot.make, spot.model, spot.trim].filter(Boolean).join(' ');
+        const vehicleName = [spot.year || inferGenerationForSpot(spot), spot.make, spot.model, spot.trim].filter(Boolean).join(' ');
         let priceText = estimatedPrice >= 1000000
             ? `about $${(estimatedPrice / 1000000).toFixed(estimatedPrice % 1000000 ? 1 : 0)}M`
             : `about $${Math.round(estimatedPrice / 1000)}K`;
@@ -6469,6 +6540,7 @@
             const oldest = sightings[sightings.length - 1];
             const photoSpot = sightings.find(item => item.photo) || latest;
             const yearValues = [...new Set(sightings.map(item => Number(item.year)).filter(year => Number.isInteger(year) && year >= 1886 && year <= 2099))].sort((a, b) => a - b);
+            const generationValues = [...new Set(sightings.map(item => String(item.generation || '').trim()).filter(Boolean))];
             const colors = [...new Set(sightings.map(item => (item.color || '').trim()).filter(Boolean))];
             const raritySpot = sightings.reduce((best, item) => estimateRarity(item).rank > estimateRarity(best).rank ? item : best, latest);
             const favoriteSpot = sightings.find(item => item.favorite) || null;
@@ -6481,6 +6553,7 @@
                 oldest,
                 photoSpot,
                 yearValues,
+                generationValues,
                 colors,
                 favorite: !!favoriteSpot,
                 favoriteSpot,
@@ -6494,7 +6567,7 @@
         // vehicle visible, while its badge still reports the full lifetime count.
         let visibleVehicles = vehicles.filter(vehicle => {
             if (query) {
-                const hasMatch = vehicle.sightings.some(spot => `${spot.make || ''} ${spot.model || ''} ${spot.trim || ''} ${spot.year || ''} ${spot.color || ''} ${spot.place || ''} ${spot.notes || ''}`.toLowerCase().includes(query));
+                const hasMatch = vehicle.sightings.some(spot => `${spot.make || ''} ${spot.model || ''} ${spot.trim || ''} ${spot.generation || ''} ${spot.year || ''} ${spot.color || ''} ${spot.place || ''} ${spot.notes || ''}`.toLowerCase().includes(query));
                 if (!hasMatch) return false;
             }
             if (filter === 'favorites' && !vehicle.favorite) return false;
@@ -6538,7 +6611,10 @@
                 const rarity = vehicle.rarity;
                 const years = vehicle.yearValues;
                 const yearLabel = years.length > 2 ? `${years.slice(0, 2).join(' · ')} +${years.length - 2}` : years.join(' · ');
-                const yearTitle = years.length ? `Years spotted: ${years.join(', ')}` : '';
+                const generationLabels = vehicle.generationValues || [];
+                const generationLabel = !years.length ? (generationLabels.length > 1 ? 'Multiple generations' : generationLabels[0] || '') : '';
+                const yearTitle = years.length ? `Years spotted: ${years.join(', ')}` : generationLabel ? `Generation: ${generationLabels.join(', ')}` : '';
+                const yearOrGenerationLabel = yearLabel || generationLabel;
                 const trimLabel = vehicle.trim || (vehicle.colors.length > 1 ? 'Multiple colors' : vehicle.colors[0] || 'Trim not noted');
                 const locationSpot = vehicle.locationSpot;
                 const locationLabel = locationSpot?.place
@@ -6548,7 +6624,7 @@
                 const repeatBadge = vehicle.count > 1
                     ? `<span class="garage-repeat-count" title="This vehicle has been spotted ${vehicle.count} times">${vehicle.count}× SPOTTED</span>`
                     : '';
-                return `<article class="car-card rarity-card rarity-${rarity.key}" style="--card-index:${Math.min(index, 10)};--card-delay:${Math.min(index, 10) * 34}ms" data-open-spot="${escapeHTML(detailSpot.id)}" tabindex="0" role="button" aria-label="View ${escapeHTML(make)} ${escapeHTML(model)}, spotted ${vehicle.count} ${vehicle.count === 1 ? 'time' : 'times'}"><div class="car-image-wrap">${photo}<span class="car-tag">${s.runId ? 'ROAD TRIP' : 'FIELD SPOT'}</span><span class="car-rarity-overlay ${rarity.key}" title="${escapeHTML(rarity.reason)}">${rarity.label.toUpperCase()}</span>${vehicle.favorite ? '<span class="favorite-chip" aria-label="One or more sightings favorited" title="One or more sightings favorited">★</span>' : ''}</div><div class="car-card-body"><div class="car-make">${escapeHTML(make)} ${yearLabel ? `<span class="car-year" title="${escapeHTML(yearTitle)}">${escapeHTML(yearLabel)}</span>` : ''}</div><div class="car-model">${escapeHTML(model)}</div><div class="car-trim">${escapeHTML(trimLabel)}</div>${repeatBadge}<div class="car-meta"><span>${escapeHTML(locationLabel)}</span><span>${fmtDate(s.createdAt, { month: 'short', day: 'numeric', year: undefined })}</span></div></div></article>`;
+                return `<article class="car-card rarity-card rarity-${rarity.key}" style="--card-index:${Math.min(index, 10)};--card-delay:${Math.min(index, 10) * 34}ms" data-open-spot="${escapeHTML(detailSpot.id)}" tabindex="0" role="button" aria-label="View ${escapeHTML(make)} ${escapeHTML(model)}, spotted ${vehicle.count} ${vehicle.count === 1 ? 'time' : 'times'}"><div class="car-image-wrap">${photo}<span class="car-tag">${s.runId ? 'ROAD TRIP' : 'FIELD SPOT'}</span><span class="car-rarity-overlay ${rarity.key}" title="${escapeHTML(rarity.reason)}">${rarity.label.toUpperCase()}</span>${vehicle.favorite ? '<span class="favorite-chip" aria-label="One or more sightings favorited" title="One or more sightings favorited">★</span>' : ''}</div><div class="car-card-body"><div class="car-make">${escapeHTML(make)} ${yearOrGenerationLabel ? `<span class="car-year" title="${escapeHTML(yearTitle)}">${escapeHTML(yearOrGenerationLabel)}</span>` : ''}</div><div class="car-model">${escapeHTML(model)}</div><div class="car-trim">${escapeHTML(trimLabel)}</div>${repeatBadge}<div class="car-meta"><span>${escapeHTML(locationLabel)}</span><span>${fmtDate(s.createdAt, { month: 'short', day: 'numeric', year: undefined })}</span></div></div></article>`;
             };
             const activeLayout = document.querySelector('[data-garage-mode].active')?.dataset.garageMode || 'collection';
             if (activeLayout === 'manufacturer') {
@@ -6710,7 +6786,7 @@
             located.forEach(s => {
                 const icon = L.divIcon({ className: '', html: '<div class="spot-pin"></div>', iconSize: [18, 18], iconAnchor: [9, 9] });
                 const marker = L.marker([Number(s.location.lat), Number(s.location.lng)], { icon, keyboard: true }).addTo(garageMap);
-                const popup = `<div class="map-spot-popup"><b>${escapeHTML(s.year ? `${s.year} ` : '')}${escapeHTML(s.make)} ${escapeHTML(s.model)}</b><span>${escapeHTML(s.trim || s.color || s.place || '')}</span>${s.photo ? `<img src="${escapeHTML(s.photo)}" alt="">` : ''}<button type="button" data-map-spot="${escapeHTML(s.id)}">VIEW SIGHTING ↗</button></div>`;
+                const popup = `<div class="map-spot-popup"><b>${escapeHTML(spotYearGenerationPrefix(s))}${escapeHTML(s.make)} ${escapeHTML(s.model)}</b><span>${escapeHTML(s.trim || s.color || s.place || '')}</span>${s.photo ? `<img src="${escapeHTML(s.photo)}" alt="">` : ''}<button type="button" data-map-spot="${escapeHTML(s.id)}">VIEW SIGHTING ↗</button></div>`;
                 marker.bindPopup(popup, { maxWidth: 230 });
                 marker.on('popupopen', () => {
                     const button = marker.getPopup()?.getElement()?.querySelector('[data-map-spot]');
@@ -6740,12 +6816,13 @@
         getElement('detailPhoto').src = spot.photo || '';
         getElement('detailPhoto').hidden = !spot.photo;
         getElement('detailNoPhoto').hidden = !!spot.photo;
-        getElement('spotDetailTitle').textContent = `${spot.year ? spot.year + ' ' : ''}${spot.make} ${spot.model}`;
+        getElement('spotDetailTitle').textContent = `${spot.year ? spot.year + ' ' : (inferGenerationForSpot(spot) ? inferGenerationForSpot(spot) + ' ' : '')}${spot.make} ${spot.model}`;
         getElement('spotDetailSubtitle').textContent = `${spot.favorite ? '★ Favorite sighting · ' : ''}${fmtDateTime(spot.createdAt)}`;
         getElement('detailMake').textContent = spot.make;
         getElement('detailModel').textContent = spot.model;
         getElement('detailTrim').textContent = spot.trim || 'Not specified';
-        getElement('detailYear').textContent = spot.year || 'Not noted';
+        getElement('detailYear').textContent = spot.year || 'Not specified';
+        getElement('detailGeneration').textContent = inferGenerationForSpot(spot) || 'Not selected';
         getElement('detailColor').textContent = spot.color || 'Not noted';
         getElement('detailDate').textContent = fmtDateTime(spot.createdAt);
         getElement('detailPlace').textContent = spot.place || 'Not noted';
@@ -6785,6 +6862,7 @@
         getElement('editPhotoPreview').src = spot.photo || '';
         getElement('editPhotoStatus').textContent = spot.photo ? 'Current photo' : 'No photo saved';
         getElement('editYearInput').value = spot.year || '';
+        getElement('editGenerationInput').value = inferGenerationForSpot(spot);
         renderGenerationGroups('edit');
         updateGenerationCaption('edit');
         getElement('editSpottedAtInput').value = toLocalDateTimeInput(spot.createdAt);
@@ -6815,7 +6893,7 @@
             return;
         }
         const old = clone(spot);
-        Object.assign(spot, fields, { year, color: getElement('editColorInput').value.trim(), place: getElement('editPlaceInput').value.trim(), notes: getElement('editNotesInput').value.trim(), createdAt: editedSpottedAt });
+        Object.assign(spot, fields, { generation: getSelectedGeneration('edit'), year, color: getElement('editColorInput').value.trim(), place: getElement('editPlaceInput').value.trim(), notes: getElement('editNotesInput').value.trim(), createdAt: editedSpottedAt });
         if (editPhoto)
             spot.photo = editPhoto;
         getElement('saveEditButton').disabled = true;
@@ -6955,7 +7033,7 @@
         getElement('runDetailSubtitle').textContent = `${fmtDateTime(run.startedAt)} · ${run.endedAt ? `Finished ${fmtDateTime(run.endedAt)}` : 'In progress'} · ${cars.length} ${cars.length === 1 ? 'car' : 'cars'}`;
         getElement('runStartedAtEdit').value = toLocalDateTimeInput(run.startedAt);
         getElement('runEndedAtEdit').value = run.endedAt ? toLocalDateTimeInput(run.endedAt) : '';
-        getElement('runCarGrid').innerHTML = cars.map(s => `<button class="run-car-mini" type="button" data-open-spot-from-run="${escapeHTML(s.id)}">${s.photo ? `<img src="${escapeHTML(s.photo)}" alt="">` : '<span class="run-no-photo">NO PHOTO</span>'}<strong>${escapeHTML(s.year ? `${s.year} ` : '')}${escapeHTML(s.make)} ${escapeHTML(s.model)}</strong><span>${escapeHTML(s.trim || s.color || '')}</span></button>`).join('');
+        getElement('runCarGrid').innerHTML = cars.map(s => `<button class="run-car-mini" type="button" data-open-spot-from-run="${escapeHTML(s.id)}">${s.photo ? `<img src="${escapeHTML(s.photo)}" alt="">` : '<span class="run-no-photo">NO PHOTO</span>'}<strong>${escapeHTML(spotYearGenerationPrefix(s))}${escapeHTML(s.make)} ${escapeHTML(s.model)}</strong><span>${escapeHTML(s.trim || s.color || '')}</span></button>`).join('');
         getElement('runNoCars').hidden = !!cars.length;
         showModal('runDetailModal');
     }
@@ -7128,7 +7206,7 @@
         getElement('homeTodayLabel').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' }).toUpperCase();
         const sorted = [...data.spots].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         const recent = sorted.slice(0, 4);
-        getElement('homeRecentList').innerHTML = recent.length ? recent.map(s => `<button class="home-recent-item" type="button" data-home-spot="${escapeHTML(s.id)}"><span class="home-recent-photo">${s.photo ? `<img src="${escapeHTML(s.photo)}" alt="">` : `<b>${escapeHTML((s.make || 'C').slice(0, 1) + (s.model || 'S').slice(0, 1))}</b>`}</span><span class="home-recent-info"><strong>${escapeHTML(s.year ? `${s.year} ` : '')}${escapeHTML(s.make)} <span>${escapeHTML(s.model)}</span>${s.favorite ? ' ★' : ''}</strong><small>${escapeHTML(s.place || s.color || s.trim || 'Sighting saved')} · ${fmtDate(s.createdAt, { month: 'short', day: 'numeric' })}</small></span><span class="home-recent-arrow">↗</span></button>`).join('') : `<div class="home-empty"><div class="home-empty-icon">＋</div><strong>Your first spot is waiting.</strong><p>Save a car you see and it will show up here.</p><button type="button" data-goto-view="spot">LOG YOUR FIRST CAR ↗</button></div>`;
+        getElement('homeRecentList').innerHTML = recent.length ? recent.map(s => `<button class="home-recent-item" type="button" data-home-spot="${escapeHTML(s.id)}"><span class="home-recent-photo">${s.photo ? `<img src="${escapeHTML(s.photo)}" alt="">` : `<b>${escapeHTML((s.make || 'C').slice(0, 1) + (s.model || 'S').slice(0, 1))}</b>`}</span><span class="home-recent-info"><strong>${escapeHTML(spotYearGenerationPrefix(s))}${escapeHTML(s.make)} <span>${escapeHTML(s.model)}</span>${s.favorite ? ' ★' : ''}</strong><small>${escapeHTML(s.place || s.color || s.trim || 'Sighting saved')} · ${fmtDate(s.createdAt, { month: 'short', day: 'numeric' })}</small></span><span class="home-recent-arrow">↗</span></button>`).join('') : `<div class="home-empty"><div class="home-empty-icon">＋</div><strong>Your first spot is waiting.</strong><p>Save a car you see and it will show up here.</p><button type="button" data-goto-view="spot">LOG YOUR FIRST CAR ↗</button></div>`;
         const counts = {};
         data.spots.forEach(s => { const key = s.make || 'Unknown'; counts[key] = (counts[key] || 0) + 1; });
         const top = Object.entries(counts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0];
