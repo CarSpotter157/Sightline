@@ -969,10 +969,13 @@
        </option>
       </select>
       <div aria-label="Garage view" class="view-toggle" role="group">
-       <button class="active" data-garage-mode="collection" type="button">
-        COLLECTION
+       <button aria-pressed="true" class="active" data-garage-mode="collection" type="button">
+        ALL CARS
        </button>
-       <button data-garage-mode="map" type="button">
+       <button aria-pressed="false" data-garage-mode="manufacturer" type="button">
+        BY MAKE
+       </button>
+       <button aria-pressed="false" data-garage-mode="map" type="button">
         MAP
        </button>
       </div>
