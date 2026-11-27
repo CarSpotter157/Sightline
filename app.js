@@ -4031,6 +4031,9 @@
     let dbMode = 'indexeddb';
     let data = { spots: [], runs: [], activeRunId: null, homeHeroPhoto: '' };
     let currentPhoto = '';
+    // unset = follow saved-photo suggestions; auto = photo copied from a prior matching sighting;
+    // manual = user picked a photo; none = user explicitly removed/skipped the photo.
+    let currentPhotoMode = 'unset';
     let currentLocation = null;
     let guidedDemoCar = null;
     let currentDetailId = null;
@@ -4285,6 +4288,631 @@
             return option;
         }));
     }
+    // Curated generation guide for commonly spotted vehicles. Ranges are model years;
+    // other models fall back to decade groups rather than being given invented generation names.
+    const vehicleGenerationCatalog = new Map();
+    const addGenerationSet = (make, models, generations) => {
+        models.forEach(model => vehicleGenerationCatalog.set(`${normalizeGenerationText(make)}|${normalizeGenerationText(model)}`, generations));
+    };
+    function normalizeGenerationText(value) {
+        return String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    }
+    const generationSets = [
+        { make: 'Porsche', models: ['911'], generations: [
+            { label: 'Classic 911 · F-series / G-series', start: 1964, end: 1989, wiki: 'Porsche 911 classic generation' },
+            { label: '964 generation', start: 1989, end: 1994, wiki: 'Porsche 911 (964)' },
+            { label: '993 generation', start: 1994, end: 1998, wiki: 'Porsche 911 (993)' },
+            { label: '996 generation', start: 1998, end: 2004, wiki: 'Porsche 911 (996)' },
+            { label: '997 generation', start: 2004, end: 2012, wiki: 'Porsche 911 (997)' },
+            { label: '991 generation', start: 2012, end: 2019, wiki: 'Porsche 911 (991)' },
+            { label: '992 generation', start: 2019, end: null, wiki: 'Porsche 911 (992)' }
+        ]},
+        { make: 'Porsche', models: ['Boxster'], generations: [
+            { label: '986 generation', start: 1996, end: 2004, wiki: 'Porsche Boxster (986)' },
+            { label: '987 generation', start: 2004, end: 2012, wiki: 'Porsche Boxster (987)' },
+            { label: '981 generation', start: 2012, end: 2016, wiki: 'Porsche Boxster (981)' },
+            { label: '982 / 718 generation', start: 2016, end: 2025, wiki: 'Porsche 718 Boxster (982)' }
+        ]},
+        { make: 'Porsche', models: ['718 Boxster'], generations: [{ label: '982 / 718 generation', start: 2016, end: 2025, wiki: 'Porsche 718 Boxster (982)' }]},
+        { make: 'Porsche', models: ['Cayman'], generations: [
+            { label: '987 generation', start: 2005, end: 2012, wiki: 'Porsche Cayman (987)' },
+            { label: '981 generation', start: 2012, end: 2016, wiki: 'Porsche Cayman (981)' },
+            { label: '982 / 718 generation', start: 2016, end: 2025, wiki: 'Porsche 718 Cayman (982)' }
+        ]},
+        { make: 'Porsche', models: ['718 Cayman'], generations: [{ label: '982 / 718 generation', start: 2016, end: null, wiki: 'Porsche 718 Cayman (982)' }]},
+        { make: 'Porsche', models: ['Cayenne'], generations: [
+            { label: '955 / 957 generation', start: 2002, end: 2010, wiki: 'Porsche Cayenne (955)' },
+            { label: '958 generation', start: 2010, end: 2017, wiki: 'Porsche Cayenne (958)' },
+            { label: '9Y0 generation', start: 2017, end: null, wiki: 'Porsche Cayenne (9Y0)' }
+        ]},
+        { make: 'Porsche', models: ['Macan'], generations: [
+            { label: '95B · first generation', start: 2014, end: 2024, wiki: 'Porsche Macan' },
+            { label: 'Electric generation', start: 2024, end: null, wiki: 'Porsche Macan Electric' }
+        ]},
+        { make: 'Porsche', models: ['Panamera'], generations: [
+            { label: '970 generation', start: 2009, end: 2016, wiki: 'Porsche Panamera (970)' },
+            { label: '971 generation', start: 2016, end: 2023, wiki: 'Porsche Panamera (971)' },
+            { label: '972 generation', start: 2023, end: null, wiki: 'Porsche Panamera (972)' }
+        ]},
+        { make: 'Ford', models: ['Mustang'], generations: [
+            { label: 'First generation', start: 1964, end: 1973, wiki: 'Ford Mustang first generation' },
+            { label: 'Mustang II', start: 1974, end: 1978, wiki: 'Ford Mustang second generation' },
+            { label: 'Fox Body', start: 1979, end: 1993, wiki: 'Ford Mustang third generation Fox platform' },
+            { label: 'SN95 / New Edge', start: 1994, end: 2004, wiki: 'Ford Mustang fourth generation' },
+            { label: 'S197', start: 2005, end: 2014, wiki: 'Ford Mustang fifth generation' },
+            { label: 'S550', start: 2015, end: 2023, wiki: 'Ford Mustang sixth generation' },
+            { label: 'S650', start: 2024, end: null, wiki: 'Ford Mustang seventh generation' }
+        ]},
+        { make: 'Ford', models: ['GT'], generations: [
+            { label: 'First generation', start: 2004, end: 2006, wiki: 'Ford GT first generation' },
+            { label: 'Second generation', start: 2017, end: 2022, wiki: 'Ford GT second generation' }
+        ]},
+        { make: 'Ford', models: ['F-150'], generations: [
+            { label: '6th generation', start: 1975, end: 1979, wiki: 'Ford F-Series sixth generation' },
+            { label: '7th generation', start: 1980, end: 1986, wiki: 'Ford F-Series seventh generation' },
+            { label: '8th generation', start: 1987, end: 1991, wiki: 'Ford F-Series eighth generation' },
+            { label: '9th generation', start: 1992, end: 1996, wiki: 'Ford F-Series ninth generation' },
+            { label: '10th generation', start: 1997, end: 2003, wiki: 'Ford F-Series tenth generation' },
+            { label: '11th generation', start: 2004, end: 2008, wiki: 'Ford F-Series eleventh generation' },
+            { label: '12th generation', start: 2009, end: 2014, wiki: 'Ford F-Series twelfth generation' },
+            { label: '13th generation', start: 2015, end: 2020, wiki: 'Ford F-Series thirteenth generation' },
+            { label: '14th generation', start: 2021, end: null, wiki: 'Ford F-Series fourteenth generation' }
+        ]},
+        { make: 'BMW', models: ['3 Series'], generations: [
+            { label: 'E21', start: 1975, end: 1983, wiki: 'BMW 3 Series (E21)' },
+            { label: 'E30', start: 1982, end: 1994, wiki: 'BMW 3 Series (E30)' },
+            { label: 'E36', start: 1990, end: 2000, wiki: 'BMW 3 Series (E36)' },
+            { label: 'E46', start: 1997, end: 2006, wiki: 'BMW 3 Series (E46)' },
+            { label: 'E90 / E91 / E92 / E93', start: 2005, end: 2013, wiki: 'BMW 3 Series (E90)' },
+            { label: 'F30 / F31 / F34', start: 2011, end: 2019, wiki: 'BMW 3 Series (F30)' },
+            { label: 'G20 / G21', start: 2018, end: null, wiki: 'BMW 3 Series (G20)' }
+        ]},
+        { make: 'BMW', models: ['M3'], generations: [
+            { label: 'E30', start: 1986, end: 1991, wiki: 'BMW M3 (E30)' },
+            { label: 'E36', start: 1992, end: 1999, wiki: 'BMW M3 (E36)' },
+            { label: 'E46', start: 2000, end: 2006, wiki: 'BMW M3 (E46)' },
+            { label: 'E90 / E92 / E93', start: 2007, end: 2013, wiki: 'BMW M3 (E90)' },
+            { label: 'F80', start: 2014, end: 2018, wiki: 'BMW M3 (F80)' },
+            { label: 'G80 / G81', start: 2021, end: null, wiki: 'BMW M3 (G80)' }
+        ]},
+        { make: 'BMW', models: ['5 Series'], generations: [
+            { label: 'E12 / E28', start: 1972, end: 1988, wiki: 'BMW 5 Series' },
+            { label: 'E34', start: 1988, end: 1996, wiki: 'BMW 5 Series (E34)' },
+            { label: 'E39', start: 1995, end: 2003, wiki: 'BMW 5 Series (E39)' },
+            { label: 'E60 / E61', start: 2003, end: 2010, wiki: 'BMW 5 Series (E60)' },
+            { label: 'F10 / F11', start: 2010, end: 2017, wiki: 'BMW 5 Series (F10)' },
+            { label: 'G30 / G31', start: 2017, end: 2023, wiki: 'BMW 5 Series (G30)' },
+            { label: 'G60 / G61', start: 2023, end: null, wiki: 'BMW 5 Series (G60)' }
+        ]},
+        { make: 'BMW', models: ['M5'], generations: [
+            { label: 'E28', start: 1984, end: 1988, wiki: 'BMW M5 (E28)' },
+            { label: 'E34', start: 1988, end: 1995, wiki: 'BMW M5 (E34)' },
+            { label: 'E39', start: 1998, end: 2003, wiki: 'BMW M5 (E39)' },
+            { label: 'E60 / E61', start: 2005, end: 2010, wiki: 'BMW M5 (E60)' },
+            { label: 'F10', start: 2011, end: 2016, wiki: 'BMW M5 (F10)' },
+            { label: 'F90', start: 2017, end: 2023, wiki: 'BMW M5 (F90)' },
+            { label: 'G90 / G99', start: 2024, end: null, wiki: 'BMW M5 (G90)' }
+        ]},
+        { make: 'BMW', models: ['2 Series'], generations: [
+            { label: 'F22 / F23', start: 2014, end: 2021, wiki: 'BMW 2 Series (F22)' },
+            { label: 'G42 / G44', start: 2021, end: null, wiki: 'BMW 2 Series (G42)' }
+        ]},
+        { make: 'BMW', models: ['M2'], generations: [
+            { label: 'F87', start: 2016, end: 2021, wiki: 'BMW M2 (F87)' },
+            { label: 'G87', start: 2023, end: null, wiki: 'BMW M2 (G87)' }
+        ]},
+        { make: 'BMW', models: ['4 Series'], generations: [
+            { label: 'F32 / F33 / F36', start: 2013, end: 2020, wiki: 'BMW 4 Series (F32)' },
+            { label: 'G22 / G23 / G26', start: 2020, end: null, wiki: 'BMW 4 Series (G22)' }
+        ]},
+        { make: 'BMW', models: ['Z4'], generations: [
+            { label: 'E85 / E86', start: 2002, end: 2008, wiki: 'BMW Z4 (E85)' },
+            { label: 'E89', start: 2009, end: 2016, wiki: 'BMW Z4 (E89)' },
+            { label: 'G29', start: 2018, end: null, wiki: 'BMW Z4 (G29)' }
+        ]},
+        { make: 'Toyota', models: ['Supra'], generations: [
+            { label: 'A40 / A50', start: 1978, end: 1981, wiki: 'Toyota Celica XX' },
+            { label: 'A60', start: 1981, end: 1986, wiki: 'Toyota Supra (A60)' },
+            { label: 'A70', start: 1986, end: 1992, wiki: 'Toyota Supra (A70)' },
+            { label: 'A80', start: 1993, end: 2002, wiki: 'Toyota Supra (A80)' },
+            { label: 'A90 / A91', start: 2019, end: 2025, wiki: 'Toyota Supra (A90)' }
+        ]},
+        { make: 'Toyota', models: ['GR Supra'], generations: [{ label: 'A90 / A91', start: 2019, end: 2025, wiki: 'Toyota Supra (A90)' }]},
+        { make: 'Toyota', models: ['86'], generations: [{ label: 'ZN6', start: 2012, end: 2021, wiki: 'Toyota 86 (ZN6)' }]},
+        { make: 'Toyota', models: ['GR86'], generations: [{ label: 'ZN8', start: 2021, end: null, wiki: 'Toyota 86 (ZN8)' }]},
+        { make: 'Toyota', models: ['Corolla'], generations: [
+            { label: 'E70', start: 1979, end: 1983, wiki: 'Toyota Corolla (E70)' },
+            { label: 'E80', start: 1983, end: 1987, wiki: 'Toyota Corolla (E80)' },
+            { label: 'E90', start: 1987, end: 1991, wiki: 'Toyota Corolla (E90)' },
+            { label: 'E100', start: 1991, end: 1995, wiki: 'Toyota Corolla (E100)' },
+            { label: 'E110', start: 1995, end: 2000, wiki: 'Toyota Corolla (E110)' },
+            { label: 'E120 / E130', start: 2000, end: 2006, wiki: 'Toyota Corolla (E120)' },
+            { label: 'E140 / E150', start: 2006, end: 2013, wiki: 'Toyota Corolla (E140)' },
+            { label: 'E170', start: 2013, end: 2018, wiki: 'Toyota Corolla (E170)' },
+            { label: 'E210', start: 2018, end: null, wiki: 'Toyota Corolla (E210)' }
+        ]},
+        { make: 'Toyota', models: ['Land Cruiser'], generations: [
+            { label: 'J40', start: 1960, end: 1984, wiki: 'Toyota Land Cruiser (J40)' },
+            { label: 'J60', start: 1980, end: 1990, wiki: 'Toyota Land Cruiser (J60)' },
+            { label: 'J70', start: 1984, end: null, wiki: 'Toyota Land Cruiser (J70)' },
+            { label: 'J80', start: 1990, end: 1997, wiki: 'Toyota Land Cruiser (J80)' },
+            { label: 'J100', start: 1998, end: 2007, wiki: 'Toyota Land Cruiser (J100)' },
+            { label: 'J200', start: 2007, end: 2021, wiki: 'Toyota Land Cruiser (J200)' },
+            { label: 'J300', start: 2021, end: null, wiki: 'Toyota Land Cruiser (J300)' }
+        ]},
+        { make: 'Honda', models: ['Civic'], generations: [
+            { label: '1st generation', start: 1972, end: 1979, wiki: 'Honda Civic first generation' },
+            { label: '2nd generation', start: 1979, end: 1983, wiki: 'Honda Civic second generation' },
+            { label: '3rd generation', start: 1983, end: 1987, wiki: 'Honda Civic third generation' },
+            { label: '4th generation', start: 1987, end: 1991, wiki: 'Honda Civic fourth generation' },
+            { label: '5th generation', start: 1991, end: 1995, wiki: 'Honda Civic fifth generation' },
+            { label: '6th generation', start: 1995, end: 2000, wiki: 'Honda Civic sixth generation' },
+            { label: '7th generation', start: 2000, end: 2005, wiki: 'Honda Civic seventh generation' },
+            { label: '8th generation', start: 2005, end: 2011, wiki: 'Honda Civic eighth generation' },
+            { label: '9th generation', start: 2011, end: 2015, wiki: 'Honda Civic ninth generation' },
+            { label: '10th generation', start: 2015, end: 2021, wiki: 'Honda Civic tenth generation' },
+            { label: '11th generation', start: 2021, end: null, wiki: 'Honda Civic eleventh generation' }
+        ]},
+        { make: 'Honda', models: ['Civic Type R'], generations: [
+            { label: 'EK9 · Type R', start: 1997, end: 2000, wiki: 'Honda Civic Type R EK9' },
+            { label: 'EP3 · Type R', start: 2001, end: 2005, wiki: 'Honda Civic Type R EP3' },
+            { label: 'FD2 / FN2 · Type R', start: 2007, end: 2011, wiki: 'Honda Civic Type R FD2' },
+            { label: 'FK2 · Type R', start: 2015, end: 2016, wiki: 'Honda Civic Type R FK2' },
+            { label: 'FK8 · Type R', start: 2017, end: 2021, wiki: 'Honda Civic Type R FK8' },
+            { label: 'FL5 · Type R', start: 2022, end: null, wiki: 'Honda Civic Type R FL5' }
+        ]},
+        { make: 'Honda', models: ['Accord'], generations: [
+            { label: '1st generation', start: 1976, end: 1981, wiki: 'Honda Accord first generation' },
+            { label: '2nd generation', start: 1981, end: 1985, wiki: 'Honda Accord second generation' },
+            { label: '3rd generation', start: 1985, end: 1989, wiki: 'Honda Accord third generation' },
+            { label: '4th generation', start: 1989, end: 1993, wiki: 'Honda Accord fourth generation' },
+            { label: '5th generation', start: 1993, end: 1997, wiki: 'Honda Accord fifth generation' },
+            { label: '6th generation', start: 1997, end: 2002, wiki: 'Honda Accord sixth generation' },
+            { label: '7th generation', start: 2002, end: 2008, wiki: 'Honda Accord seventh generation' },
+            { label: '8th generation', start: 2008, end: 2012, wiki: 'Honda Accord eighth generation' },
+            { label: '9th generation', start: 2012, end: 2017, wiki: 'Honda Accord ninth generation' },
+            { label: '10th generation', start: 2017, end: 2022, wiki: 'Honda Accord tenth generation' },
+            { label: '11th generation', start: 2022, end: null, wiki: 'Honda Accord eleventh generation' }
+        ]},
+        { make: 'Honda', models: ['NSX'], generations: [
+            { label: 'NA1 / NA2 · first generation', start: 1990, end: 2005, wiki: 'Honda NSX first generation' },
+            { label: 'NC1 · second generation', start: 2016, end: 2022, wiki: 'Honda NSX second generation' }
+        ]},
+        { make: 'Acura', models: ['NSX'], generations: [
+            { label: 'NA1 / NA2 · first generation', start: 1991, end: 2005, wiki: 'Acura NSX first generation' },
+            { label: 'NC1 · second generation', start: 2017, end: 2022, wiki: 'Acura NSX second generation' }
+        ]},
+        { make: 'Honda', models: ['S2000'], generations: [
+            { label: 'AP1', start: 1999, end: 2003, wiki: 'Honda S2000 AP1' },
+            { label: 'AP2', start: 2004, end: 2009, wiki: 'Honda S2000 AP2' }
+        ]},
+        { make: 'Chevrolet', models: ['Corvette'], generations: [
+            { label: 'C1', start: 1953, end: 1962, wiki: 'Chevrolet Corvette C1' },
+            { label: 'C2', start: 1963, end: 1967, wiki: 'Chevrolet Corvette C2' },
+            { label: 'C3', start: 1968, end: 1982, wiki: 'Chevrolet Corvette C3' },
+            { label: 'C4', start: 1984, end: 1996, wiki: 'Chevrolet Corvette C4' },
+            { label: 'C5', start: 1997, end: 2004, wiki: 'Chevrolet Corvette C5' },
+            { label: 'C6', start: 2005, end: 2013, wiki: 'Chevrolet Corvette C6' },
+            { label: 'C7', start: 2014, end: 2019, wiki: 'Chevrolet Corvette C7' },
+            { label: 'C8', start: 2020, end: null, wiki: 'Chevrolet Corvette C8' }
+        ]},
+        { make: 'Chevrolet', models: ['Silverado'], generations: [
+            { label: 'GMT800', start: 1999, end: 2007, wiki: 'Chevrolet Silverado GMT800' },
+            { label: 'GMT900', start: 2007, end: 2014, wiki: 'Chevrolet Silverado GMT900' },
+            { label: 'K2XX', start: 2014, end: 2019, wiki: 'Chevrolet Silverado K2XX' },
+            { label: 'T1XX', start: 2019, end: null, wiki: 'Chevrolet Silverado T1XX' }
+        ]},
+        { make: 'Chevrolet', models: ['Camaro'], generations: [
+            { label: '1st generation', start: 1967, end: 1969, wiki: 'Chevrolet Camaro first generation' },
+            { label: '2nd generation', start: 1970, end: 1981, wiki: 'Chevrolet Camaro second generation' },
+            { label: '3rd generation', start: 1982, end: 1992, wiki: 'Chevrolet Camaro third generation' },
+            { label: '4th generation', start: 1993, end: 2002, wiki: 'Chevrolet Camaro fourth generation' },
+            { label: '5th generation', start: 2010, end: 2015, wiki: 'Chevrolet Camaro fifth generation' },
+            { label: '6th generation', start: 2016, end: 2024, wiki: 'Chevrolet Camaro sixth generation' }
+        ]},
+        { make: 'Dodge', models: ['Challenger'], generations: [
+            { label: 'First generation', start: 1970, end: 1974, wiki: 'Dodge Challenger first generation' },
+            { label: 'Third generation', start: 2008, end: 2023, wiki: 'Dodge Challenger third generation' }
+        ]},
+        { make: 'Dodge', models: ['Charger'], generations: [
+            { label: 'B-body classics', start: 1966, end: 1978, wiki: 'Dodge Charger B-body' },
+            { label: 'L-body', start: 1982, end: 1987, wiki: 'Dodge Charger L-body' },
+            { label: 'LX', start: 2006, end: 2010, wiki: 'Dodge Charger (LX)' },
+            { label: 'LD', start: 2011, end: 2023, wiki: 'Dodge Charger (LD)' },
+            { label: 'Next generation', start: 2024, end: null, wiki: 'Dodge Charger (2024)' }
+        ]},
+        { make: 'Dodge', models: ['Viper'], generations: [
+            { label: 'SR I / SR II', start: 1992, end: 2002, wiki: 'Dodge Viper first generation' },
+            { label: 'ZB I / ZB II', start: 2003, end: 2010, wiki: 'Dodge Viper third generation' },
+            { label: 'VX I', start: 2013, end: 2017, wiki: 'Dodge Viper fifth generation' }
+        ]},
+        { make: 'Nissan', models: ['GT-R'], generations: [
+            { label: 'R32', start: 1989, end: 1994, wiki: 'Nissan Skyline GT-R R32' },
+            { label: 'R33', start: 1995, end: 1998, wiki: 'Nissan Skyline GT-R R33' },
+            { label: 'R34', start: 1999, end: 2002, wiki: 'Nissan Skyline GT-R R34' },
+            { label: 'R35', start: 2007, end: 2025, wiki: 'Nissan GT-R R35' }
+        ]},
+        { make: 'Nissan', models: ['Z', '350Z', '370Z'], generations: [
+            { label: 'S30 / 240Z', start: 1969, end: 1978, wiki: 'Nissan S30' },
+            { label: 'S130 / 280ZX', start: 1978, end: 1983, wiki: 'Nissan S130' },
+            { label: 'Z31', start: 1983, end: 1989, wiki: 'Nissan 300ZX Z31' },
+            { label: 'Z32', start: 1989, end: 2000, wiki: 'Nissan 300ZX Z32' },
+            { label: 'Z33 / 350Z', start: 2002, end: 2009, wiki: 'Nissan 350Z' },
+            { label: 'Z34 / 370Z', start: 2009, end: 2020, wiki: 'Nissan 370Z' },
+            { label: 'RZ34 / new Z', start: 2022, end: null, wiki: 'Nissan Z (RZ34)' }
+        ]},
+        { make: 'Nissan', models: ['Skyline'], generations: [
+            { label: 'C10 / Hakosuka', start: 1968, end: 1972, wiki: 'Nissan Skyline C10' },
+            { label: 'C110 / Kenmeri', start: 1972, end: 1977, wiki: 'Nissan Skyline C110' },
+            { label: 'R31', start: 1985, end: 1989, wiki: 'Nissan Skyline R31' },
+            { label: 'R32', start: 1989, end: 1994, wiki: 'Nissan Skyline R32' },
+            { label: 'R33', start: 1993, end: 1998, wiki: 'Nissan Skyline R33' },
+            { label: 'R34', start: 1998, end: 2002, wiki: 'Nissan Skyline R34' },
+            { label: 'V35 / V36 / V37', start: 2001, end: null, wiki: 'Nissan Skyline V35' }
+        ]},
+        { make: 'Mazda', models: ['MX-5 Miata', 'MX-5'], generations: [
+            { label: 'NA', start: 1989, end: 1997, wiki: 'Mazda MX-5 (NA)' },
+            { label: 'NB', start: 1998, end: 2005, wiki: 'Mazda MX-5 (NB)' },
+            { label: 'NC', start: 2005, end: 2015, wiki: 'Mazda MX-5 (NC)' },
+            { label: 'ND', start: 2015, end: null, wiki: 'Mazda MX-5 (ND)' }
+        ]},
+        { make: 'Mazda', models: ['RX-7'], generations: [
+            { label: 'SA / FB', start: 1978, end: 1985, wiki: 'Mazda RX-7 first generation' },
+            { label: 'FC', start: 1985, end: 1992, wiki: 'Mazda RX-7 second generation' },
+            { label: 'FD', start: 1992, end: 2002, wiki: 'Mazda RX-7 third generation' }
+        ]},
+        { make: 'Mazda', models: ['RX-8'], generations: [{ label: 'SE3P · single generation', start: 2003, end: 2012, wiki: 'Mazda RX-8' }]},
+        { make: 'Subaru', models: ['WRX'], generations: [
+            { label: 'GC / GF', start: 1992, end: 2000, wiki: 'Subaru Impreza first generation' },
+            { label: 'GD / GG', start: 2000, end: 2007, wiki: 'Subaru Impreza second generation' },
+            { label: 'GE / GH / GR / GV', start: 2007, end: 2014, wiki: 'Subaru Impreza third generation' },
+            { label: 'VA', start: 2014, end: 2021, wiki: 'Subaru WRX VA' },
+            { label: 'VB', start: 2022, end: null, wiki: 'Subaru WRX VB' }
+        ]},
+        { make: 'Subaru', models: ['WRX STI'], generations: [
+            { label: 'GC / GF', start: 1994, end: 2000, wiki: 'Subaru Impreza WRX STI first generation' },
+            { label: 'GD / GG', start: 2000, end: 2007, wiki: 'Subaru Impreza WRX STI second generation' },
+            { label: 'GR / GV', start: 2007, end: 2014, wiki: 'Subaru Impreza WRX STI third generation' },
+            { label: 'VA', start: 2014, end: 2021, wiki: 'Subaru WRX STI VA' }
+        ]},
+        { make: 'Subaru', models: ['BRZ'], generations: [
+            { label: 'ZC6', start: 2012, end: 2021, wiki: 'Subaru BRZ first generation' },
+            { label: 'ZD8', start: 2021, end: null, wiki: 'Subaru BRZ second generation' }
+        ]},
+        { make: 'Volkswagen', models: ['Golf GTI'], generations: [
+            { label: 'Mk1', start: 1976, end: 1983, wiki: 'Volkswagen Golf Mk1 GTI' },
+            { label: 'Mk2', start: 1984, end: 1992, wiki: 'Volkswagen Golf Mk2 GTI' },
+            { label: 'Mk3', start: 1993, end: 1998, wiki: 'Volkswagen Golf Mk3 GTI' },
+            { label: 'Mk4', start: 1999, end: 2005, wiki: 'Volkswagen Golf Mk4 GTI' },
+            { label: 'Mk5', start: 2006, end: 2009, wiki: 'Volkswagen Golf Mk5 GTI' },
+            { label: 'Mk6', start: 2010, end: 2014, wiki: 'Volkswagen Golf Mk6 GTI' },
+            { label: 'Mk7 / Mk7.5', start: 2015, end: 2021, wiki: 'Volkswagen Golf Mk7 GTI' },
+            { label: 'Mk8 / Mk8.5', start: 2022, end: null, wiki: 'Volkswagen Golf Mk8 GTI' }
+        ]},
+        { make: 'Volkswagen', models: ['Golf R'], generations: [
+            { label: 'Mk4 R32', start: 2004, end: 2004, wiki: 'Volkswagen Golf Mk4 R32' },
+            { label: 'Mk5 R32', start: 2008, end: 2008, wiki: 'Volkswagen Golf Mk5 R32' },
+            { label: 'Mk6 Golf R', start: 2012, end: 2013, wiki: 'Volkswagen Golf Mk6 R' },
+            { label: 'Mk7 / Mk7.5 Golf R', start: 2015, end: 2021, wiki: 'Volkswagen Golf Mk7 R' },
+            { label: 'Mk8 / Mk8.5 Golf R', start: 2022, end: null, wiki: 'Volkswagen Golf Mk8 R' }
+        ]},
+        { make: 'Volkswagen', models: ['Beetle'], generations: [
+            { label: 'Classic Beetle / Type 1', start: 1938, end: 2003, wiki: 'Volkswagen Beetle' },
+            { label: 'New Beetle', start: 1997, end: 2011, wiki: 'Volkswagen New Beetle' },
+            { label: 'A5 / third-generation Beetle', start: 2011, end: 2019, wiki: 'Volkswagen Beetle (A5)' }
+        ]},
+        { make: 'Volkswagen', models: ['Beetle Turbo'], generations: [
+            { label: 'New Beetle Turbo', start: 1999, end: 2011, wiki: 'Volkswagen New Beetle Turbo' },
+            { label: 'A5 / third-generation Turbo', start: 2011, end: 2019, wiki: 'Volkswagen Beetle (A5)' }
+        ]},
+        { make: 'Audi', models: ['A4'], generations: [
+            { label: 'B5', start: 1994, end: 2001, wiki: 'Audi A4 (B5)' },
+            { label: 'B6', start: 2000, end: 2006, wiki: 'Audi A4 (B6)' },
+            { label: 'B7', start: 2004, end: 2009, wiki: 'Audi A4 (B7)' },
+            { label: 'B8', start: 2007, end: 2016, wiki: 'Audi A4 (B8)' },
+            { label: 'B9', start: 2016, end: 2024, wiki: 'Audi A4 (B9)' }
+        ]},
+        { make: 'Audi', models: ['RS 6'], generations: [
+            { label: 'C5', start: 2002, end: 2004, wiki: 'Audi RS 6 C5' },
+            { label: 'C6', start: 2008, end: 2010, wiki: 'Audi RS 6 C6' },
+            { label: 'C7', start: 2013, end: 2018, wiki: 'Audi RS 6 C7' },
+            { label: 'C8', start: 2019, end: null, wiki: 'Audi RS 6 C8' }
+        ]},
+        { make: 'Audi', models: ['R8'], generations: [
+            { label: 'Type 42', start: 2006, end: 2015, wiki: 'Audi R8 Type 42' },
+            { label: 'Type 4S', start: 2015, end: 2024, wiki: 'Audi R8 Type 4S' }
+        ]},
+        { make: 'Mercedes-Benz', models: ['C-Class'], generations: [
+            { label: 'W202', start: 1993, end: 2000, wiki: 'Mercedes-Benz C-Class W202' },
+            { label: 'W203', start: 2000, end: 2007, wiki: 'Mercedes-Benz C-Class W203' },
+            { label: 'W204', start: 2007, end: 2014, wiki: 'Mercedes-Benz C-Class W204' },
+            { label: 'W205', start: 2014, end: 2021, wiki: 'Mercedes-Benz C-Class W205' },
+            { label: 'W206', start: 2021, end: null, wiki: 'Mercedes-Benz C-Class W206' }
+        ]},
+        { make: 'Mercedes-Benz', models: ['E-Class'], generations: [
+            { label: 'W124', start: 1984, end: 1995, wiki: 'Mercedes-Benz W124' },
+            { label: 'W210', start: 1995, end: 2002, wiki: 'Mercedes-Benz W210' },
+            { label: 'W211', start: 2002, end: 2009, wiki: 'Mercedes-Benz W211' },
+            { label: 'W212', start: 2009, end: 2016, wiki: 'Mercedes-Benz W212' },
+            { label: 'W213', start: 2016, end: 2023, wiki: 'Mercedes-Benz W213' },
+            { label: 'W214', start: 2023, end: null, wiki: 'Mercedes-Benz W214' }
+        ]},
+        { make: 'Mercedes-Benz', models: ['G-Class'], generations: [
+            { label: 'W460 / W461', start: 1979, end: 2018, wiki: 'Mercedes-Benz G-Class W460' },
+            { label: 'W463 · modern generation', start: 2018, end: null, wiki: 'Mercedes-Benz G-Class W463' }
+        ]},
+        { make: 'Ferrari', models: ['458 Italia'], generations: [{ label: '458 generation', start: 2009, end: 2015, wiki: 'Ferrari 458' }]},
+        { make: 'Ferrari', models: ['488 GTB'], generations: [{ label: '488 generation', start: 2015, end: 2019, wiki: 'Ferrari 488' }]},
+        { make: 'Ferrari', models: ['F8 Tributo'], generations: [{ label: 'F8 generation', start: 2019, end: 2023, wiki: 'Ferrari F8' }]},
+        { make: 'Ferrari', models: ['296 GTB', '296 GTS'], generations: [{ label: '296 generation', start: 2021, end: null, wiki: 'Ferrari 296' }]},
+        { make: 'Lamborghini', models: ['Huracán'], generations: [{ label: 'Huracán generation', start: 2014, end: 2024, wiki: 'Lamborghini Huracan' }]},
+        { make: 'Lamborghini', models: ['Gallardo'], generations: [{ label: 'Gallardo generation', start: 2003, end: 2013, wiki: 'Lamborghini Gallardo' }]},
+        { make: 'Lamborghini', models: ['Aventador'], generations: [{ label: 'Aventador generation', start: 2011, end: 2022, wiki: 'Lamborghini Aventador' }]},
+        { make: 'McLaren', models: ['720S'], generations: [{ label: '720S generation', start: 2017, end: 2022, wiki: 'McLaren 720S' }]},
+        { make: 'McLaren', models: ['750S'], generations: [{ label: '750S generation', start: 2023, end: null, wiki: 'McLaren 750S' }]},
+        { make: 'McLaren', models: ['Artura'], generations: [{ label: 'Artura generation', start: 2021, end: null, wiki: 'McLaren Artura' }]},
+        { make: 'Lexus', models: ['IS'], generations: [
+            { label: 'XE10', start: 1998, end: 2005, wiki: 'Lexus IS first generation' },
+            { label: 'XE20', start: 2005, end: 2013, wiki: 'Lexus IS second generation' },
+            { label: 'XE30', start: 2013, end: null, wiki: 'Lexus IS third generation' }
+        ]},
+        { make: 'Lexus', models: ['IS 500'], generations: [{ label: 'XE30 · IS 500', start: 2022, end: null, wiki: 'Lexus IS 500' }]},
+        { make: 'Lexus', models: ['RC F'], generations: [{ label: 'RC generation', start: 2014, end: null, wiki: 'Lexus RC' }]},
+        { make: 'Lexus', models: ['LC 500'], generations: [{ label: 'LC generation', start: 2017, end: null, wiki: 'Lexus LC' }]},
+        { make: 'Hyundai', models: ['Elantra N'], generations: [{ label: 'CN7 / seventh generation', start: 2021, end: null, wiki: 'Hyundai Elantra seventh generation' }]},
+        { make: 'Hyundai', models: ['Genesis Coupe'], generations: [{ label: 'BK generation', start: 2008, end: 2016, wiki: 'Hyundai Genesis Coupe' }]},
+        { make: 'Ford', models: ['Bronco'], generations: [
+            { label: '1st generation · Early Bronco', start: 1966, end: 1977, wiki: 'Ford Bronco first generation' },
+            { label: '2nd generation', start: 1978, end: 1979, wiki: 'Ford Bronco second generation' },
+            { label: '3rd generation', start: 1980, end: 1986, wiki: 'Ford Bronco third generation' },
+            { label: '4th generation', start: 1987, end: 1991, wiki: 'Ford Bronco fourth generation' },
+            { label: '5th generation', start: 1992, end: 1996, wiki: 'Ford Bronco fifth generation' },
+            { label: '6th generation', start: 2021, end: null, wiki: 'Ford Bronco sixth generation' }
+        ]},
+        { make: 'Jeep', models: ['Wrangler'], generations: [
+            { label: 'YJ', start: 1987, end: 1995, wiki: 'Jeep Wrangler (YJ)' },
+            { label: 'TJ', start: 1997, end: 2006, wiki: 'Jeep Wrangler (TJ)' },
+            { label: 'JK', start: 2007, end: 2018, wiki: 'Jeep Wrangler (JK)' },
+            { label: 'JL', start: 2018, end: null, wiki: 'Jeep Wrangler (JL)' }
+        ]},
+        { make: 'Tesla', models: ['Model S'], generations: [
+            { label: 'Original / first generation', start: 2012, end: 2021, wiki: 'Tesla Model S' },
+            { label: 'Refresh / updated generation', start: 2021, end: null, wiki: 'Tesla Model S (2021)' }
+        ]},
+        { make: 'Tesla', models: ['Model 3'], generations: [
+            { label: 'Pre-refresh', start: 2017, end: 2023, wiki: 'Tesla Model 3' },
+            { label: 'Highland refresh', start: 2024, end: null, wiki: 'Tesla Model 3 Highland' }
+        ]},
+        { make: 'Toyota', models: ['Camry'], generations: [
+            { label: 'XV10', start: 1991, end: 1996, wiki: 'Toyota Camry (XV10)' },
+            { label: 'XV20', start: 1996, end: 2001, wiki: 'Toyota Camry (XV20)' },
+            { label: 'XV30', start: 2001, end: 2006, wiki: 'Toyota Camry (XV30)' },
+            { label: 'XV40', start: 2006, end: 2011, wiki: 'Toyota Camry (XV40)' },
+            { label: 'XV50', start: 2011, end: 2017, wiki: 'Toyota Camry (XV50)' },
+            { label: 'XV70', start: 2017, end: 2024, wiki: 'Toyota Camry (XV70)' },
+            { label: 'XV80', start: 2024, end: null, wiki: 'Toyota Camry (XV80)' }
+        ]},
+        { make: 'Toyota', models: ['GR Corolla'], generations: [{ label: 'GZEA14 · first generation', start: 2022, end: null, wiki: 'Toyota GR Corolla' }]},
+        { make: 'Kia', models: ['Stinger'], generations: [{ label: 'CK · single generation', start: 2017, end: 2023, wiki: 'Kia Stinger' }]},
+        { make: 'Mini', models: ['Cooper', 'Cooper S', 'John Cooper Works'], generations: [
+            { label: 'R50 / R52 / R53', start: 2001, end: 2006, wiki: 'Mini Hatch (first generation)' },
+            { label: 'R56 / R55 / R57', start: 2006, end: 2013, wiki: 'Mini Hatch (second generation)' },
+            { label: 'F55 / F56 / F57', start: 2014, end: 2024, wiki: 'Mini Hatch (third generation)' },
+            { label: 'Fourth generation', start: 2024, end: null, wiki: 'Mini Hatch (fourth generation)' }
+        ]},
+        { make: 'Polaris', models: ['Slingshot'], generations: [
+            { label: 'First generation', start: 2015, end: 2019, wiki: 'Polaris Slingshot' },
+            { label: 'Updated generation', start: 2020, end: null, wiki: 'Polaris Slingshot 2020' }
+        ]}
+    ];
+    generationSets.forEach(set => addGenerationSet(set.make, set.models, set.generations));
+
+    const wikipediaVehicleImageCache = new Map();
+    const generationPickerSequence = { '': 0, edit: 0 };
+    const generationPickerIds = prefix => ({
+        make: prefix ? 'editMakeSelect' : 'makeSelect',
+        model: prefix ? 'editModelSelect' : 'modelSelect',
+        input: prefix ? 'editYearInput' : 'yearInput',
+        toggle: prefix ? 'editYearPickerToggle' : 'yearPickerToggle',
+        panel: prefix ? 'editYearPickerPanel' : 'yearPickerPanel',
+        list: prefix ? 'editYearGenerationList' : 'yearGenerationList',
+        caption: prefix ? 'editYearGenerationCaption' : 'yearGenerationCaption'
+    });
+    const currentYearOptionsMax = () => Math.min(2099, new Date().getFullYear() + 2);
+    function resolveVehicleGenerations(make, model) {
+        return vehicleGenerationCatalog.get(`${normalizeGenerationText(make)}|${normalizeGenerationText(model)}`) || null;
+    }
+    function buildDecadeFallback(make, model) {
+        const latest = currentYearOptionsMax();
+        const groups = [];
+        for (let decade = Math.floor(latest / 10) * 10; decade >= 1880; decade -= 10) {
+            const start = Math.max(1886, decade), end = Math.min(latest, decade + 9);
+            groups.push({ label: `${decade}s · year group`, start, end, wiki: `${make} ${model} car` });
+        }
+        return groups;
+    }
+    function getGenerationRangeLabel(generation) {
+        return `${generation.start}–${generation.end == null ? 'present' : generation.end}`;
+    }
+    function updateGenerationCaption(prefix) {
+        const ids = generationPickerIds(prefix);
+        const make = getElement(ids.make)?.value.trim() || '';
+        const model = getElement(ids.model)?.value.trim() || '';
+        const input = getElement(ids.input);
+        const caption = getElement(ids.caption);
+        if (!input || !caption) return;
+        const yearText = input.value.trim();
+        const year = /^\d{4}$/.test(yearText) ? Number(yearText) : null;
+        const generations = make && model ? resolveVehicleGenerations(make, model) : null;
+        if (!make || !model) {
+            caption.textContent = yearText ? 'Choose a make and model to match this year to a generation.' : 'Choose a make and model to see their generations.';
+            return;
+        }
+        if (!year) {
+            caption.textContent = generations ? `${generations.length} generation groups available · choose one to see its year range and reference photo.` : 'No verified generation guide for this model yet · choose a year by decade or type it directly.';
+            return;
+        }
+        const found = generations?.find(generation => year >= generation.start && year <= (generation.end == null ? currentYearOptionsMax() : generation.end));
+        caption.textContent = found ? `${found.label} · ${getGenerationRangeLabel(found)}` : `Year ${year} entered · no exact generation match in the guide.`;
+    }
+    async function fetchWikipediaVehicleImage(searchText) {
+        const cacheKey = String(searchText || '').trim().toLowerCase();
+        if (!cacheKey) return null;
+        if (wikipediaVehicleImageCache.has(cacheKey)) return wikipediaVehicleImageCache.get(cacheKey);
+        const task = (async () => {
+            try {
+                const params = new URLSearchParams({
+                    action: 'query', generator: 'search', gsrsearch: searchText,
+                    gsrnamespace: '0', gsrwhat: 'text', gsrlimit: '5',
+                    prop: 'pageimages|info', piprop: 'thumbnail', pithumbsize: '420',
+                    inprop: 'url', format: 'json', formatversion: '2', origin: '*'
+                });
+                const response = await fetch(`https://en.wikipedia.org/w/api.php?${params.toString()}`, { headers: { Accept: 'application/json' } });
+                if (!response.ok) return null;
+                const payload = await response.json();
+                const pages = payload?.query?.pages || [];
+                const page = pages.find(item => item.thumbnail?.source) || pages[0];
+                if (!page) return null;
+                return {
+                    image: page.thumbnail?.source || '',
+                    page: page.fullurl || `https://en.wikipedia.org/wiki/${encodeURIComponent(String(page.title || '').replace(/ /g, '_'))}`,
+                    title: page.title || searchText
+                };
+            }
+            catch {
+                return null;
+            }
+        })();
+        wikipediaVehicleImageCache.set(cacheKey, task);
+        return task;
+    }
+    function renderGenerationGroups(prefix) {
+        const ids = generationPickerIds(prefix);
+        const make = getElement(ids.make)?.value.trim() || '';
+        const model = getElement(ids.model)?.value.trim() || '';
+        const list = getElement(ids.list);
+        if (!list) return;
+        const mapped = make && model ? resolveVehicleGenerations(make, model) : null;
+        const groups = mapped || (make && model ? buildDecadeFallback(make, model) : []);
+        const inputYear = Number(getElement(ids.input)?.value || 0);
+        const fallbackNote = !mapped && make && model
+            ? `<div class="generation-fallback-note"><strong>Generation guide not available yet.</strong><span>These are decade groups, not official generations. Enter the exact year if you already know it.</span></div>` : '';
+        if (!make || !model) {
+            list.innerHTML = '<div class="generation-empty"><strong>Select a make and model first.</strong><span>The generation picker will show the model-year ranges and Wikipedia reference photos here.</span></div>';
+            updateGenerationCaption(prefix);
+            return;
+        }
+        list.innerHTML = `${fallbackNote}${groups.map((generation, index) => {
+            const maxYear = Math.min(generation.end == null ? currentYearOptionsMax() : generation.end, currentYearOptionsMax());
+            const years = [];
+            for (let year = generation.start; year <= maxYear; year++) years.push(year);
+            if (!years.length) return '';
+            const selected = years.includes(inputYear);
+            const imageAlt = `${make} ${model} ${generation.label}`;
+            const wikiSearch = generation.wiki || `${make} ${model} ${generation.label}`;
+            const yearsMarkup = years.map(year => `<button aria-label="Select ${year}, ${escapeHTML(make)} ${escapeHTML(model)} ${escapeHTML(generation.label)}" class="generation-year-chip${year === inputYear ? ' is-selected' : ''}" data-generation-year="${year}" data-generation-label="${escapeHTML(generation.label)}" data-generation-range="${escapeHTML(getGenerationRangeLabel(generation))}" type="button">${year}</button>`).join('');
+            return `<article class="generation-option" data-generation-option="${index}"><a aria-label="Open ${escapeHTML(imageAlt)} on Wikipedia" class="generation-image-link" data-generation-wiki-link="${index}" href="https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(wikiSearch)}" rel="noopener noreferrer" target="_blank"><span class="generation-image-placeholder">${escapeHTML(make.slice(0, 1).toUpperCase())}${escapeHTML(model.slice(0, 1).toUpperCase())}</span><img alt="${escapeHTML(imageAlt)} reference photo" class="generation-image" data-generation-image="${index}" hidden="" loading="lazy"/><span class="generation-image-credit">WIKIPEDIA</span></a><div class="generation-option-copy"><div class="generation-option-heading"><strong>${escapeHTML(generation.label)}</strong><span>${escapeHTML(getGenerationRangeLabel(generation))}</span></div><div class="generation-year-chips">${yearsMarkup}</div></div></article>`;
+        }).join('')}`;
+        updateGenerationCaption(prefix);
+        // Only request Wikipedia thumbnails while the picker is visible. This avoids
+        // firing searches as someone is still typing a make or model.
+        const pickerPanel = getElement(generationPickerIds(prefix).panel);
+        if (!pickerPanel || pickerPanel.hidden) return;
+        const token = ++generationPickerSequence[prefix];
+        const loadImages = async () => {
+            if (!mapped) {
+                const info = await fetchWikipediaVehicleImage(`${make} ${model} automobile`);
+                if (token !== generationPickerSequence[prefix] || !info) return;
+                list.querySelectorAll('[data-generation-image]').forEach(image => {
+                    image.src = info.image;
+                    image.hidden = !info.image;
+                });
+                list.querySelectorAll('[data-generation-wiki-link]').forEach(link => { link.href = info.page; link.title = `Open ${info.title} on Wikipedia`; });
+                return;
+            }
+            await Promise.all(groups.map(async (generation, index) => {
+                const image = list.querySelector(`[data-generation-image="${index}"]`);
+                const link = list.querySelector(`[data-generation-wiki-link="${index}"]`);
+                if (!image || !link) return;
+                const info = await fetchWikipediaVehicleImage(generation.wiki || `${make} ${model} ${generation.label} car`);
+                if (token !== generationPickerSequence[prefix] || !info) return;
+                image.src = info.image;
+                image.hidden = !info.image;
+                link.href = info.page;
+                link.title = `Open ${info.title} on Wikipedia`;
+            }));
+        };
+        loadImages();
+    }
+    function positionGenerationPicker(prefix) {
+        const ids = generationPickerIds(prefix);
+        const input = getElement(ids.input), panel = getElement(ids.panel);
+        if (!input || !panel || panel.hidden) return;
+        if (window.matchMedia && window.matchMedia('(max-width: 600px)').matches) {
+            ['left', 'right', 'top', 'bottom', 'width', 'maxHeight'].forEach(property => { panel.style[property] = ''; });
+            return;
+        }
+        const rect = input.getBoundingClientRect();
+        const width = Math.min(560, Math.max(280, window.innerWidth - 24));
+        const left = Math.max(12, Math.min(rect.left, window.innerWidth - width - 12));
+        let top = rect.bottom + 8;
+        let maxHeight = Math.min(560, window.innerHeight - top - 12);
+        if (maxHeight < 230) {
+            maxHeight = Math.min(560, Math.max(180, rect.top - 22));
+            top = Math.max(12, rect.top - maxHeight - 8);
+        }
+        panel.style.left = `${left}px`;
+        panel.style.right = 'auto';
+        panel.style.top = `${top}px`;
+        panel.style.bottom = 'auto';
+        panel.style.width = `${width}px`;
+        panel.style.maxHeight = `${maxHeight}px`;
+    }
+    function closeGenerationPicker(prefix) {
+        const ids = generationPickerIds(prefix);
+        const panel = getElement(ids.panel), toggle = getElement(ids.toggle);
+        if (panel) panel.hidden = true;
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    }
+    function openGenerationPicker(prefix) {
+        const ids = generationPickerIds(prefix);
+        const panel = getElement(ids.panel), toggle = getElement(ids.toggle);
+        if (!panel || !toggle) return;
+        panel.hidden = false;
+        renderGenerationGroups(prefix);
+        toggle.setAttribute('aria-expanded', 'true');
+        positionGenerationPicker(prefix);
+    }
+    function setupGenerationPicker(prefix) {
+        const ids = generationPickerIds(prefix);
+        const input = getElement(ids.input), toggle = getElement(ids.toggle), panel = getElement(ids.panel), list = getElement(ids.list);
+        if (!input || !toggle || !panel || !list || input.dataset.generationPickerReady === 'true') return;
+        input.dataset.generationPickerReady = 'true';
+        toggle.addEventListener('click', () => panel.hidden ? openGenerationPicker(prefix) : closeGenerationPicker(prefix));
+        input.addEventListener('input', () => updateGenerationCaption(prefix));
+        panel.querySelector('.generation-picker-close')?.addEventListener('click', () => closeGenerationPicker(prefix));
+        list.addEventListener('click', event => {
+            const yearButton = event.target.closest('[data-generation-year]');
+            if (!yearButton) return;
+            input.value = yearButton.dataset.generationYear || '';
+            updateGenerationCaption(prefix);
+            closeGenerationPicker(prefix);
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+            if (!prefix) updateSpotProgress();
+        });
+        document.addEventListener('pointerdown', event => {
+            if (!panel.hidden && !panel.contains(event.target) && !toggle.contains(event.target) && !input.contains(event.target)) closeGenerationPicker(prefix);
+        });
+        window.addEventListener('resize', () => positionGenerationPicker(prefix));
+        window.addEventListener('scroll', () => positionGenerationPicker(prefix), true);
+        panel.addEventListener('keydown', event => {
+            if (event.key === 'Escape') {
+                closeGenerationPicker(prefix);
+                toggle.focus();
+            }
+        });
+    }
+
     function updateTrimOptions(prefix, preferredTrim) {
         const make = vehicleField(prefix, 'makeSelect').value.trim();
         const model = vehicleField(prefix, 'modelSelect').value.trim();
@@ -4314,36 +4942,50 @@
             if (value !== make.dataset.lastValue) {
                 model.value = '';
                 trim.value = '';
+                getElement(prefix ? 'editYearInput' : 'yearInput').value = '';
                 model.dataset.lastValue = '';
                 make.dataset.lastValue = value;
             }
             updateModelOptions(prefix);
             updateTrimOptions(prefix, '');
-            if (prefix === '')
+            renderGenerationGroups(prefix);
+            if (prefix === '') {
+                syncPreviousSpotPhoto();
                 updateSpotProgress();
+            }
         };
         const syncModel = () => {
             const value = model.value.trim();
             if (value !== model.dataset.lastValue) {
                 trim.value = '';
+                getElement(prefix ? 'editYearInput' : 'yearInput').value = '';
                 model.dataset.lastValue = value;
             }
             updateTrimOptions(prefix);
-            if (prefix === '')
+            renderGenerationGroups(prefix);
+            if (prefix === '') {
+                syncPreviousSpotPhoto();
                 updateSpotProgress();
+            }
         };
         make.addEventListener('input', syncMake);
         make.addEventListener('change', syncMake);
         model.addEventListener('input', syncModel);
         model.addEventListener('change', syncModel);
         trim.addEventListener('input', () => {
-            if (prefix === '')
+            if (prefix === '') {
+                syncPreviousSpotPhoto();
                 updateSpotProgress();
+            }
         });
         trim.addEventListener('change', () => {
-            if (prefix === '')
+            if (prefix === '') {
+                syncPreviousSpotPhoto();
                 updateSpotProgress();
+            }
         });
+        setupGenerationPicker(prefix);
+        renderGenerationGroups(prefix);
     }
     function setVehicleFields(prefix, spot) {
         const make = vehicleField(prefix, 'makeSelect'), model = vehicleField(prefix, 'modelSelect'), trim = vehicleField(prefix, 'trimSelect');
@@ -4353,17 +4995,73 @@
         model.value = spot.model || '';
         model.dataset.lastValue = model.value.trim();
         updateTrimOptions(prefix, spot.trim || '');
+        renderGenerationGroups(prefix);
+        updateGenerationCaption(prefix);
     }
     function readVehicleFields(prefix) {
         return { make: vehicleField(prefix, 'makeSelect').value.trim(), model: vehicleField(prefix, 'modelSelect').value.trim(), trim: vehicleField(prefix, 'trimSelect').value.trim() };
     }
+    function normalizeVehiclePhotoKeyPart(value) {
+        return String(value || '').normalize('NFKC').trim().toLocaleLowerCase().replace(/\s+/g, ' ');
+    }
+    function clearSpotPhotoPreview(status = 'No photo selected') {
+        currentPhoto = '';
+        getElement('photoPreview').removeAttribute('src');
+        getElement('photoDrop').classList.remove('has-photo', 'no-photo');
+        getElement('photoStatus').textContent = status;
+        updateSpotProgress();
+    }
+    function showSpotPhotoPreview(photo, status) {
+        currentPhoto = photo || '';
+        if (currentPhoto) {
+            getElement('photoPreview').src = currentPhoto;
+            getElement('photoDrop').classList.remove('no-photo');
+            getElement('photoDrop').classList.add('has-photo');
+            getElement('photoStatus').textContent = status || `Ready · ${bytesLabel(photoSize(currentPhoto))}`;
+        }
+        else {
+            getElement('photoPreview').removeAttribute('src');
+            getElement('photoDrop').classList.remove('has-photo', 'no-photo');
+            getElement('photoStatus').textContent = status || 'No photo selected';
+        }
+        updateSpotProgress();
+    }
+    function syncPreviousSpotPhoto() {
+        // A deliberate photo choice or an explicit no-photo action always wins.
+        if (currentPhotoMode === 'manual' || currentPhotoMode === 'none')
+            return;
+        const vehicle = readVehicleFields('');
+        if (!vehicle.make || !vehicle.model) {
+            if (currentPhotoMode === 'auto') {
+                currentPhotoMode = 'unset';
+                showSpotPhotoPreview('', 'No photo selected');
+            }
+            return;
+        }
+        // Match the same identity rule as the Garage: make + model + trim.
+        // Model year, color and location do not create a different vehicle entry.
+        const key = [vehicle.make, vehicle.model, vehicle.trim].map(normalizeVehiclePhotoKeyPart).join('\u001f');
+        let latestPhotoSpot = null;
+        for (const spot of data.spots) {
+            if (!spot.photo)
+                continue;
+            const spotKey = [spot.make, spot.model, spot.trim].map(normalizeVehiclePhotoKeyPart).join('\u001f');
+            if (spotKey !== key)
+                continue;
+            if (!latestPhotoSpot || new Date(spot.createdAt) > new Date(latestPhotoSpot.createdAt))
+                latestPhotoSpot = spot;
+        }
+        if (latestPhotoSpot) {
+            currentPhotoMode = 'auto';
+            showSpotPhotoPreview(latestPhotoSpot.photo, `Reusing your previous photo · ${fmtDate(latestPhotoSpot.createdAt, { month: 'short', day: 'numeric', year: 'numeric' })} · CHANGE PHOTO to replace`);
+        }
+        else if (currentPhotoMode === 'auto') {
+            currentPhotoMode = 'unset';
+            showSpotPhotoPreview('', 'No previous photo found for this car');
+        }
+    }
     function populateChoiceLists() {
-        const latest = Math.min(2099, new Date().getFullYear() + 2);
-        const years = [];
-        for (let y = latest; y >= 1886; y--)
-            years.push(String(y));
         const colors = ['Black', 'White', 'Pearl White', 'Ivory', 'Cream', 'Silver', 'Platinum Silver', 'Gray', 'Charcoal', 'Nardo Gray', 'Chalk', 'Aventurine Green', 'Blue', 'Navy Blue', 'Miami Blue', 'Racing Blue', 'Light Blue', 'Red', 'Guards Red', 'Rosso Corsa', 'Soul Red Crystal', 'Burgundy', 'Orange', 'Papaya Orange', 'Yellow', 'Giallo Modena', 'Green', 'British Racing Green', 'Lime Green', 'Purple', 'Brown', 'Bronze', 'Gold', 'Champagne', 'Beige', 'Tan', 'Copper', 'Two-tone', 'Other'];
-        ['yearOptions', 'editYearOptions'].forEach(id => fillDatalist(id, years));
         ['colorOptions', 'editColorOptions'].forEach(id => fillDatalist(id, colors));
     }
     populateVehicle('');
@@ -4977,23 +5675,21 @@
     }
     function photoSize(dataUrl) { return Math.max(0, Math.round((dataUrl.length * 3) / 4)); }
     async function setSelectedPhoto(file) {
+        const previousPhoto = currentPhoto;
+        const previousMode = currentPhotoMode;
         getElement('photoStatus').textContent = 'Preparing photo…';
         getElement('saveSpotButton').disabled = true;
         try {
             const compressed = await compressPhoto(file);
-            currentPhoto = compressed;
-            getElement('photoPreview').src = compressed;
-            getElement('photoDrop').classList.remove('no-photo');
-            getElement('photoDrop').classList.add('has-photo');
-            getElement('photoStatus').textContent = `Ready · ${bytesLabel(photoSize(compressed))}`;
-            updateSpotProgress();
+            currentPhotoMode = 'manual';
+            showSpotPhotoPreview(compressed, `Ready · ${bytesLabel(photoSize(compressed))}`);
         }
         catch (err) {
             showToast(err.message || 'Could not prepare this photo.');
-            getElement('photoStatus').textContent = 'No photo selected';
-            currentPhoto = '';
-            getElement('photoDrop').classList.remove('has-photo', 'no-photo');
-            updateSpotProgress();
+            currentPhotoMode = previousMode;
+            showSpotPhotoPreview(previousPhoto, previousPhoto
+                ? (previousMode === 'auto' ? 'Reusing your previous photo · CHANGE PHOTO to replace' : `Ready · ${bytesLabel(photoSize(previousPhoto))}`)
+                : 'No photo selected');
         }
         finally {
             getElement('saveSpotButton').disabled = false;
@@ -5091,8 +5787,23 @@
         if (file)
             setSelectedPhoto(file);
     });
-    getElement('removePhoto').addEventListener('click', () => { currentPhoto = ''; getElement('photoLibraryInput').value = ''; getElement('photoCameraInput').value = ''; getElement('photoPreview').removeAttribute('src'); getElement('photoDrop').classList.remove('has-photo', 'no-photo'); getElement('photoStatus').textContent = 'No photo selected'; updateSpotProgress(); });
-    getElement('noPhotoButton').addEventListener('click', () => { currentPhoto = ''; getElement('photoLibraryInput').value = ''; getElement('photoCameraInput').value = ''; getElement('photoPreview').removeAttribute('src'); getElement('photoDrop').classList.remove('has-photo'); getElement('photoDrop').classList.add('no-photo'); getElement('photoStatus').textContent = 'Saving without a photo'; updateSpotProgress(); });
+    getElement('removePhoto').addEventListener('click', () => {
+        currentPhotoMode = 'none';
+        getElement('photoLibraryInput').value = '';
+        getElement('photoCameraInput').value = '';
+        clearSpotPhotoPreview('Photo removed for this sighting');
+    });
+    getElement('noPhotoButton').addEventListener('click', () => {
+        currentPhotoMode = 'none';
+        getElement('photoLibraryInput').value = '';
+        getElement('photoCameraInput').value = '';
+        currentPhoto = '';
+        getElement('photoPreview').removeAttribute('src');
+        getElement('photoDrop').classList.remove('has-photo');
+        getElement('photoDrop').classList.add('no-photo');
+        getElement('photoStatus').textContent = 'Saving without a photo';
+        updateSpotProgress();
+    });
     getElement('notesInput').addEventListener('input', () => { getElement('notesCounter').textContent = `${getElement('notesInput').value.length} / 280`; });
     updateSpotProgress();
     function initSpotMap() {
@@ -5159,12 +5870,16 @@
         updateModelOptions('');
         updateTrimOptions('', '');
         currentPhoto = '';
+        currentPhotoMode = 'unset';
         getElement('photoLibraryInput').value = '';
         getElement('photoCameraInput').value = '';
         getElement('photoPreview').removeAttribute('src');
         getElement('photoDrop').classList.remove('has-photo', 'no-photo');
         getElement('photoStatus').textContent = 'No photo selected';
         getElement('yearInput').value = '';
+        renderGenerationGroups('');
+        updateGenerationCaption('');
+        closeGenerationPicker('');
         getElement('spottedAtInput').value = toLocalDateTimeInput();
         getElement('colorInput').value = '';
         getElement('placeInput').value = '';
@@ -5729,63 +6444,129 @@
     function renderGarage() {
         renderStats();
         renderRarityCounts();
+
         const query = getElement('garageSearch').value.trim().toLowerCase();
-        const sort = getElement('garageSort').value, filter = getElement('garageFilter').value;
-        let spots = data.spots.filter(s => `${s.make} ${s.model} ${s.trim} ${s.year || ''} ${s.color || ''} ${s.place || ''} ${s.notes || ''}`.toLowerCase().includes(query));
-        if (filter === 'favorites')
-            spots = spots.filter(s => s.favorite);
-        else if (filter === 'located')
-            spots = spots.filter(s => s.location);
-        else if (filter === 'no-photo')
-            spots = spots.filter(s => !s.photo);
-        else if (['common', 'uncommon', 'rare', 'epic', 'legendary', 'cosmic'].includes(filter))
-            spots = spots.filter(s => estimateRarity(s).key === filter);
+        const sort = getElement('garageSort').value;
+        const filter = getElement('garageFilter').value;
+        const normalizeVehiclePart = value => String(value || '').normalize('NFKC').trim().toLocaleLowerCase().replace(/\s+/g, ' ');
+
+        // A garage entry represents a vehicle configuration, not an individual
+        // spotting event. Year, color, location and date deliberately do not
+        // split the same make/model/trim into separate garage cards.
+        const grouped = new Map();
+        data.spots.forEach(spot => {
+            const make = (spot.make || 'Unknown make').trim() || 'Unknown make';
+            const model = (spot.model || 'Unknown model').trim() || 'Unknown model';
+            const trim = (spot.trim || '').trim();
+            const key = [make, model, trim].map(normalizeVehiclePart).join('\u001f');
+            if (!grouped.has(key)) grouped.set(key, { key, make, model, trim, sightings: [] });
+            grouped.get(key).sightings.push(spot);
+        });
+
+        const vehicles = [...grouped.values()].map(group => {
+            const sightings = [...group.sightings].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            const latest = sightings[0];
+            const oldest = sightings[sightings.length - 1];
+            const photoSpot = sightings.find(item => item.photo) || latest;
+            const yearValues = [...new Set(sightings.map(item => Number(item.year)).filter(year => Number.isInteger(year) && year >= 1886 && year <= 2099))].sort((a, b) => a - b);
+            const colors = [...new Set(sightings.map(item => (item.color || '').trim()).filter(Boolean))];
+            const raritySpot = sightings.reduce((best, item) => estimateRarity(item).rank > estimateRarity(best).rank ? item : best, latest);
+            const favoriteSpot = sightings.find(item => item.favorite) || null;
+            const locationSpot = sightings.find(item => item.place || item.location) || latest;
+            return {
+                ...group,
+                count: sightings.length,
+                sightings,
+                latest,
+                oldest,
+                photoSpot,
+                yearValues,
+                colors,
+                favorite: !!favoriteSpot,
+                favoriteSpot,
+                locationSpot,
+                raritySpot,
+                rarity: estimateRarity(raritySpot)
+            };
+        });
+
+        // Filters act on the vehicle group: a matching sighting makes that
+        // vehicle visible, while its badge still reports the full lifetime count.
+        let visibleVehicles = vehicles.filter(vehicle => {
+            if (query) {
+                const hasMatch = vehicle.sightings.some(spot => `${spot.make || ''} ${spot.model || ''} ${spot.trim || ''} ${spot.year || ''} ${spot.color || ''} ${spot.place || ''} ${spot.notes || ''}`.toLowerCase().includes(query));
+                if (!hasMatch) return false;
+            }
+            if (filter === 'favorites' && !vehicle.favorite) return false;
+            if (filter === 'located' && !vehicle.sightings.some(spot => spot.location)) return false;
+            if (filter === 'no-photo' && !vehicle.sightings.some(spot => !spot.photo)) return false;
+            if (['common', 'uncommon', 'rare', 'epic', 'legendary', 'cosmic'].includes(filter) && !vehicle.sightings.some(spot => estimateRarity(spot).key === filter)) return false;
+            return true;
+        });
+
         if (sort === 'oldest')
-            spots.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            visibleVehicles.sort((a, b) => new Date(a.oldest.createdAt) - new Date(b.oldest.createdAt));
         else if (sort === 'az')
-            spots.sort((a, b) => `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`));
+            visibleVehicles.sort((a, b) => `${a.make} ${a.model} ${a.trim}`.localeCompare(`${b.make} ${b.model} ${b.trim}`));
         else if (sort === 'year')
-            spots.sort((a, b) => (b.year || 0) - (a.year || 0));
+            visibleVehicles.sort((a, b) => (Math.max(...b.yearValues, 0) - Math.max(...a.yearValues, 0)) || new Date(b.latest.createdAt) - new Date(a.latest.createdAt));
         else if (sort === 'rarity')
-            spots.sort((a, b) => estimateRarity(b).rank - estimateRarity(a).rank || new Date(b.createdAt) - new Date(a.createdAt));
+            visibleVehicles.sort((a, b) => b.rarity.rank - a.rarity.rank || new Date(b.latest.createdAt) - new Date(a.latest.createdAt));
         else
-            spots.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        getElement('garageCountLabel').textContent = `${spots.length} ${spots.length === 1 ? 'MATCH' : 'MATCHES'}`;
+            visibleVehicles.sort((a, b) => new Date(b.latest.createdAt) - new Date(a.latest.createdAt));
+
+        const totalUnique = vehicles.length;
+        getElement('garageHeadingCount').textContent = `${totalUnique} UNIQUE ${totalUnique === 1 ? 'CAR' : 'CARS'}`;
+        getElement('garageCountLabel').textContent = `${visibleVehicles.length} ${visibleVehicles.length === 1 ? 'CAR' : 'CARS'}`;
         const container = getElement('garageCollection');
         if (!data.spots.length) {
             container.innerHTML = noCarsMarkup('Your garage starts here.', 'Save your first sighting and it will land here with its photo and details.');
         }
-        else if (!spots.length) {
+        else if (!visibleVehicles.length) {
             const emptyCopy = { favorites: ['No favorites yet.', 'Open any sighting and tap the star to keep your best finds close.'], located: ['No pinned sightings.', 'Save a GPS location or place a pin on the map when logging a car.'], 'no-photo': ['Every sighting has a photo.', 'There are no photo-free entries in your collection right now.'] };
             const message = emptyCopy[filter] || ['No cars found.', 'Try another make, model, trim or note, or clear your search to see everything.'];
             container.innerHTML = noCarsMarkup(message[0], message[1], false);
         }
         else {
-            const renderCarCard = (s, index) => {
-                const run = s.runId ? data.runs.find(r => r.id === s.runId) : null;
-                const make = s.make || 'Unknown make';
-                const model = s.model || 'Unknown model';
-                const photo = s.photo ? `<img class="car-image" src="${escapeHTML(s.photo)}" alt="${escapeHTML(make)} ${escapeHTML(model)}" loading="lazy">` : `<div class="car-image-placeholder"><span>PHOTO NOT ADDED</span><b>${escapeHTML(make.slice(0, 1) + model.slice(0, 1))}</b></div>`;
-                const rarity = estimateRarity(s);
-                return `<article class="car-card rarity-card rarity-${rarity.key}" style="--card-index:${Math.min(index, 10)};--card-delay:${Math.min(index, 10) * 34}ms" data-open-spot="${escapeHTML(s.id)}" tabindex="0" role="button" aria-label="View ${escapeHTML(make)} ${escapeHTML(model)}"><div class="car-image-wrap">${photo}<span class="car-tag">${run ? 'ROAD TRIP' : 'FIELD SPOT'}</span><span class="car-rarity-overlay ${rarity.key}" title="${escapeHTML(rarity.reason)}">${rarity.label.toUpperCase()}</span>${s.favorite ? '<span class="favorite-chip" aria-label="Favorite">★</span>' : ''}</div><div class="car-card-body"><div class="car-make">${escapeHTML(make)} ${s.year ? `<span class="car-year">${s.year}</span>` : ''}</div><div class="car-model">${escapeHTML(model)}</div><div class="car-trim">${escapeHTML(s.trim || s.color || 'Trim not noted')}</div><div class="car-meta"><span>${s.place ? `⌖ ${escapeHTML(s.place)}` : s.location ? '⌖ Location saved' : 'Location not saved'}</span><span>${fmtDate(s.createdAt, { month: 'short', day: 'numeric', year: undefined })}</span></div></div></article>`;
+            const renderCarCard = (vehicle, index) => {
+                const s = vehicle.latest;
+                const make = vehicle.make || 'Unknown make';
+                const model = vehicle.model || 'Unknown model';
+                const photo = vehicle.photoSpot?.photo
+                    ? `<img class="car-image" src="${escapeHTML(vehicle.photoSpot.photo)}" alt="${escapeHTML(make)} ${escapeHTML(model)}" loading="lazy">`
+                    : `<div class="car-image-placeholder"><span>PHOTO NOT ADDED</span><b>${escapeHTML(make.slice(0, 1) + model.slice(0, 1))}</b></div>`;
+                const rarity = vehicle.rarity;
+                const years = vehicle.yearValues;
+                const yearLabel = years.length > 2 ? `${years.slice(0, 2).join(' · ')} +${years.length - 2}` : years.join(' · ');
+                const yearTitle = years.length ? `Years spotted: ${years.join(', ')}` : '';
+                const trimLabel = vehicle.trim || (vehicle.colors.length > 1 ? 'Multiple colors' : vehicle.colors[0] || 'Trim not noted');
+                const locationSpot = vehicle.locationSpot;
+                const locationLabel = locationSpot?.place
+                    ? `⌖ ${locationSpot.place}`
+                    : locationSpot?.location ? '⌖ Location saved' : 'Location not saved';
+                const detailSpot = filter === 'favorites' && vehicle.favoriteSpot ? vehicle.favoriteSpot : s;
+                const repeatBadge = vehicle.count > 1
+                    ? `<span class="garage-repeat-count" title="This vehicle has been spotted ${vehicle.count} times">${vehicle.count}× SPOTTED</span>`
+                    : '';
+                return `<article class="car-card rarity-card rarity-${rarity.key}" style="--card-index:${Math.min(index, 10)};--card-delay:${Math.min(index, 10) * 34}ms" data-open-spot="${escapeHTML(detailSpot.id)}" tabindex="0" role="button" aria-label="View ${escapeHTML(make)} ${escapeHTML(model)}, spotted ${vehicle.count} ${vehicle.count === 1 ? 'time' : 'times'}"><div class="car-image-wrap">${photo}<span class="car-tag">${s.runId ? 'ROAD TRIP' : 'FIELD SPOT'}</span><span class="car-rarity-overlay ${rarity.key}" title="${escapeHTML(rarity.reason)}">${rarity.label.toUpperCase()}</span>${vehicle.favorite ? '<span class="favorite-chip" aria-label="One or more sightings favorited" title="One or more sightings favorited">★</span>' : ''}</div><div class="car-card-body"><div class="car-make">${escapeHTML(make)} ${yearLabel ? `<span class="car-year" title="${escapeHTML(yearTitle)}">${escapeHTML(yearLabel)}</span>` : ''}</div><div class="car-model">${escapeHTML(model)}</div><div class="car-trim">${escapeHTML(trimLabel)}</div>${repeatBadge}<div class="car-meta"><span>${escapeHTML(locationLabel)}</span><span>${fmtDate(s.createdAt, { month: 'short', day: 'numeric', year: undefined })}</span></div></div></article>`;
             };
             const activeLayout = document.querySelector('[data-garage-mode].active')?.dataset.garageMode || 'collection';
             if (activeLayout === 'manufacturer') {
                 const groups = new Map();
-                spots.forEach(spot => {
-                    const make = (spot.make || 'Unknown make').trim() || 'Unknown make';
+                visibleVehicles.forEach(vehicle => {
+                    const make = (vehicle.make || 'Unknown make').trim() || 'Unknown make';
                     if (!groups.has(make)) groups.set(make, []);
-                    groups.get(make).push(spot);
+                    groups.get(make).push(vehicle);
                 });
                 const orderedMakes = [...groups.keys()].sort((a, b) => a.localeCompare(b));
                 container.innerHTML = orderedMakes.map(make => {
                     const cars = groups.get(make);
-                    const countLabel = `${cars.length} ${cars.length === 1 ? 'CAR' : 'CARS'}`;
+                    const countLabel = `${cars.length} ${cars.length === 1 ? 'UNIQUE CAR' : 'UNIQUE CARS'}`;
                     return `<details class="garage-make-group"><summary class="garage-make-summary"><span aria-hidden="true" class="garage-make-monogram">${escapeHTML(make.slice(0, 1).toUpperCase())}</span><span class="garage-make-heading"><strong>${escapeHTML(make)}</strong><small>MANUFACTURER</small></span><span class="garage-make-count">${countLabel}</span><span aria-hidden="true" class="garage-make-chevron">⌄</span></summary><div class="garage-make-grid">${cars.map(renderCarCard).join('')}</div></details>`;
                 }).join('');
             }
             else {
-                container.innerHTML = spots.map(renderCarCard).join('');
+                container.innerHTML = visibleVehicles.map(renderCarCard).join('');
             }
         }
     }
@@ -6004,6 +6785,8 @@
         getElement('editPhotoPreview').src = spot.photo || '';
         getElement('editPhotoStatus').textContent = spot.photo ? 'Current photo' : 'No photo saved';
         getElement('editYearInput').value = spot.year || '';
+        renderGenerationGroups('edit');
+        updateGenerationCaption('edit');
         getElement('editSpottedAtInput').value = toLocalDateTimeInput(spot.createdAt);
         getElement('editColorInput').value = spot.color || '';
         getElement('editPlaceInput').value = spot.place || '';
@@ -6514,6 +7297,7 @@
         getElement('colorInput').value = guidedDemoCar.color;
         getElement('spottedAtInput').value = toLocalDateTimeInput();
         currentPhoto = photo;
+        currentPhotoMode = 'manual';
         getElement('photoPreview').src = photo;
         getElement('photoDrop').classList.remove('no-photo');
         getElement('photoDrop').classList.add('has-photo');
